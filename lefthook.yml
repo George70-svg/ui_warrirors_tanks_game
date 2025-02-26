@@ -1,10 +1,23 @@
 pre-commit:
   parallel: true
   commands:
-    lint:
-      glob: '*.{ts,tsx}'
-      run: cd packages/client && npm run lint
-    prettier:
-      glob: '*.{ts,tsx,css}'
-      run: cd packages/client && npm run format
+    eslint-client:
+      glob: 'packages/client/**/*.{ts,tsx}'
+      run: cd packages/client && npx eslint --fix $(echo {staged_files} | sed 's/packages\/client\///g')
+      stage_fixed: true
+    eslint-server:
+      glob: 'packages/server/**/*.{ts}'
+      run: cd packages/server && npx eslint --fix $(echo {staged_files} | sed 's/packages\/server\///g')
+      stage_fixed: true
+    stylelint:
+      glob: 'packages/client/**/*.css'
+      run: cd packages/client && npx stylelint --fix $(echo {staged_files} | sed 's/packages\/client\///g')
+      stage_fixed: true
+    prettier-client:
+      glob: 'packages/client/**/*.{ts,tsx,css}'
+      run: cd packages/client && npx prettier --write $(echo {staged_files} | sed 's/packages\/client\///g')
+      stage_fixed: true
+    prettier-server:
+      glob: 'packages/server/**/*.{ts}'
+      run: cd packages/server && npx prettier --write $(echo {staged_files} | sed 's/packages\/server\///g')
       stage_fixed: true
