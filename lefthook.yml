@@ -1,23 +1,15 @@
 pre-commit:
   parallel: true
   commands:
-    eslint-client:
-      glob: 'packages/client/**/*.{ts,tsx}'
-      run: cd packages/client && yarn eslint --fix $(echo {staged_files} | sed 's/packages\/client\///g')
+    lint:
+      glob: '*.{ts,tsx}'
+      run: yarn eslint {staged_files} --fix
       stage_fixed: true
-    eslint-server:
-      glob: 'packages/server/**/*.{ts}'
-      run: cd packages/server && yarn eslint --fix $(echo {staged_files} | sed 's/packages\/server\///g')
+    prettier:
+      glob: '*.{ts,tsx,css}'
+      run: yarn prettier -w {staged_files}
       stage_fixed: true
     stylelint:
-      glob: 'packages/client/**/*.css'
-      run: cd packages/client && yarn stylelint --fix $(echo {staged_files} | sed 's/packages\/client\///g')
-      stage_fixed: true
-    prettier-client:
-      glob: 'packages/client/**/*.{ts,tsx,css}'
-      run: cd packages/client && yarn prettier --write $(echo {staged_files} | sed 's/packages\/client\///g')
-      stage_fixed: true
-    prettier-server:
-      glob: 'packages/server/**/*.{ts}'
-      run: cd packages/server && yarn prettier --write $(echo {staged_files} | sed 's/packages\/server\///g')
+      glob: '*.{css}'
+      run: yarn stylelint {staged_files} --fix
       stage_fixed: true

@@ -1,7 +1,1 @@
-{
-  "singleQuote": true,
-  "semi": false,
-  "arrowParens": "avoid",
-  "bracketSameLine": true,
-  "width": 50
-}
+{}

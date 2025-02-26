@@ -6,17 +6,16 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "yarn eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "lint:css": "yarn stylelint \"**/*.css\"",
-    "lint:css:fix": "yarn stylelint \"**/*.css\" --fix",
-    "format": "yarn prettier --write .",
-    "test": "yarn jest ./"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:css": "stylelint \"**/*.css\"",
+    "format": "prettier --write .",
+    "test": "jest ./"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.12.5",
     "autoprefixer": "^10.4.16",
+    "axios": "^1.8.1",
     "dotenv": "^16.0.2",
     "eslint-config-prettier": "^8.5.0",
     "postcss": "^8.4.31",
