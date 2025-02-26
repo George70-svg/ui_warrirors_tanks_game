@@ -6,12 +6,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "lint:css": "stylelint \"**/*.css\"",
-    "lint:css:fix": "stylelint \"**/*.css\" --fix",
-    "format": "prettier --write .",
-    "test": "jest ./"
+    "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "yarn eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:css": "yarn stylelint \"**/*.css\"",
+    "lint:css:fix": "yarn stylelint \"**/*.css\" --fix",
+    "format": "yarn prettier --write .",
+    "test": "yarn jest ./"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",

@@ -6,9 +6,9 @@
     "build": "tsc --p ./tsconfig.prod.json",
     "preview": "node ./dist/index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.ts",
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "test": "jest ."
+    "lint": "yarn eslint .",
+    "format": "yarn prettier --write .",
+    "test": "yarn jest ."
   },
   "dependencies": {
     "cors": "^2.8.5",
