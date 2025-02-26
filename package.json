@@ -8,9 +8,15 @@
     "dev:server": "lerna run dev --scope=server",
     "dev": "lerna run dev",
     "test": "lerna run test",
-    "lint": "lerna run lint",
-    "format": "lerna run format",
-    "preview": "lerna run preview"
+    "lint": "eslint \"packages/**/*.{ts,tsx}\" --fix",
+    "lint:check": "eslint \"packages/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"packages/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"packages/**/*.{ts,tsx,css}\"",
+    "stylelint": "stylelint \"packages/**/*.css\"",
+    "stylelint:fix": "stylelint \"packages/**/*.css\" --fix",
+    "stylelint:check": "stylelint \"packages/**/*.css\"",
+    "preview": "lerna run preview",
+    "check-lint": "yarn lint:check && yarn format:check && yarn stylelint:check && yarn test"
   },
   "license": "MIT",
   "workspaces": [
@@ -21,6 +27,16 @@
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.3.9",
-    "lerna": "^5.4.3"
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "identity-obj-proxy": "^3.0.0",
+    "lerna": "^5.4.3",
+    "prettier": "^2.7.1",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0"
   }
 }

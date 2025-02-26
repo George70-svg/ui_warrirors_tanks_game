@@ -20,6 +20,6 @@ jobs:
       - name: Initialize
         run: yarn lerna bootstrap
       - name: Lint
-        run: yarn lint
+        run: yarn check-lint
       - name: Test
         run: yarn test
