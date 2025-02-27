@@ -9,13 +9,12 @@ import { LeaderboardPage } from '../pages/leaderboard'
 import { ProfilePage } from '../pages/profile'
 import { SignInPage } from '../pages/sign-in'
 import { SignUpPage } from '../pages/sign-up'
-import { ClientErrorPage } from '../pages/client-error'
+import { NotFoundPage } from '../pages/not-found'
 
 export const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
     element: <HomePage />,
-    errorElement: <ClientErrorPage />,
   },
   {
     path: ROUTES.FORUM,
@@ -48,5 +47,9 @@ export const router = createBrowserRouter([
   {
     path: ROUTES.SIGN_UP,
     element: <SignUpPage />,
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ])
