@@ -1,10 +1,12 @@
 import { themeConfig } from './theme-config'
 import { ConfigProvider } from 'antd'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
 
 export function App() {
   return (
     <ConfigProvider theme={themeConfig}>
-      <div className="App">Вот тут будет жить ваше приложение :)</div>
+      <RouterProvider router={router} />
     </ConfigProvider>
   )
 }
