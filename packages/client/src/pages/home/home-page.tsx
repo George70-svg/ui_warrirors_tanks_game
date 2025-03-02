@@ -13,7 +13,7 @@ export function HomePage() {
           <Link to={`${ROUTES.FORUM}/1`}>Forum Topic 1</Link>
         </li>
         <li>
-          <Link to={ROUTES.GAME}>GAME</Link>
+          <Link to={ROUTES.GAME}>Game</Link>
         </li>
         <li>
           <Link to={ROUTES.LEADERBOARD}>Leaderboard</Link>
@@ -23,12 +23,6 @@ export function HomePage() {
         </li>
         <li>
           <Link to={ROUTES.SERVER_ERROR}>Server error</Link>
-        </li>
-        <li>
-          <Link to={ROUTES.SIGN_IN}>Sign in</Link>
-        </li>
-        <li>
-          <Link to={ROUTES.SIGN_UP}>Sign up</Link>
         </li>
         <li>
           <Link to={'/unknown'}>Unknown link</Link>
