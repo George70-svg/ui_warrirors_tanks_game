@@ -11,7 +11,7 @@ export function NoAuthRoutes() {
   }
 
   if (data) {
-    return <Navigate to={ROUTES.HOME} />
+    return <Navigate to={ROUTES.HOME} replace={true} />
   }
 
   return <Outlet />
