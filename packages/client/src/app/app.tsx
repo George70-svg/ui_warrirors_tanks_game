@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import './app.css'
 import '../shared/config/variables.pcss'
+import '../shared/config/variables.pcss'
 
 export function App() {
   return (
