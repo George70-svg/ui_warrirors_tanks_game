@@ -1,0 +1,103 @@
+.auth-form-container {
+  background-color: var(--auth-form-bg);
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  font-family: var(--auth-font-family);
+}
+
+.auth-form-title {
+  font-weight: 700;
+  font-size: 36px;
+  text-align: center;
+  color: var(--auth-text-color);
+  margin-bottom: 30px;
+}
+
+.auth-form {
+  margin-bottom: 20px;
+}
+
+.auth-form-input {
+  background-color: transparent;
+  color: var(--auth-text-color);
+  border: 1px solid var(--auth-form-border);
+  height: var(--input-height);
+  font-family: var(--auth-font-family);
+}
+
+.auth-form-input::placeholder {
+  color: var(--auth-text-color);
+}
+
+.auth-form-button {
+  height: var(--input-height);
+  font-size: 16px;
+  background-color: var(--auth-primary-button);
+  border-color: var(--auth-primary-button);
+  margin-top: 10px;
+  font-family: var(--auth-font-family);
+}
+
+.auth-form-footer {
+  text-align: center;
+  color: var(--auth-text-color);
+  font-size: 14px;
+  margin-top: 20px;
+  padding-top: 20px;
+  font-family: var(--auth-font-family);
+  position: relative;
+}
+
+.auth-form-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--auth-text-color);
+  opacity: 0.3;
+}
+
+.auth-form-footer-link {
+  color: var(--auth-primary-button);
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+.auth-form-footer-link:hover {
+  text-decoration: underline;
+}
+
+.auth-form-container .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.auth-form-container .ant-input-affix-wrapper {
+  background-color: transparent;
+  border: 1px solid var(--auth-form-border);
+  color: var(--auth-text-color);
+}
+
+.auth-form-container .ant-input-affix-wrapper:hover,
+.auth-form-container .ant-input-affix-wrapper:focus,
+.auth-form-container .ant-input-affix-wrapper-focused {
+  border-color: var(--auth-primary-button);
+  box-shadow: none;
+}
+
+.auth-form-container .ant-input-affix-wrapper input {
+  background-color: transparent;
+  color: var(--auth-text-color);
+  font-family: var(--auth-font-family);
+}
+
+.auth-form-container .ant-input-suffix {
+  color: var(--auth-text-color);
+}
+
+.auth-form-container .anticon.ant-input-password-icon {
+  color: var(--auth-text-color);
+}
