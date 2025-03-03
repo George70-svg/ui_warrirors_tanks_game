@@ -1,0 +1,41 @@
+.auth-layout {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--auth-font-family);
+}
+
+.auth-background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.7);
+}
+
+.auth-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 1;
+  padding: 0 20px;
+}
+
+.auth-logo-container {
+  margin-bottom: 30px;
+  text-align: center;
+  width: 75%;
+}
+
+.auth-logo {
+  width: 100%;
+  height: auto;
+}
