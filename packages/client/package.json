@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
-    "antd": "^5.12.5",
+    "antd": "^5.24.3",
     "autoprefixer": "^10.4.16",
     "axios": "^1.8.1",
     "dotenv": "^16.0.2",
@@ -45,7 +45,8 @@
     "stylelint-config-standard": "^34.0.0",
     "ts-jest": "^28.0.8",
     "typescript": "^4.8.2",
-    "vite": "^3.0.7"
+    "vite": "^3.0.7",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "license": "MIT"
 }

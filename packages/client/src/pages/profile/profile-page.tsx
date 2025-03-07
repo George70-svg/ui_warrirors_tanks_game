@@ -1,3 +1,3 @@
 export function ProfilePage() {
-  return <div>Profile</div>
+  return <div>Hello world!</div>
 }
