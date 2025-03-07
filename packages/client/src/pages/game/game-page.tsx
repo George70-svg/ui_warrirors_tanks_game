@@ -1,26 +1,27 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './game-page.pcss'
-import { useGameLoop } from '../../entities/game/model/gameLoop'
 import { config } from '../../entities/game/config/gameConfig'
+import { Game } from '../../entities/game/Game'
 
 export function GamePage() {
-  const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
+  const [game] = useState(() => new Game())
   const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  const { loop } = useGameLoop(ctxRef)
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    const context = canvas?.getContext('2d')
 
-    ctxRef.current = canvas.getContext('2d')
-    const id = requestAnimationFrame(loop)
+    if (!canvas || !context) {
+      throw new Error("Can't find a canvas context")
+    }
+
+    game.start(context)
 
     // Cleaner после unmount
     return () => {
-      cancelAnimationFrame(id)
+      game.stop()
     }
-  }, [loop])
+  }, [game])
 
   return (
     <div className="canvas-container">

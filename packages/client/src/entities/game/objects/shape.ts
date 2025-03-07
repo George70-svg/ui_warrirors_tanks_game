@@ -4,7 +4,7 @@ export type ShapeProps = {
   size: Size
 }
 
-export class Shape {
+export abstract class Shape {
   coordinate: Coordinate = { x: 0, y: 0 }
   size: Size = { width: 0, height: 0 }
 

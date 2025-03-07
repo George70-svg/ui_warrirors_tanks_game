@@ -1,5 +1,4 @@
 import { ShapeObject } from '../types'
-import { Shape } from '../objects/shape'
 import { config, decorationObjects, tankObjects } from '../config/gameConfig'
 
 export function getCollision(shapeObject: ShapeObject): boolean {
@@ -76,11 +75,4 @@ const isIntervalsIntersect = (
     (range1[0] > range2[0] && range1[0] < range2[1]) ||
     (range1[1] > range2[0] && range1[1] < range2[1])
   )
-}
-
-function getShapeObject(shape: Shape): ShapeObject {
-  return {
-    coordinate: { x: shape.coordinate.x, y: shape.coordinate.y },
-    size: { width: shape.size.width, height: shape.size.height },
-  }
 }

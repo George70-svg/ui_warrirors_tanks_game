@@ -1,5 +1,4 @@
 import { Decoration } from '../objects/decoration'
-
 const gameMap = [
   [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
