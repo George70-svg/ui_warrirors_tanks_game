@@ -4,35 +4,10 @@ import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { ROUTES } from '../shared/config'
 import { Content, Header } from 'antd/es/layout/layout'
 import React, { useEffect } from 'react'
-import { COLORS } from '../shared/ui/colors'
 import { Logo } from '../shared/components/Logo'
 import { useUserLogout } from '../entities/user/use-user-logout'
 import { LogoutOutlined } from '@ant-design/icons'
-
-const headerStyle: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  textAlign: 'center',
-  padding: '19px 50px',
-  minHeight: 103,
-  borderBottom: `1px solid ${COLORS.BORDER_GRAY}`,
-}
-
-const contentStyle: React.CSSProperties = {
-  textAlign: 'center',
-  minHeight: 'calc(100vh - 103px)',
-  paddingInline: 107,
-  paddingBlock: 69,
-}
-
-const titleStyle: React.CSSProperties = {
-  position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  color: COLORS.WHITE,
-  textTransform: 'uppercase',
-}
+import './protected-routes.pcss'
 
 export function ProtectedRoutes() {
   const { error, isLoading } = useUserInfo()
@@ -43,7 +18,7 @@ export function ProtectedRoutes() {
   const currentPageName = pathname.split('/')[1]
 
   useEffect(() => {
-    if (!logoutError && logoutError) {
+    if (!logoutLoading && logoutError) {
       notification.error({ message: JSON.stringify(logoutError) })
     }
   }, [notification, logoutError, logoutLoading])
@@ -62,7 +37,7 @@ export function ProtectedRoutes() {
 
   return (
     <Layout>
-      <Header style={headerStyle}>
+      <Header className="header">
         <Flex gap={39}>
           <Logo />
           <Flex gap={20} align="center">
@@ -92,7 +67,7 @@ export function ProtectedRoutes() {
             </Link>
           </Flex>
         </Flex>
-        <Typography.Title style={titleStyle}>
+        <Typography.Title className="title">
           {currentPageName || 'Start'}
         </Typography.Title>
         <Button
@@ -106,7 +81,7 @@ export function ProtectedRoutes() {
           Logout
         </Button>
       </Header>
-      <Content style={contentStyle}>
+      <Content className="content">
         <Outlet />
       </Content>
     </Layout>
