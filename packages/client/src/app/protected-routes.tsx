@@ -7,28 +7,23 @@ import React, { useEffect } from 'react'
 import { COLORS } from '../shared/ui/colors'
 import { Logo } from '../shared/components/Logo'
 import { useUserLogout } from '../entities/user/use-user-logout'
-
-const layoutStyle = {
-  overflow: 'hidden',
-}
+import { LogoutOutlined } from '@ant-design/icons'
 
 const headerStyle: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   textAlign: 'center',
-  color: '#fff',
   padding: '19px 50px',
   minHeight: 103,
-  backgroundColor: COLORS.PRIMARY_BACKGROUND,
   borderBottom: `1px solid ${COLORS.BORDER_GRAY}`,
 }
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
   minHeight: 'calc(100vh - 103px)',
-  lineHeight: '120px',
-  backgroundColor: COLORS.PRIMARY_BACKGROUND,
+  paddingInline: 107,
+  paddingBlock: 69,
 }
 
 const titleStyle: React.CSSProperties = {
@@ -45,6 +40,7 @@ export function ProtectedRoutes() {
 
   const { pathname } = useLocation()
   const { notification } = App.useApp()
+  const currentPageName = pathname.split('/')[1]
 
   useEffect(() => {
     if (!logoutError && logoutError) {
@@ -65,36 +61,46 @@ export function ProtectedRoutes() {
   }
 
   return (
-    <Layout style={layoutStyle}>
+    <Layout>
       <Header style={headerStyle}>
         <Flex gap={39}>
           <Logo />
           <Flex gap={20} align="center">
             <Link to={ROUTES.HOME}>
-              <Button color="danger" ghost variant="filled">
+              <Button
+                color="danger"
+                variant={pathname === ROUTES.HOME ? 'solid' : 'filled'}
+              >
                 Start
               </Button>
             </Link>
             <Link to={ROUTES.LEADERBOARD}>
-              <Button color="danger" ghost variant="filled">
+              <Button
+                color="danger"
+                variant={pathname === ROUTES.LEADERBOARD ? 'solid' : 'filled'}
+              >
                 Leaderboard
               </Button>
             </Link>
             <Link to={ROUTES.PROFILE}>
-              <Button color="danger" ghost variant="filled">
+              <Button
+                color="danger"
+                variant={pathname === ROUTES.PROFILE ? 'solid' : 'filled'}
+              >
                 Profile
               </Button>
             </Link>
           </Flex>
         </Flex>
         <Typography.Title style={titleStyle}>
-          {pathname.split('/')[1] || 'Game'}
+          {currentPageName || 'Start'}
         </Typography.Title>
         <Button
           color="danger"
-          ghost
           variant="filled"
           loading={logoutLoading}
+          iconPosition="start"
+          icon={<LogoutOutlined />}
           onClick={fn}
         >
           Logout

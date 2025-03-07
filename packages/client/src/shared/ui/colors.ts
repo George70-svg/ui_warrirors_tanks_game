@@ -1,4 +1,6 @@
 export const COLORS = {
+  PRIMARY: '#D54B3F',
+  PRIMARY_FADED: 'rgba(213, 75, 63, 0.2)',
   PRIMARY_BACKGROUND: '#0D0F1C',
   BLACK: '#000000',
   BLUE: '#0000FF',

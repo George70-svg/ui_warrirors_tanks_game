@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react'
-import { UserSignUpDto } from './types'
 import { apiCall } from '../../shared/api'
 import { ApiError } from '../../shared/api/api-error'
 import { useNavigate } from 'react-router-dom'
