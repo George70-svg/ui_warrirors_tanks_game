@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { UserSignUpDto } from './types'
+import { ProfileDto } from './types'
 import { apiCall } from '../../shared/api'
 import { ApiError } from '../../shared/api/api-error'
 import { useNavigate } from 'react-router-dom'
@@ -17,7 +17,7 @@ export function useUserSignUp() {
 
   const navigate = useNavigate()
   const fn = useCallback(
-    async (data: UserSignUpDto) => {
+    async (data: ProfileDto) => {
       try {
         await apiCall({
           url: '/auth/signup',
