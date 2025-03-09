@@ -10,58 +10,65 @@ import { ProfilePage } from '../pages/profile'
 import { SignInPage } from '../pages/sign-in'
 import { SignUpPage } from '../pages/sign-up'
 import { NotFoundPage } from '../pages/not-found'
-import { ProtectedRoutes } from './protected-routes'
-import { NoAuthRoutes } from './no-auth-routes'
+import { ProtectedRoutes } from './ui/protected-routes'
+import { NoAuthRoutes } from './ui/no-auth-routes'
+import { ErrorElement } from './ui/error-element'
 
 export const router = createBrowserRouter([
   {
-    element: <ProtectedRoutes />,
+    path: '/',
+    errorElement: <ErrorElement />,
     children: [
       {
-        path: ROUTES.HOME,
-        element: <HomePage />,
+        element: <ProtectedRoutes />,
+        children: [
+          {
+            path: ROUTES.HOME,
+            element: <HomePage />,
+          },
+          {
+            path: ROUTES.FORUM,
+            element: <ForumPage />,
+          },
+          {
+            path: `${ROUTES.FORUM}/:topicId`,
+            element: <ForumTopicPage />,
+          },
+          {
+            path: ROUTES.GAME,
+            element: <GamePage />,
+          },
+          {
+            path: ROUTES.LEADERBOARD,
+            element: <LeaderboardPage />,
+          },
+          {
+            path: ROUTES.PROFILE,
+            element: <ProfilePage />,
+          },
+        ],
       },
       {
-        path: ROUTES.FORUM,
-        element: <ForumPage />,
+        element: <NoAuthRoutes />,
+        children: [
+          {
+            path: ROUTES.SIGN_IN,
+            element: <SignInPage />,
+          },
+          {
+            path: ROUTES.SIGN_UP,
+            element: <SignUpPage />,
+          },
+        ],
       },
       {
-        path: `${ROUTES.FORUM}/:topicId`,
-        element: <ForumTopicPage />,
+        path: ROUTES.SERVER_ERROR,
+        element: <ServerErrorPage />,
       },
       {
-        path: ROUTES.GAME,
-        element: <GamePage />,
-      },
-      {
-        path: ROUTES.LEADERBOARD,
-        element: <LeaderboardPage />,
-      },
-      {
-        path: ROUTES.PROFILE,
-        element: <ProfilePage />,
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
-  },
-  {
-    element: <NoAuthRoutes />,
-    children: [
-      {
-        path: ROUTES.SIGN_IN,
-        element: <SignInPage />,
-      },
-      {
-        path: ROUTES.SIGN_UP,
-        element: <SignUpPage />,
-      },
-    ],
-  },
-  {
-    path: ROUTES.SERVER_ERROR,
-    element: <ServerErrorPage />,
-  },
-  {
-    path: '*',
-    element: <NotFoundPage />,
   },
 ])
