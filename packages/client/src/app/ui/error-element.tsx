@@ -4,20 +4,18 @@ import { ROUTES } from '../../shared/config'
 import { isHasMessageStringProp } from '../../shared/lib'
 import styles from './error-element.module.pcss'
 
-const { Header, Content } = Layout
-const { Title, Link, Paragraph } = Typography
+const { Content } = Layout
+const { Title, Link, Text } = Typography
 
 export function ErrorElement() {
   const error = useRouteError()
   return (
     <Layout className={styles.layout}>
-      <Header className={styles.header}>
-        <Title className={styles.title}>Render Error</Title>
-      </Header>
       <Content className={styles.container}>
-        <Paragraph>
+        <Title>Render Error</Title>
+        <Text>
           {isHasMessageStringProp(error) ? error.message : 'Unknown error'}
-        </Paragraph>
+        </Text>
         <RouterLink to={ROUTES.HOME}>
           <Link>Go to home page</Link>
         </RouterLink>
