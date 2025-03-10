@@ -33,5 +33,8 @@ export const themeConfig: ThemeConfig = {
     Alert: {
       fontSize: 14,
     },
+    Divider: {
+      colorSplit: COLORS.WHITE,
+    },
   },
 }

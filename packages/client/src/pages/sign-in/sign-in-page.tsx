@@ -103,7 +103,7 @@ export function SignInPage() {
           />
         )}
 
-        <Divider style={{ borderColor: '#B8B8B8' }} />
+        <Divider />
 
         <Flex justify={'center'} align={'center'} gap={5}>
           <Text>Ещё нет аккаунта?</Text>
