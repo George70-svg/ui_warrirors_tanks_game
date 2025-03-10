@@ -46,7 +46,7 @@ export function ProtectedRoutes() {
                 color="danger"
                 variant={pathname === ROUTES.HOME ? 'solid' : 'filled'}
               >
-                Start
+                Home
               </Button>
             </Link>
             <Link to={ROUTES.LEADERBOARD}>
@@ -68,7 +68,7 @@ export function ProtectedRoutes() {
           </Flex>
         </Flex>
         <Typography.Title className="title">
-          {currentPageName || 'Start'}
+          {currentPageName || 'Home'}
         </Typography.Title>
         <Button
           color="danger"
