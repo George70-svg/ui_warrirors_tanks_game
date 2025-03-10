@@ -3,7 +3,7 @@ export type UserSignInDto = {
   password: string
 }
 
-export type UserSignUpDto = {
+export type ProfileDto = {
   first_name: string
   second_name: string
   login: string
