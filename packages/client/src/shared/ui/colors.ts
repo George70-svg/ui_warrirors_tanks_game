@@ -4,6 +4,7 @@ export const COLORS = {
   PRIMARY_BACKGROUND: '#0D0F1C',
   BLACK: '#000000',
   BLUE: '#1677FF',
+  DARKBLUE: '#0960df',
   GREEN: '#00FF00',
   RED: '#FF0000',
   WHITE: '#FFFFFF',
