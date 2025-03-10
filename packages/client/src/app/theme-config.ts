@@ -7,6 +7,7 @@ export const themeConfig: ThemeConfig = {
     colorPrimary: COLORS.WHITE,
     colorText: COLORS.WHITE,
     colorBgBase: COLORS.PRIMARY_BACKGROUND,
+    colorSplit: COLORS.BORDER_GRAY,
     fontFamily: 'Nunito Sans, sans-serif',
     fontSize: 20,
     margin: 0,
@@ -35,6 +36,11 @@ export const themeConfig: ThemeConfig = {
     },
     Divider: {
       colorSplit: COLORS.WHITE,
+    },
+    List: {
+      itemPaddingSM: '8px 8px',
+      descriptionFontSize: 8,
+      avatarMarginRight: 8,
     },
   },
 }
