@@ -1,11 +1,11 @@
-import { useUserInfo } from '../entities/user'
+import { useUserInfo } from '../../entities/user'
 import { App, Button, Flex, Layout, Spin, Typography } from 'antd'
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
-import { ROUTES } from '../shared/config'
+import { ROUTES } from '../../shared/config'
 import { Content, Header } from 'antd/es/layout/layout'
 import React, { useEffect } from 'react'
-import { Logo } from '../shared/components/Logo'
-import { useUserLogout } from '../entities/user/use-user-logout'
+import { Logo } from '../../shared/components/Logo'
+import { useUserLogout } from '../../entities/user/use-user-logout'
 import { LogoutOutlined } from '@ant-design/icons'
 import './protected-routes.pcss'
 
@@ -46,7 +46,7 @@ export function ProtectedRoutes() {
                 color="danger"
                 variant={pathname === ROUTES.HOME ? 'solid' : 'filled'}
               >
-                Start
+                Home
               </Button>
             </Link>
             <Link to={ROUTES.LEADERBOARD}>
@@ -68,7 +68,7 @@ export function ProtectedRoutes() {
           </Flex>
         </Flex>
         <Typography.Title className="title">
-          {currentPageName || 'Start'}
+          {currentPageName || 'Home'}
         </Typography.Title>
         <Button
           color="danger"
