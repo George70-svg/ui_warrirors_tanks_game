@@ -4,16 +4,11 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { ROUTES } from '../shared/config'
 import { Content } from 'antd/es/layout/layout'
 import React from 'react'
-import { useUserLogout } from '../entities/user/use-user-logout'
-import './protected-routes.pcss'
-import { Header } from '../shared/components/Header'
+import '../shared/components/Header/header.pcss'
+import { Header } from '../shared/components/Header/Header'
 
 export function ProtectedRoutes() {
   const { error, isLoading } = useUserInfo()
-
-  const { pathname } = useLocation()
-
-  const currentPageName = pathname.split('/')[1]
 
   if (isLoading) {
     return (

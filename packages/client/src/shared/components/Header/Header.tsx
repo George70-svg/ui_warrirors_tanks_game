@@ -1,11 +1,12 @@
 import React, { FC, useEffect } from 'react'
 import { App, Button, Flex, Typography } from 'antd'
 import { Header as AntHeader } from 'antd/es/layout/layout'
-import { Logo } from './Logo'
+import { Logo } from '../Logo'
 import { Link, useLocation } from 'react-router-dom'
-import { ROUTES } from '../config'
+import { ROUTES } from '../../config'
 import { LogoutOutlined } from '@ant-design/icons'
-import { useUserLogout } from '../../entities/user/use-user-logout'
+import { useUserLogout } from '../../../entities/user/use-user-logout'
+import './header.pcss'
 
 export const Header: FC = () => {
   const { pathname } = useLocation()
