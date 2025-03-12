@@ -22,7 +22,7 @@ export class Game {
     updateAllTanks(this.controller.keysState, delta)
     renderAllTanks(this.context)
     renderAllDecoration(this.context)
-    requestAnimationFrame(this.loop.bind(this))
+    this.frameCb = requestAnimationFrame(this.loop.bind(this))
   }
 
   public start(context: CanvasRenderingContext2D) {
