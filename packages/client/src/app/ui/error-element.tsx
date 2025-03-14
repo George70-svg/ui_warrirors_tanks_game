@@ -1,25 +1,11 @@
-import { Link as RouterLink, useRouteError } from 'react-router-dom'
-import { Layout, Typography } from 'antd'
-import { ROUTES } from '../../shared/config'
+import { useRouteError } from 'react-router-dom'
 import { isHasMessageStringProp } from '../../shared/lib'
-import styles from './error-element.module.pcss'
-
-const { Content } = Layout
-const { Title, Link, Text } = Typography
+import { ErrorPage } from '../../pages/error-page'
 
 export function ErrorElement() {
   const error = useRouteError()
-  return (
-    <Layout className={styles.layout}>
-      <Content className={styles.container}>
-        <Title>Render Error</Title>
-        <Text>
-          {isHasMessageStringProp(error) ? error.message : 'Unknown error'}
-        </Text>
-        <RouterLink to={ROUTES.HOME}>
-          <Link>Go to home page</Link>
-        </RouterLink>
-      </Content>
-    </Layout>
-  )
+  const message = isHasMessageStringProp(error)
+    ? error.message
+    : 'Unknown error'
+  return <ErrorPage title="Render error" message={message} />
 }

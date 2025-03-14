@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { HomePage } from '../pages/home'
-import { ServerErrorPage } from '../pages/server-error'
 import { ROUTES } from '../shared/config'
 import { ForumPage } from '../pages/forum'
 import { ForumTopicPage } from '../pages/forum-topic'
@@ -9,10 +8,10 @@ import { LeaderboardPage } from '../pages/leaderboard'
 import { ProfilePage } from '../pages/profile'
 import { SignInPage } from '../pages/sign-in'
 import { SignUpPage } from '../pages/sign-up'
-import { NotFoundPage } from '../pages/not-found'
 import { ProtectedRoutes } from './ui/protected-routes'
 import { NoAuthRoutes } from './ui/no-auth-routes'
 import { ErrorElement } from './ui/error-element'
+import { ErrorPage } from '../pages/error-page'
 
 export const router = createBrowserRouter([
   {
@@ -63,11 +62,11 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.SERVER_ERROR,
-        element: <ServerErrorPage />,
+        element: <ErrorPage />,
       },
       {
         path: '*',
-        element: <NotFoundPage />,
+        element: <ErrorPage title="404" message="Page not found" />,
       },
     ],
   },
