@@ -2,6 +2,7 @@ import { Coordinate, Direction, Size } from '../types'
 import { Shape } from './shape'
 
 export type TankProps = {
+  context: CanvasRenderingContext2D
   startPosition: Coordinate
   direction: Direction
   speed: number
@@ -11,38 +12,38 @@ export type TankProps = {
 
 export class Tank extends Shape {
   coordinate: Coordinate = { x: 0, y: 0 }
-  size: Size = { width: 0, height: 0 }
   direction: Direction = 'up'
   image: HTMLImageElement = new Image()
   speed = 0
 
   constructor(props: TankProps) {
     super({
+      context: props.context,
       position: props.startPosition,
       size: props.size,
     })
 
+    this.setContext(props.context)
     this.setPosition(props.startPosition)
     this.setSize(props.size)
 
     this.direction = props.direction
     this.speed = props.speed
-    this.size = props.size
     this.image.src = props.imageSrc
   }
 
-  updateCoordinate(coordinate: Coordinate) {
+  public updateCoordinate(coordinate: Coordinate) {
     if (this.coordinate) {
       this.coordinate.x += coordinate.x
       this.coordinate.y += coordinate.y
     }
   }
 
-  setDirection(direction: Direction) {
+  public setDirection(direction: Direction) {
     this.direction = direction
   }
 
-  getRotateAngle() {
+  private getRotateAngle() {
     let angle = 0
 
     if (this.direction === 'up') {
@@ -56,5 +57,22 @@ export class Tank extends Shape {
     }
 
     return angle
+  }
+
+  public render() {
+    this.context.save() // Сохраняем текущее состояние Canvas
+    this.context.translate(
+      this.coordinate.x + this.size.width / 2,
+      this.coordinate.y + this.size.height / 2
+    ) // Настраиваем точку вращения (центр объекта)
+    this.context.rotate(this.getRotateAngle()) // Поворачиваем систему координат
+    this.context.drawImage(
+      this.image,
+      -this.size.width / 2,
+      -this.size.height / 2,
+      this.size.width,
+      this.size.height
+    ) // Рисуем танк
+    this.context.restore() // Восстанавливаем состояние (отменяем translate, rotate и т.д.)
   }
 }

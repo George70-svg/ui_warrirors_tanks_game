@@ -1,6 +1,10 @@
 import { updateAllTanks } from './model/updateUtils'
-import { config } from './config/gameConfig'
-import { renderAllDecoration, renderAllTanks } from './model/renderUtils'
+import {
+  config,
+  initializeDecorationObjects,
+  initializeTankObjects,
+} from './config/gameConfig'
+import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
 
 export class Game {
@@ -20,13 +24,14 @@ export class Game {
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
     updateAllTanks(this.controller.keysState, delta)
-    renderAllTanks(this.context)
-    renderAllDecoration(this.context)
+    renderAllObjects(this.context)
     this.frameCb = requestAnimationFrame(this.loop.bind(this))
   }
 
   public start(context: CanvasRenderingContext2D) {
     this.context = context
+    initializeTankObjects(context)
+    initializeDecorationObjects(context)
     this.frameCb = requestAnimationFrame(this.loop.bind(this))
   }
 
