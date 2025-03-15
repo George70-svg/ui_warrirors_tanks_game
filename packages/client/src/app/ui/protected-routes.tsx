@@ -81,7 +81,7 @@ export function ProtectedRoutes() {
           Logout
         </Button>
       </Header>
-      <Content className="content">
+      <Content className="container">
         <Outlet />
       </Content>
     </Layout>

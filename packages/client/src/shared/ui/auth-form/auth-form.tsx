@@ -41,10 +41,8 @@ export function AuthForm({
   }
 
   return (
-    <Card bordered={false} className="auth-form-container">
-      <Title level={2} className="auth-form-title">
-        {title}
-      </Title>
+    <Card variant="borderless">
+      <Title level={5}>{title}</Title>
 
       <Form
         form={form}

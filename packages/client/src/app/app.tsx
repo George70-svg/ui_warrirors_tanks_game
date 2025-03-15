@@ -3,7 +3,6 @@ import { ConfigProvider, App as AntApp } from 'antd'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './router'
 import './app.pcss'
-import '../shared/config/variables.pcss'
 
 export function App() {
   return (
