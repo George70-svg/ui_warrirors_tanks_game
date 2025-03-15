@@ -1,0 +1,12 @@
+export const COLORS = {
+  PRIMARY: '#D54B3F',
+  PRIMARY_FADED: 'rgba(213, 75, 63, 0.2)',
+  PRIMARY_BACKGROUND: '#0D0F1C',
+  BLACK: '#000000',
+  BLUE: '#1677FF',
+  DARKBLUE: '#0960df',
+  GREEN: '#00FF00',
+  RED: '#FF0000',
+  WHITE: '#FFFFFF',
+  BORDER_GRAY: '#5F5959',
+}

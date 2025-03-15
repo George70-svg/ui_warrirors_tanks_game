@@ -5,9 +5,9 @@ import {
   PhoneOutlined,
   IdcardOutlined,
 } from '@ant-design/icons'
-import { AuthForm, AuthLayout, FormField } from '../../../shared/ui'
-import { ROUTES } from '../../../shared/config'
-import { AuthFormFooterLink } from '../../../shared/ui/auth-form/auth-form-footer-link'
+import { AuthForm, AuthLayout, FormField } from '../../shared/ui'
+import { ROUTES } from '../../shared/config'
+import { AuthFormFooterLink } from '../../shared/ui/auth-form/auth-form-footer-link'
 
 const signUpFields: FormField[] = [
   {
