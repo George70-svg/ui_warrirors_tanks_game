@@ -1,10 +1,19 @@
 import { ShapeObject } from '../types'
-import { config, DecorationObject, TankObject } from '../config/gameConfig'
+import {
+  BulletObject,
+  config,
+  DecorationObject,
+  TankObject,
+} from '../config/gameConfig'
 
 export function getCollision(
   shapeObject: ShapeObject,
-  objectsForCollisionCalculation: (TankObject | DecorationObject)[]
-): boolean {
+  objectsForCollisionCalculation: (
+    | TankObject
+    | DecorationObject
+    | BulletObject
+  )[]
+): [ShapeObject, TankObject | DecorationObject | BulletObject] | null {
   let isCollision = false
 
   for (const item of [...objectsForCollisionCalculation]) {
@@ -16,11 +25,11 @@ export function getCollision(
     isCollision = checkCollision(shapeObject, decorationShape)
 
     if (isCollision) {
-      return isCollision
+      return [shapeObject, item]
     }
   }
 
-  return isCollision
+  return null
 }
 
 export function checkCollision(shape1: ShapeObject, shape2: ShapeObject) {
@@ -72,7 +81,7 @@ const isIntervalsIntersect = (
 ): boolean => {
   // Проверяю, что один интервал пересекается с другим
   return (
-    (range1[0] > range2[0] && range1[0] < range2[1]) ||
-    (range1[1] > range2[0] && range1[1] < range2[1])
+    // (range1[0] > range2[0] && range1[0] < range2[1]) || (range1[1] > range2[0] && range1[1] < range2[1]) // version 1
+    Math.max(range1[0], range2[0]) < Math.min(range1[1], range2[1]) // version 2
   )
 }

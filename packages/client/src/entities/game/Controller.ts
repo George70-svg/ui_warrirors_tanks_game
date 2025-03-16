@@ -26,7 +26,7 @@ export class Controller {
     return this._mouseState
   }
 
-  public consumeMouseClick(): boolean {
+  public wasMouseClicked(): boolean {
     if (this.mouseState.clicked) {
       this.mouseState.clicked = false
       return true

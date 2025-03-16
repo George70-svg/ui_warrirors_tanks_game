@@ -8,6 +8,7 @@ import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
 
 export class Game {
+  canvas?: HTMLCanvasElement | null
   context?: CanvasRenderingContext2D
   frameCb?: number
   lastTimestamp = 0
@@ -23,7 +24,7 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
-    if (this.controller.consumeMouseClick()) {
+    if (this.controller.wasMouseClicked()) {
       shot()
     }
 

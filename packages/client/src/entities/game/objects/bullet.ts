@@ -60,10 +60,13 @@ export class Bullet extends Shape {
   }*/
 
   render() {
+    const halfWidth = this.size.width / 2
+    const halfHeight = this.size.height / 2
+
     this.context.fillStyle = this.color
     this.context.fillRect(
-      this.coordinate.x - this.size.width / 2,
-      this.coordinate.y - this.size.height / 2,
+      this.coordinate.x - halfWidth,
+      this.coordinate.y - halfHeight,
       this.size.width,
       this.size.height
     )

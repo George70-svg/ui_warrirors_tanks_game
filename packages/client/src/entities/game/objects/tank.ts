@@ -90,16 +90,19 @@ export class Tank extends Shape {
   }
 
   public render() {
+    const halfWidth = this.size.width / 2
+    const halfHeight = this.size.height / 2
+
     this.context.save() // Сохраняем текущее состояние Canvas
     this.context.translate(
-      this.coordinate.x + this.size.width / 2,
-      this.coordinate.y + this.size.height / 2
+      this.coordinate.x + halfWidth,
+      this.coordinate.y + halfHeight
     ) // Настраиваем точку вращения (центр объекта)
     this.context.rotate(this.getRotateAngle()) // Поворачиваем систему координат
     this.context.drawImage(
       this.image,
-      -this.size.width / 2,
-      -this.size.height / 2,
+      -halfWidth,
+      -halfHeight,
       this.size.width,
       this.size.height
     ) // Рисуем танк

@@ -16,7 +16,7 @@ export function updateAllTanks(keysState: KeysState, delta: number) {
         item.object.direction
       )
     } else {
-      //Вражеские танки пока стоят на месте
+      // Вражеские танки пока стоят на месте
       offset = { coordinate: { x: 0, y: 0 }, direction: item.object.direction }
     }
 
@@ -29,7 +29,7 @@ function updateTank(tank: Tank, offset: Offset | null) {
 
   tank.updateCoordinate({ x: offset.coordinate.x, y: offset.coordinate.y }) // Обновляем текущую позицию
   const objectsForCollisionCalculation = [
-    ...config.tankObjects,
+    ...config.tankObjects.filter((item) => item.object.id !== tank.id),
     ...config.decorationObjects,
   ]
 
@@ -41,21 +41,39 @@ function updateTank(tank: Tank, offset: Offset | null) {
   } else {
     tank.setDirection(offset.direction) // Обновляем текущее направление
   }
+
+  // Проверка столкновений с пулями
+  const enemyBullets = [
+    ...config.bulletObjects.filter((item) => item.tankId !== tank.id),
+  ]
+
+  const collisionObjects = getCollision(tank, enemyBullets)
+
+  if (collisionObjects) {
+    tank.takeDamage()
+    config.bulletObjects = config.bulletObjects.filter(
+      (item) => item.object.id !== collisionObjects[1].object.id
+    )
+    console.log('getCollision', tank.healthPoint)
+
+    if (tank.healthPoint <= 0) {
+      config.tankObjects = config.tankObjects.filter(
+        (item) => item.object.id !== tank.id
+      )
+    }
+  }
 }
 
 export function updateAllBullets(delta: number) {
   config.bulletObjects.forEach((bullet) => {
     const offset = getBulletOffset(bullet.object, delta)
-    updateBullet(bullet.object, offset, bullet.tankId)
+    updateBullet(bullet.object, offset)
   })
 }
 
-function updateBullet(bullet: Bullet, offset: Offset, tankId: string) {
+function updateBullet(bullet: Bullet, offset: Offset) {
   bullet.updateCoordinate(offset.coordinate)
-  const objectsForCollisionCalculation = [
-    ...config.tankObjects.filter((item) => item.object.id !== tankId),
-    ...config.decorationObjects,
-  ]
+  const objectsForCollisionCalculation = [...config.decorationObjects]
 
   if (
     getCollision(bullet, objectsForCollisionCalculation) ||

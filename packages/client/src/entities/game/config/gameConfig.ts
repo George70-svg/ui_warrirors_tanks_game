@@ -18,7 +18,7 @@ type Config = {
 
 const cellSize = 50
 
-export function toPixels(size: number): number {
+function toPixels(size: number): number {
   return size * cellSize
 }
 
@@ -41,6 +41,7 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
         speed: 0.15,
         size: { width: 50, height: 64 },
         imageSrc: tankImg,
+        healthPoint: 100,
       }),
       type: 'player',
     },
@@ -53,6 +54,7 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
         speed: 0.15,
         size: { width: 50, height: 65 },
         imageSrc: tankImg,
+        healthPoint: 100,
       }),
       type: 'computer',
     },
@@ -65,6 +67,20 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
         speed: 0.15,
         size: { width: 50, height: 65 },
         imageSrc: tankImg,
+        healthPoint: 100,
+      }),
+      type: 'computer',
+    },
+    {
+      object: new Tank({
+        id: makeUUID(),
+        context,
+        startPosition: { x: toPixels(12), y: toPixels(6) },
+        direction: 'left',
+        speed: 0.15,
+        size: { width: 50, height: 65 },
+        imageSrc: tankImg,
+        healthPoint: 100,
       }),
       type: 'computer',
     },
