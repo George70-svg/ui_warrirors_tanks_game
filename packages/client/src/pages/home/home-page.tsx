@@ -1,10 +1,11 @@
 import { Button, Typography } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
 
 const { Paragraph, Link: TypographyLink } = Typography
 
 export function HomePage() {
+  const navigate = useNavigate()
   return (
     <>
       <Paragraph>
@@ -41,7 +42,9 @@ export function HomePage() {
         dominate the battlefield in Battle City!
       </Paragraph>
       <Link to={ROUTES.GAME}>
-        <Button size="large">Play</Button>
+        <Button size="large" onClick={() => navigate(ROUTES.GAME)}>
+          Play
+        </Button>
       </Link>
     </>
   )

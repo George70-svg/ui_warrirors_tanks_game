@@ -1,7 +1,7 @@
 import { Button, Card, Flex, Form, Typography } from 'antd'
 import styles from './auth-form.module.pcss'
 import { ReactNode } from 'react'
-import { RouterLink } from '../common/router-link'
+import { Link } from 'react-router-dom'
 
 const { Title, Text } = Typography
 
@@ -51,7 +51,9 @@ export function AuthForm<T>({
 
       <Flex justify={'center'} align={'center'} gap={5}>
         <Text>{footerText}</Text>
-        <RouterLink to={footerLink}>{linText}</RouterLink>
+        <Text>
+          <Link to={footerLink}>{linText}</Link>
+        </Text>
       </Flex>
     </Card>
   )

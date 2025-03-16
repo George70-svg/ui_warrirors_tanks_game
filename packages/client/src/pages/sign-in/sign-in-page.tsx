@@ -1,11 +1,6 @@
 import { useUserSignIn } from '../../entities/user'
 import { ROUTES } from '../../shared/config'
-import {
-  AuthForm,
-  AuthLayout,
-  LoginField,
-  PasswordField,
-} from '../../shared/ui'
+import { AuthForm, LoginField, PasswordField } from '../../shared/ui'
 
 interface Fields {
   login: string
@@ -23,19 +18,17 @@ export function SignInPage() {
   }
 
   return (
-    <AuthLayout>
-      <AuthForm<Fields>
-        title="Sign in"
-        submitButtonText="Sign in"
-        onSubmit={handleSubmit}
-        footerLink={ROUTES.SIGN_UP}
-        footerText="Don't have an account yet?"
-        linText="Sign up"
-        disabled={isLoading}
-      >
-        <LoginField />
-        <PasswordField />
-      </AuthForm>
-    </AuthLayout>
+    <AuthForm<Fields>
+      title="Sign in"
+      submitButtonText="Sign in"
+      onSubmit={handleSubmit}
+      footerLink={ROUTES.SIGN_UP}
+      footerText="Don't have an account yet?"
+      linText="Sign up"
+      disabled={isLoading}
+    >
+      <LoginField />
+      <PasswordField />
+    </AuthForm>
   )
 }

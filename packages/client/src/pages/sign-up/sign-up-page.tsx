@@ -1,6 +1,5 @@
 import {
   AuthForm,
-  AuthLayout,
   EmailField,
   FirstNameField,
   SecondNameField,
@@ -28,23 +27,21 @@ export function SignUpPage() {
   }
 
   return (
-    <AuthLayout>
-      <AuthForm<Fields>
-        disabled={isLoading}
-        title="Sign up"
-        submitButtonText="Sign up"
-        onSubmit={handleSubmit}
-        footerLink={ROUTES.SIGN_IN}
-        footerText="Already have account?"
-        linText="Sign in"
-      >
-        <FirstNameField />
-        <SecondNameField />
-        <LoginField />
-        <EmailField />
-        <PasswordField />
-        <PhoneField />
-      </AuthForm>
-    </AuthLayout>
+    <AuthForm<Fields>
+      disabled={isLoading}
+      title="Sign up"
+      submitButtonText="Sign up"
+      onSubmit={handleSubmit}
+      footerLink={ROUTES.SIGN_IN}
+      footerText="Already have account?"
+      linText="Sign in"
+    >
+      <FirstNameField />
+      <SecondNameField />
+      <LoginField />
+      <EmailField />
+      <PasswordField />
+      <PhoneField />
+    </AuthForm>
   )
 }

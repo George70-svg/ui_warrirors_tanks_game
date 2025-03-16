@@ -1,5 +1,5 @@
 import { theme, ThemeConfig } from 'antd'
-import { COLORS } from '../shared/ui/colors'
+import { COLORS } from './colors'
 
 export const themeConfig: ThemeConfig = {
   algorithm: theme.darkAlgorithm,
