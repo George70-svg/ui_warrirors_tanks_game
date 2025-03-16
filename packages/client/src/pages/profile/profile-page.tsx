@@ -15,15 +15,7 @@ import { useUserEditInfo } from '../../entities/user/use-user-change-profile'
 import { UserInfoDto } from '../../entities/user/types'
 import { UploadOutlined } from '@ant-design/icons'
 import styles from './profile-page.module.pcss'
-import {
-  DisplayNameField,
-  EmailField,
-  FirstNameField,
-  LoginField,
-  PhoneField,
-  SecondNameField,
-} from '../../shared/ui'
-
+import { InputField } from '../../shared/ui'
 const paragraphStyle: CSSProperties = { margin: 0 }
 
 export const ProfilePage = () => {
@@ -113,12 +105,12 @@ export const ProfilePage = () => {
         autoComplete="off"
         className={styles.form}
       >
-        <DisplayNameField showLabel={true} />
-        <EmailField showLabel={true} />
-        <FirstNameField showLabel={true} />
-        <SecondNameField showLabel={true} />
-        <LoginField showLabel={true} />
-        <PhoneField showLabel={true} />
+        <InputField name="display_name" showLabel={true} />
+        <InputField name="email" showLabel={true} />
+        <InputField name="first_name" showLabel={true} />
+        <InputField name="second_name" showLabel={true} />
+        <InputField name="login" showLabel={true} />
+        <InputField name="phone" showLabel={true} />
 
         <Form.Item<UserInfoDto> className={styles.button}>
           <Button loading={userLoading} htmlType="submit">

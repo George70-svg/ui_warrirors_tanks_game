@@ -11,7 +11,7 @@ export function AuthForm<T>({
   onSubmit,
   footerText,
   footerLink,
-  linText,
+  linkText,
   children,
   disabled,
 }: {
@@ -20,7 +20,7 @@ export function AuthForm<T>({
   onSubmit: (values: T) => void
   footerText: string
   footerLink: string
-  linText: string
+  linkText: string
   children: ReactNode
   disabled: boolean
 }) {
@@ -52,7 +52,7 @@ export function AuthForm<T>({
       <Flex justify={'center'} align={'center'} gap={5}>
         <Text>{footerText}</Text>
         <Text>
-          <Link to={footerLink}>{linText}</Link>
+          <Link to={footerLink}>{linkText}</Link>
         </Text>
       </Flex>
     </Card>

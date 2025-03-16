@@ -1,12 +1,4 @@
-import {
-  AuthForm,
-  EmailField,
-  FirstNameField,
-  SecondNameField,
-  LoginField,
-  PasswordField,
-  PhoneField,
-} from '../../shared/ui'
+import { AuthForm, InputField } from '../../shared/ui'
 import { ROUTES } from '../../shared/config'
 import { useUserSignUp } from '../../entities/user'
 
@@ -34,14 +26,14 @@ export function SignUpPage() {
       onSubmit={handleSubmit}
       footerLink={ROUTES.SIGN_IN}
       footerText="Already have account?"
-      linText="Sign in"
+      linkText="Sign in"
     >
-      <FirstNameField />
-      <SecondNameField />
-      <LoginField />
-      <EmailField />
-      <PasswordField />
-      <PhoneField />
+      <InputField name="first_name" />
+      <InputField name="second_name" />
+      <InputField name="login" />
+      <InputField name="email" />
+      <InputField name="password" />
+      <InputField name="phone" />
     </AuthForm>
   )
 }
