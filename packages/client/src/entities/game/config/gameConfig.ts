@@ -1,94 +1,122 @@
+import { v4 as makeUUID } from 'uuid'
 import { Tank } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
+import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
+
+export type TankObject = { object: Tank; type: 'player' | 'computer' }
+export type DecorationObject = { object: Decoration }
+export type BulletObject = { object: Bullet; tankId: string }
 
 type Config = {
   frameWidth: number
   frameHeight: number
+  tankObjects: TankObject[]
+  decorationObjects: DecorationObject[]
+  bulletObjects: BulletObject[]
 }
 
-type TankObjects = Record<string, { object: Tank; type: 'player' | 'computer' }>
-type DecorationObjects = Record<string, { object: Decoration }>
+const cellSize = 50
+
+export function toPixels(size: number): number {
+  return size * cellSize
+}
 
 export const config: Config = {
-  frameWidth: 1200,
-  frameHeight: 700,
+  frameWidth: toPixels(25),
+  frameHeight: toPixels(12),
+  tankObjects: [],
+  decorationObjects: [],
+  bulletObjects: [],
 }
 
-export let tankObjects: TankObjects = {}
-export let decorationObjects: DecorationObjects = {}
-
 export function initializeTankObjects(context: CanvasRenderingContext2D) {
-  tankObjects = {
-    tank1: {
+  config.tankObjects = [
+    {
       object: new Tank({
+        id: makeUUID(),
         context,
-        startPosition: { x: 600, y: 630 },
+        startPosition: { x: toPixels(12), y: toPixels(10) },
         direction: 'up',
         speed: 0.15,
-        size: { width: 47, height: 60 },
+        size: { width: 50, height: 64 },
         imageSrc: tankImg,
       }),
       type: 'player',
     },
-    tank2: {
+    {
       object: new Tank({
+        id: makeUUID(),
         context,
-        startPosition: { x: 100, y: 100 },
+        startPosition: { x: toPixels(2), y: toPixels(2) },
         direction: 'right',
         speed: 0.15,
-        size: { width: 47, height: 60 },
+        size: { width: 50, height: 65 },
         imageSrc: tankImg,
       }),
       type: 'computer',
     },
-    tank3: {
+    {
       object: new Tank({
+        id: makeUUID(),
         context,
-        startPosition: { x: 900, y: 200 },
+        startPosition: { x: toPixels(20), y: toPixels(4) },
         direction: 'left',
         speed: 0.15,
-        size: { width: 47, height: 60 },
+        size: { width: 50, height: 65 },
         imageSrc: tankImg,
       }),
       type: 'computer',
     },
-  }
+  ]
 }
 
 export function initializeDecorationObjects(context: CanvasRenderingContext2D) {
-  decorationObjects = {
-    decoration1: {
+  config.decorationObjects = [
+    {
       object: new Decoration({
+        id: makeUUID(),
         context,
-        position: { x: 100, y: 300 },
-        size: { width: 350, height: 50 },
+        position: { x: toPixels(2), y: toPixels(6) },
+        size: { width: toPixels(7), height: toPixels(1) },
         color: '#46efe9',
       }),
     },
-    decoration2: {
+    {
       object: new Decoration({
+        id: makeUUID(),
         context,
-        position: { x: 750, y: 300 },
-        size: { width: 350, height: 50 },
-        color: '#0BA5EC',
-      }),
-    },
-    decoration3: {
-      object: new Decoration({
-        context,
-        position: { x: 450, y: 170 },
-        size: { width: 50, height: 300 },
+        position: { x: toPixels(9), y: toPixels(3) },
+        size: { width: toPixels(1), height: toPixels(7) },
         color: '#46efe9',
       }),
     },
-    decoration4: {
+    {
       object: new Decoration({
+        id: makeUUID(),
         context,
-        position: { x: 700, y: 170 },
-        size: { width: 50, height: 300 },
+        position: { x: toPixels(16), y: toPixels(6) },
+        size: { width: toPixels(7), height: toPixels(1) },
         color: '#0BA5EC',
       }),
     },
-  }
+    {
+      object: new Decoration({
+        id: makeUUID(),
+        context,
+        position: { x: toPixels(15), y: toPixels(3) },
+        size: { width: toPixels(1), height: toPixels(7) },
+        color: '#0BA5EC',
+      }),
+    },
+    {
+      object: new Decoration({
+        id: makeUUID(),
+        context,
+        position: { x: toPixels(10), y: toPixels(0.5) },
+        size: { width: toPixels(5), height: toPixels(0.5) },
+        color: '#0BA5EC',
+      }),
+    },
+  ]
 }

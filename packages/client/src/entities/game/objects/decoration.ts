@@ -2,6 +2,7 @@ import { Coordinate, Size } from '../types'
 import { Shape } from './shape'
 
 export type DecorationProps = {
+  id: string
   context: CanvasRenderingContext2D
   position: Coordinate
   size: Size
@@ -13,14 +14,17 @@ export class Decoration extends Shape {
 
   constructor(props: DecorationProps) {
     super({
+      id: props.id,
       context: props.context,
       position: props.position,
       size: props.size,
     })
 
+    this.setId(props.id)
     this.setContext(props.context)
     this.setPosition(props.position)
     this.setSize(props.size)
+
     this.color = props.color
   }
 

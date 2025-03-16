@@ -1,13 +1,15 @@
-import { decorationObjects, tankObjects } from '../config/gameConfig'
+import { config } from '../config/gameConfig'
 
 export function renderAllObjects(ctx: CanvasRenderingContext2D | null) {
   if (!ctx) return
 
-  Object.values(decorationObjects).forEach((item) => {
-    item.object.render()
-  })
+  const objects = [
+    ...config.bulletObjects,
+    ...config.tankObjects,
+    ...config.decorationObjects,
+  ]
 
-  Object.values(tankObjects).forEach((item) => {
+  objects.forEach((item) => {
     item.object.render()
   })
 }

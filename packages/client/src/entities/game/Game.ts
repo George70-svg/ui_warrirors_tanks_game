@@ -1,4 +1,4 @@
-import { updateAllTanks } from './model/updateUtils'
+import { shot, updateAllBullets, updateAllTanks } from './model/updateUtils'
 import {
   config,
   initializeDecorationObjects,
@@ -23,7 +23,12 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
+    if (this.controller.consumeMouseClick()) {
+      shot()
+    }
+
     updateAllTanks(this.controller.keysState, delta)
+    updateAllBullets(delta)
     renderAllObjects(this.context)
     this.frameCb = requestAnimationFrame(this.loop.bind(this))
   }

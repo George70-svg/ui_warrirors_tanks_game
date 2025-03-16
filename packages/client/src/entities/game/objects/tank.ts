@@ -1,28 +1,36 @@
 import { Coordinate, Direction, Size } from '../types'
+import { v4 as makeUUID } from 'uuid'
+import { Bullet } from './bullet'
 import { Shape } from './shape'
 
 export type TankProps = {
+  id: string
   context: CanvasRenderingContext2D
   startPosition: Coordinate
   direction: Direction
   speed: number
   imageSrc: string
   size: Size
+  healthPoint: number
 }
 
 export class Tank extends Shape {
   coordinate: Coordinate = { x: 0, y: 0 }
-  direction: Direction = 'up'
+  direction: Direction
   image: HTMLImageElement = new Image()
   speed = 0
+  healthPoint = 100
+  damage = 50
 
   constructor(props: TankProps) {
     super({
+      id: props.id,
       context: props.context,
       position: props.startPosition,
       size: props.size,
     })
 
+    this.setId(props.id)
     this.setContext(props.context)
     this.setPosition(props.startPosition)
     this.setSize(props.size)
@@ -30,6 +38,7 @@ export class Tank extends Shape {
     this.direction = props.direction
     this.speed = props.speed
     this.image.src = props.imageSrc
+    this.healthPoint = props.healthPoint
   }
 
   public updateCoordinate(coordinate: Coordinate) {
@@ -57,6 +66,27 @@ export class Tank extends Shape {
     }
 
     return angle
+  }
+
+  public shot() {
+    return {
+      object: new Bullet({
+        id: makeUUID(),
+        context: this.context,
+        startPosition: {
+          x: this.coordinate.x + this.size.width / 2,
+          y: this.coordinate.y + this.size.height / 2,
+        }, // Позиционируем пулю по центру танка
+        direction: this.direction,
+        speed: 0.4,
+        size: { width: 6, height: 6 },
+      }),
+      tankId: this.id,
+    }
+  }
+
+  takeDamage() {
+    this.healthPoint -= this.damage
   }
 
   public render() {

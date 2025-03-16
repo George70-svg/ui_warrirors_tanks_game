@@ -1,13 +1,13 @@
 import { ShapeObject } from '../types'
-import { config, decorationObjects, tankObjects } from '../config/gameConfig'
+import { config, DecorationObject, TankObject } from '../config/gameConfig'
 
-export function getCollision(shapeObject: ShapeObject): boolean {
+export function getCollision(
+  shapeObject: ShapeObject,
+  objectsForCollisionCalculation: (TankObject | DecorationObject)[]
+): boolean {
   let isCollision = false
 
-  for (const item of [
-    ...Object.values(decorationObjects),
-    ...Object.values(tankObjects),
-  ]) {
+  for (const item of [...objectsForCollisionCalculation]) {
     const decorationShape: ShapeObject = {
       coordinate: { x: item.object.coordinate.x, y: item.object.coordinate.y },
       size: { width: item.object.size.width, height: item.object.size.height },
