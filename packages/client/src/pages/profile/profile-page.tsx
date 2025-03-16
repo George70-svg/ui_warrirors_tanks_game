@@ -81,7 +81,7 @@ export const ProfilePage = () => {
 
   return (
     <Flex justify="space-around" className={styles.container}>
-      <Flex gap={140}>
+      <Flex>
         <Flex align="center" justify="space-between" gap={17}>
           <Avatar
             onClick={showModal}
@@ -106,10 +106,12 @@ export const ProfilePage = () => {
         form={form}
         layout="horizontal"
         name="basic"
-        labelCol={{ span: 10 }}
+        labelCol={{ span: 8 }}
+        size="large"
         initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete="off"
+        className={styles.form}
       >
         <DisplayNameField showLabel={true} />
         <EmailField showLabel={true} />
@@ -118,7 +120,7 @@ export const ProfilePage = () => {
         <LoginField showLabel={true} />
         <PhoneField showLabel={true} />
 
-        <Form.Item<UserInfoDto>>
+        <Form.Item<UserInfoDto> className={styles.button}>
           <Button loading={userLoading} htmlType="submit">
             Save
           </Button>
