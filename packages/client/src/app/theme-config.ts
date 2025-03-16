@@ -4,6 +4,7 @@ import { COLORS } from '../shared/ui/colors'
 export const themeConfig: ThemeConfig = {
   algorithm: theme.darkAlgorithm,
   token: {
+    borderRadiusLG: 16,
     colorBgBase: COLORS.PRIMARY_BACKGROUND,
     colorIcon: COLORS.WHITE,
     colorPrimary: COLORS.WHITE,
@@ -15,10 +16,7 @@ export const themeConfig: ThemeConfig = {
     margin: 0,
   },
   components: {
-    Typography: {
-      fontSizeHeading1: 36,
-      titleMarginTop: 10,
-      titleMarginBottom: 10,
+    Alert: {
       fontSize: 14,
     },
     Button: {
@@ -30,19 +28,25 @@ export const themeConfig: ThemeConfig = {
       paddingInline: 16,
       paddingBlock: 8,
     },
-    Input: {
-      inputFontSizeLG: 14,
-    },
-    Alert: {
-      fontSize: 14,
+    Card: {
+      bodyPadding: 40,
     },
     Divider: {
       colorSplit: COLORS.WHITE,
+    },
+    Input: {
+      inputFontSizeLG: 14,
     },
     List: {
       itemPaddingSM: '8px 8px',
       descriptionFontSize: 8,
       avatarMarginRight: 8,
+    },
+    Typography: {
+      fontSizeHeading1: 36,
+      titleMarginTop: 10,
+      titleMarginBottom: 10,
+      fontSize: 14,
     },
   },
 }

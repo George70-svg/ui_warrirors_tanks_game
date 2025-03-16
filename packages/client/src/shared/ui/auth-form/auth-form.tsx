@@ -1,87 +1,58 @@
-import { Button, Card, Form, Input, Typography } from 'antd'
-import { Rule } from 'antd/es/form'
-import React, { ReactNode } from 'react'
-import './auth-form.pcss'
+import { Button, Card, Flex, Form, Typography } from 'antd'
+import styles from './auth-form.module.pcss'
+import { ReactNode } from 'react'
+import { RouterLink } from '../common/router-link'
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
-export interface FormField {
-  name: string
-  placeholder: string
-  rules?: Rule[]
-  prefix?: ReactNode
-  type?: 'text' | 'password' | 'email' | 'tel'
-}
-
-export interface FormValues {
-  [key: string]: string
-}
-
-interface AuthFormProps {
-  title: string
-  fields: FormField[]
-  submitButtonText: string
-  footer?: ReactNode
-  onSubmit?: (values: FormValues) => void
-}
-
-export function AuthForm({
+export function AuthForm<T>({
   title,
-  fields,
   submitButtonText,
-  footer,
   onSubmit,
-}: AuthFormProps): React.ReactElement {
-  const [form] = Form.useForm<FormValues>()
-
-  const handleSubmit = (values: FormValues) => {
-    if (onSubmit) {
-      onSubmit(values)
-    }
-  }
+  footerText,
+  footerLink,
+  linText,
+  children,
+  disabled,
+}: {
+  title: string
+  submitButtonText: string
+  onSubmit: (values: T) => void
+  footerText: string
+  footerLink: string
+  linText: string
+  children: ReactNode
+  disabled: boolean
+}) {
+  const [form] = Form.useForm<T>()
 
   return (
-    <Card variant="borderless">
-      <Title level={5}>{title}</Title>
+    <Card variant="borderless" className={styles.container}>
+      <Title level={3} className={styles.title}>
+        {title}
+      </Title>
 
-      <Form
+      <Form<T>
         form={form}
         layout="vertical"
-        className="auth-form"
-        onFinish={handleSubmit}
+        onFinish={onSubmit}
+        initialValues={{ remember: true }}
+        autoComplete="off"
+        size="large"
+        disabled={disabled}
       >
-        {fields.map((field) => (
-          <Form.Item key={field.name} name={field.name} rules={field.rules}>
-            {field.type === 'password' ? (
-              <Input.Password
-                prefix={field.prefix}
-                placeholder={field.placeholder}
-                className="auth-form-input"
-              />
-            ) : (
-              <Input
-                prefix={field.prefix}
-                placeholder={field.placeholder}
-                type={field.type || 'text'}
-                className="auth-form-input"
-              />
-            )}
-          </Form.Item>
-        ))}
-
+        {children}
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="auth-form-button"
-            block
-          >
+          <Button type="primary" htmlType="submit" block>
             {submitButtonText}
           </Button>
         </Form.Item>
       </Form>
 
-      {footer && <div className="auth-form-footer">{footer}</div>}
+      <Flex justify={'center'} align={'center'} gap={5}>
+        <Text>{footerText}</Text>
+        <RouterLink to={footerLink}>{linText}</RouterLink>
+      </Flex>
     </Card>
   )
 }

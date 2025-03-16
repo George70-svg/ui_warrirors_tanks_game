@@ -18,13 +18,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         </video>
       </div>
 
-      <Flex
-        vertical={true}
-        align="center"
-        justify="center"
-        className={styles.container}
-        gap="small"
-      >
+      <Flex vertical={true} align="center" className={styles.container}>
         <Image
           src={wideLogoPng}
           alt="Battle City Logo"
@@ -32,8 +26,9 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           preview={false}
           rootClassName={styles.image}
         />
-
-        {children}
+        <Flex vertical={true} justify="center" flex="1">
+          {children}
+        </Flex>
       </Flex>
     </AppLayout>
   )

@@ -1,66 +1,50 @@
 import {
-  UserOutlined,
-  MailOutlined,
-  LockOutlined,
-  PhoneOutlined,
-  IdcardOutlined,
-} from '@ant-design/icons'
-import { AuthForm, AuthLayout, FormField } from '../../shared/ui'
+  AuthForm,
+  AuthLayout,
+  EmailField,
+  FirstNameField,
+  SecondNameField,
+  LoginField,
+  PasswordField,
+  PhoneField,
+} from '../../shared/ui'
 import { ROUTES } from '../../shared/config'
-import { AuthFormFooterLink } from '../../shared/ui/auth-form/auth-form-footer-link'
+import { useUserSignUp } from '../../entities/user'
 
-const signUpFields: FormField[] = [
-  {
-    name: 'firstName',
-    placeholder: 'Имя',
-    prefix: <UserOutlined />,
-  },
-  {
-    name: 'lastName',
-    placeholder: 'Фамилия',
-    prefix: <IdcardOutlined />,
-  },
-  {
-    name: 'login',
-    placeholder: 'Логин',
-    prefix: <UserOutlined />,
-  },
-  {
-    name: 'email',
-    placeholder: 'Email',
-    prefix: <MailOutlined />,
-    type: 'email',
-  },
-  {
-    name: 'password',
-    placeholder: 'Пароль',
-    prefix: <LockOutlined />,
-    type: 'password',
-  },
-  {
-    name: 'phone',
-    placeholder: 'Телефон',
-    prefix: <PhoneOutlined />,
-    type: 'tel',
-  },
-]
+interface Fields {
+  first_name: string
+  second_name: string
+  login: string
+  email: string
+  password: string
+  phone: string
+}
 
-export function SignUpPage(): React.ReactElement {
-  const footer = (
-    <div>
-      Уже есть аккаунт?{' '}
-      <AuthFormFooterLink link={ROUTES.SIGN_IN} text="Войти" />
-    </div>
-  )
+export function SignUpPage() {
+  const { fn, isLoading } = useUserSignUp()
+
+  const handleSubmit = (values: Fields) => {
+    fn({ ...values })
+  }
 
   return (
     <AuthLayout>
-      <AuthForm
-        title="Регистрация"
-        fields={signUpFields}
-        submitButtonText="Зарегистрироваться"
-        footer={footer}
-      />
+      <AuthForm<Fields>
+        disabled={isLoading}
+        title="Sign up"
+        submitButtonText="Sign up"
+        onSubmit={handleSubmit}
+        footerLink={ROUTES.SIGN_IN}
+        footerText="Already have account?"
+        linText="Sign in"
+      >
+        <FirstNameField />
+        <SecondNameField />
+        <LoginField />
+        <EmailField />
+        <PasswordField />
+        <PhoneField />
+      </AuthForm>
     </AuthLayout>
   )
 }
