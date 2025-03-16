@@ -6,7 +6,7 @@ const { Item } = Form
 
 export function InputField({
   name,
-  showLabel,
+  showLabel = false,
 }: {
   name: InputName
   showLabel?: boolean
