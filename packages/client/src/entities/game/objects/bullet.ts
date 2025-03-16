@@ -23,11 +23,6 @@ export class Bullet extends Shape {
       size: props.size,
     })
 
-    this.setId(props.id)
-    this.setContext(props.context)
-    this.setPosition(props.startPosition)
-    this.setSize(props.size)
-
     this.direction = props.direction
     this.speed = props.speed
   }
@@ -38,26 +33,6 @@ export class Bullet extends Shape {
       this.coordinate.y += coordinate.y
     }
   }
-
-  /*public updateCoordinate(direction: Direction, distance: number) {
-    this.direction = direction
-    
-    switch (direction) {
-      case 'up':
-        this.coordinate.y -= distance
-        break
-      case 'down':
-        this.coordinate.y += distance
-        break
-      case 'left':
-        this.coordinate.x -= distance
-        break
-      case 'right':
-        this.coordinate.x += distance
-        break
-      default: break
-    }
-  }*/
 
   render() {
     const halfWidth = this.size.width / 2

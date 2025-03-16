@@ -15,9 +15,9 @@ export type TankProps = {
 }
 
 export class Tank extends Shape {
-  coordinate: Coordinate = { x: 0, y: 0 }
   direction: Direction
   image: HTMLImageElement = new Image()
+  damagedImage: HTMLImageElement = new Image()
   speed = 0
   healthPoint = 100
   damage = 50
@@ -29,11 +29,6 @@ export class Tank extends Shape {
       position: props.startPosition,
       size: props.size,
     })
-
-    this.setId(props.id)
-    this.setContext(props.context)
-    this.setPosition(props.startPosition)
-    this.setSize(props.size)
 
     this.direction = props.direction
     this.speed = props.speed

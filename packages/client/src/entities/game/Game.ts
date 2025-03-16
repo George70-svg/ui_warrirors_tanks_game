@@ -13,6 +13,7 @@ export class Game {
   frameCb?: number
   lastTimestamp = 0
   private controller = new Controller()
+  private boundLoop = this.loop.bind(this)
 
   public loop(timestamp: number) {
     if (!this.context) {
@@ -31,14 +32,14 @@ export class Game {
     updateAllTanks(this.controller.keysState, delta)
     updateAllBullets(delta)
     renderAllObjects(this.context)
-    this.frameCb = requestAnimationFrame(this.loop.bind(this))
+    this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
   public start(context: CanvasRenderingContext2D) {
     this.context = context
     initializeTankObjects(context)
     initializeDecorationObjects(context)
-    this.frameCb = requestAnimationFrame(this.loop.bind(this))
+    this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
   public stop() {

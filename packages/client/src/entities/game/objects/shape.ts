@@ -19,21 +19,5 @@ export abstract class Shape {
     this.id = props.id
   }
 
-  protected setContext(context: CanvasRenderingContext2D) {
-    this.context = context
-  }
-
-  protected setPosition(position: Coordinate) {
-    this.coordinate = position
-  }
-
-  protected setSize(size: Size) {
-    this.size = size
-  }
-
-  protected setId(id: string) {
-    this.id = id
-  }
-
   abstract render(): void
 }

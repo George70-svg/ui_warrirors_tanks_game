@@ -20,11 +20,6 @@ export class Decoration extends Shape {
       size: props.size,
     })
 
-    this.setId(props.id)
-    this.setContext(props.context)
-    this.setPosition(props.position)
-    this.setSize(props.size)
-
     this.color = props.color
   }
 
