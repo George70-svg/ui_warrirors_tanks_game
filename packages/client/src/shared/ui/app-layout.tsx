@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Layout } from 'antd'
+import { Divider, Layout } from 'antd'
 import styles from './app-layout.module.pcss'
 
 const { Content, Header } = Layout
@@ -13,8 +13,8 @@ export function AppLayout({
 }) {
   return (
     <Layout className={styles.layout}>
-      {header && <Header>{header}</Header>}
-      <Content>{children}</Content>
+      {header && <Header className={styles.header}>{header}</Header>}
+      <Content className={styles.content}>{children}</Content>
     </Layout>
   )
 }

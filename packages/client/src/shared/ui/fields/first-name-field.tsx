@@ -4,15 +4,19 @@ import { VALIDATIONS, VALIDATIONS_RULES } from './validations'
 
 const { Item } = Form
 
-export function FirstNameField() {
+export function FirstNameField({ showLabel = false }: { showLabel: boolean }) {
   return (
     <Item
       name="first_name"
       key="first_name"
       rules={VALIDATIONS.name}
       {...VALIDATIONS_RULES}
+      label={showLabel ? 'First name' : ''}
     >
-      <Input placeholder="First name" prefix={<UserOutlined />} />
+      <Input
+        placeholder={showLabel ? '' : 'First name'}
+        prefix={<UserOutlined />}
+      />
     </Item>
   )
 }

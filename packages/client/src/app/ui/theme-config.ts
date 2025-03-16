@@ -44,8 +44,8 @@ export const themeConfig: ThemeConfig = {
     },
     Typography: {
       fontSizeHeading1: 36,
-      titleMarginTop: 10,
-      titleMarginBottom: 10,
+      titleMarginTop: 0,
+      titleMarginBottom: 0,
       fontSize: 14,
     },
   },

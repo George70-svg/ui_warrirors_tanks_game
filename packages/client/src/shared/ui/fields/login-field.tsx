@@ -4,15 +4,16 @@ import { VALIDATIONS, VALIDATIONS_RULES } from './validations'
 
 const { Item } = Form
 
-export function LoginField() {
+export function LoginField({ showLabel = false }: { showLabel: boolean }) {
   return (
     <Item
       name="login"
       key="login"
       rules={VALIDATIONS.login}
       {...VALIDATIONS_RULES}
+      label={showLabel ? 'Login' : ''}
     >
-      <Input placeholder="Login" prefix={<UserOutlined />} />
+      <Input placeholder={showLabel ? '' : 'Login'} prefix={<UserOutlined />} />
     </Item>
   )
 }

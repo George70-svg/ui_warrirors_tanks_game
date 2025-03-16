@@ -4,15 +4,16 @@ import { VALIDATIONS, VALIDATIONS_RULES } from './validations'
 
 const { Item } = Form
 
-export function EmailField() {
+export function EmailField({ showLabel = false }: { showLabel: boolean }) {
   return (
     <Item
       name="email"
       key="email"
       rules={VALIDATIONS.email}
       {...VALIDATIONS_RULES}
+      label={showLabel ? 'Email' : ''}
     >
-      <Input placeholder="Email" prefix={<MailOutlined />} />
+      <Input placeholder={showLabel ? '' : 'Email'} prefix={<MailOutlined />} />
     </Item>
   )
 }

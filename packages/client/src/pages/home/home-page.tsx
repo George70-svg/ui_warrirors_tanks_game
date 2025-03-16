@@ -1,13 +1,19 @@
-import { Button, Typography } from 'antd'
+import { Button, Flex, Typography } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
+import styles from './home-page.module.pcss'
 
 const { Paragraph, Link: TypographyLink } = Typography
 
 export function HomePage() {
   const navigate = useNavigate()
   return (
-    <>
+    <Flex
+      align="center"
+      vertical={true}
+      className={styles.container}
+      justify="center"
+    >
       <Paragraph>
         Battle City is a dynamic top-down tank battle game where players engage
         in strategic combat to defend their base while eliminating enemy forces.
@@ -46,6 +52,6 @@ export function HomePage() {
           Play
         </Button>
       </Link>
-    </>
+    </Flex>
   )
 }

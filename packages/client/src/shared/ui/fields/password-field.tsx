@@ -7,10 +7,12 @@ const { Password } = Input
 
 export function PasswordField({
   name = 'password',
-  placeholder = 'Password',
+  text = 'Password',
+  showLabel,
 }: {
   name?: string
-  placeholder?: string
+  text?: string
+  showLabel?: boolean
 }) {
   return (
     <Item
@@ -18,8 +20,9 @@ export function PasswordField({
       key={name}
       rules={VALIDATIONS.password}
       {...VALIDATIONS_RULES}
+      label={showLabel ? text : ''}
     >
-      <Password placeholder={placeholder} prefix={<LockOutlined />} />
+      <Password placeholder={showLabel ? '' : text} prefix={<LockOutlined />} />
     </Item>
   )
 }
