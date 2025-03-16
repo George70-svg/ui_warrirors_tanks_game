@@ -12,6 +12,7 @@ import { SignUpPage } from '../pages/sign-up'
 import { NotFoundPage } from '../pages/not-found'
 import { ProtectedRoutes } from './protected-routes'
 import { NoAuthRoutes } from './no-auth-routes'
+import { ForumCreateTopicPage } from '../pages/forum-create-topic'
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: `${ROUTES.FORUM}/:topicId`,
         element: <ForumTopicPage />,
+      },
+      {
+        path: ROUTES.CREATE_TOPIC,
+        element: <ForumCreateTopicPage />,
       },
       {
         path: ROUTES.GAME,
