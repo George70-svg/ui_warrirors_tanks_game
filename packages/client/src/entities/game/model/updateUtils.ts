@@ -3,6 +3,7 @@ import { Tank } from '../objects/tank'
 import { Direction, KeysState, Offset } from '../types'
 import { checkFrameCollision, getCollision } from './collisionUtils'
 import { Bullet } from '../objects/bullet'
+import { Shape } from '../objects/shape'
 
 export function updateAllTanks(keysState: KeysState, delta: number) {
   config.tankObjects.forEach((item) => {
@@ -19,25 +20,58 @@ export function updateAllTanks(keysState: KeysState, delta: number) {
   })
 }
 
+export function updateAllBullets(delta: number) {
+  config.bulletObjects.forEach((bullet) => {
+    const offset = getBulletOffset(bullet, delta)
+    updateBullet(bullet, offset)
+  })
+}
+
+// Обновление движения танка с учётом коллизий
 function updateTank(tank: Tank, offset: Offset | null) {
   if (!offset) return
 
   tank.updateCoordinate({ x: offset.coordinate.x, y: offset.coordinate.y }) // Обновляем текущую позицию
-  const objectsForCollisionCalculation = [
-    ...config.tankObjects.filter((item) => item.id !== tank.id),
-    ...config.decorationObjects,
-  ]
 
-  if (
-    getCollision(tank, objectsForCollisionCalculation) ||
-    checkFrameCollision(tank)
-  ) {
+  if (checkEnvironmentCollision(tank)) {
     tank.updateCoordinate({ x: -offset.coordinate.x, y: -offset.coordinate.y })
   } else {
     tank.setDirection(offset.direction) // Обновляем текущее направление
   }
 
-  // Проверка столкновений с пулями
+  handleBulletCollision(tank)
+}
+
+// Обновление движения пули с учётом коллизий
+function updateBullet(bullet: Bullet, offset: Offset) {
+  bullet.updateCoordinate(offset.coordinate)
+  const objectsForCollisionCalculation = [...config.decorationObjects]
+
+  const collisionObjects = getCollision(bullet, objectsForCollisionCalculation)
+
+  if (collisionObjects || checkFrameCollision(bullet)) {
+    bullet.setMarkForDelete(true)
+  }
+}
+
+// Метод для проверки коллизий с рамками карты, танками и декорациями
+function checkEnvironmentCollision(shape: Shape) {
+  const objectsForCollisionCalculation = [
+    ...config.tankObjects.filter((obj) => obj.id !== shape.id),
+    ...config.decorationObjects,
+  ]
+
+  const hasObjectsCollision = !!getCollision(
+    shape,
+    objectsForCollisionCalculation
+  )
+  const hasFrameCollision = checkFrameCollision(shape)
+
+  return hasObjectsCollision || hasFrameCollision
+}
+
+// Обработка столкновений танков и пуль
+function handleBulletCollision(tank: Tank) {
   const enemyBullets = [
     ...config.bulletObjects.filter((item) => item.tankId !== tank.id),
   ]
@@ -54,24 +88,7 @@ function updateTank(tank: Tank, offset: Offset | null) {
   }
 }
 
-export function updateAllBullets(delta: number) {
-  config.bulletObjects.forEach((bullet) => {
-    const offset = getBulletOffset(bullet, delta)
-    updateBullet(bullet, offset)
-  })
-}
-
-function updateBullet(bullet: Bullet, offset: Offset) {
-  bullet.updateCoordinate(offset.coordinate)
-  const objectsForCollisionCalculation = [...config.decorationObjects]
-
-  const collisionObjects = getCollision(bullet, objectsForCollisionCalculation)
-
-  if (collisionObjects || checkFrameCollision(bullet)) {
-    bullet.setMarkForDelete(true)
-  }
-}
-
+// Обработка выстрела танка игрока (клик мышью)
 export function playerShotHandler() {
   const playerTank = config.tankObjects.find((item) => item.type === 'player')
 
@@ -81,6 +98,7 @@ export function playerShotHandler() {
   }
 }
 
+// Общий метод удаления объектов
 export function deleteMarkedObjects() {
   config.tankObjects = config.tankObjects.filter((item) => !item.markForDelete)
   config.bulletObjects = config.bulletObjects.filter(
