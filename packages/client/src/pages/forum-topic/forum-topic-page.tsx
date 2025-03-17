@@ -9,7 +9,6 @@ import {
   message,
   Typography,
 } from 'antd'
-import styles from './forum-topic.module.css'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -33,16 +32,16 @@ export function ForumTopicPage() {
   }
   return (
     <>
-      <Card title="Topic Title" className={styles.title}>
+      <Card title="Topic Title">
         <Text color="gray">This is the content of the topic.</Text>
       </Card>
 
-      <Card title="Comments" className={styles.comments}>
+      <Card title="Comments">
         <List
           itemLayout="horizontal"
           dataSource={comments}
           renderItem={(item) => (
-            <List.Item className={styles.listItem}>
+            <List.Item>
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
                 title={<Text color="white">{item.author}</Text>}
@@ -52,12 +51,7 @@ export function ForumTopicPage() {
           )}
         />
 
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleAddComment}
-          className={styles.form}
-        >
+        <Form form={form} layout="vertical" onFinish={handleAddComment}>
           <Form.Item
             label={<span color="white">Add a Comment</span>}
             name="comment"

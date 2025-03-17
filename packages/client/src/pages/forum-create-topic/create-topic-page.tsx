@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
 import { Button, Card, Form, Input, message } from 'antd'
-import { COLORS } from '../../app/ui/colors'
-import styles from './createTopic.module.css'
 
 const { TextArea } = Input
 
@@ -16,10 +14,10 @@ export function ForumCreateTopicPage() {
   }
 
   return (
-    <Card title="Create New Topic" className={styles.card}>
+    <Card title="Create New Topic">
       <Form layout="vertical" onFinish={onFinish}>
         <Form.Item
-          label={<span color={COLORS.WHITE}>Title</span>}
+          label={<span>Title</span>}
           name="title"
           rules={[{ required: true, message: 'Please enter a title!' }]}
         >
@@ -27,7 +25,7 @@ export function ForumCreateTopicPage() {
         </Form.Item>
 
         <Form.Item
-          label={<span color={COLORS.WHITE}>Description</span>}
+          label={<span>Description</span>}
           name="description"
           rules={[{ required: true, message: 'Please enter a description!' }]}
         >
