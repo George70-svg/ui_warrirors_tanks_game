@@ -12,15 +12,16 @@ export type TankProps = {
   imageSrc: string
   size: Size
   healthPoint: number
+  type: 'player' | 'computer'
 }
 
 export class Tank extends Shape {
   direction: Direction
   image: HTMLImageElement = new Image()
-  damagedImage: HTMLImageElement = new Image()
   speed = 0
   healthPoint = 100
   damage = 50
+  type: 'player' | 'computer'
 
   constructor(props: TankProps) {
     super({
@@ -28,12 +29,14 @@ export class Tank extends Shape {
       context: props.context,
       position: props.startPosition,
       size: props.size,
+      markForDelete: false,
     })
 
     this.direction = props.direction
     this.speed = props.speed
     this.image.src = props.imageSrc
     this.healthPoint = props.healthPoint
+    this.type = props.type
   }
 
   public updateCoordinate(coordinate: Coordinate) {
@@ -64,20 +67,18 @@ export class Tank extends Shape {
   }
 
   public shot() {
-    return {
-      object: new Bullet({
-        id: makeUUID(),
-        context: this.context,
-        startPosition: {
-          x: this.coordinate.x + this.size.width / 2,
-          y: this.coordinate.y + this.size.height / 2,
-        }, // Позиционируем пулю по центру танка
-        direction: this.direction,
-        speed: 0.4,
-        size: { width: 6, height: 6 },
-      }),
+    return new Bullet({
+      id: makeUUID(),
       tankId: this.id,
-    }
+      context: this.context,
+      startPosition: {
+        x: this.coordinate.x + this.size.width / 2,
+        y: this.coordinate.y + this.size.height / 2,
+      }, // Позиционируем пулю по центру танка
+      direction: this.direction,
+      speed: 0.4,
+      size: { width: 6, height: 6 },
+    })
   }
 
   takeDamage() {

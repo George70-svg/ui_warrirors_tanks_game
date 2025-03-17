@@ -10,6 +10,6 @@ export function renderAllObjects(ctx: CanvasRenderingContext2D | null) {
   ]
 
   objects.forEach((item) => {
-    item.object.render()
+    item.render()
   })
 }

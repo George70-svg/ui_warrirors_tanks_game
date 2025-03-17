@@ -1,4 +1,9 @@
-import { shot, updateAllBullets, updateAllTanks } from './model/updateUtils'
+import {
+  deleteMarkedObjects,
+  playerShotHandler,
+  updateAllBullets,
+  updateAllTanks,
+} from './model/updateUtils'
 import {
   config,
   initializeDecorationObjects,
@@ -8,7 +13,6 @@ import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
 
 export class Game {
-  canvas?: HTMLCanvasElement | null
   context?: CanvasRenderingContext2D
   frameCb?: number
   lastTimestamp = 0
@@ -25,13 +29,13 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
-    if (this.controller.wasMouseClicked()) {
-      shot()
-    }
+    if (this.controller.wasMouseClicked()) playerShotHandler()
 
     updateAllTanks(this.controller.keysState, delta)
     updateAllBullets(delta)
+    deleteMarkedObjects()
     renderAllObjects(this.context)
+
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 

@@ -18,6 +18,7 @@ export class Decoration extends Shape {
       context: props.context,
       position: props.position,
       size: props.size,
+      markForDelete: false,
     })
 
     this.color = props.color

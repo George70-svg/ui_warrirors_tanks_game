@@ -3,6 +3,7 @@ import { Shape } from './shape'
 
 export type BulletProps = {
   id: string
+  tankId: string
   context: CanvasRenderingContext2D
   startPosition: Coordinate
   direction: Direction
@@ -11,6 +12,7 @@ export type BulletProps = {
 }
 
 export class Bullet extends Shape {
+  tankId: string
   color = '#ffcf35'
   direction
   speed = 0
@@ -21,10 +23,12 @@ export class Bullet extends Shape {
       context: props.context,
       position: props.startPosition,
       size: props.size,
+      markForDelete: false,
     })
 
     this.direction = props.direction
     this.speed = props.speed
+    this.tankId = props.tankId
   }
 
   public updateCoordinate(coordinate: Coordinate) {

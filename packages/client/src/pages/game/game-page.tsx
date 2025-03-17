@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import './game-page.pcss'
+import styles from './game-page.module.pcss'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
 
@@ -24,7 +24,7 @@ export function GamePage() {
   }, [game])
 
   return (
-    <div className="canvas-container">
+    <div className={styles.container}>
       <canvas
         ref={canvasRef}
         width={config.frameWidth}

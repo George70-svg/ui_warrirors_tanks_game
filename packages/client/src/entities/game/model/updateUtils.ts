@@ -9,18 +9,13 @@ export function updateAllTanks(keysState: KeysState, delta: number) {
     let offset
 
     if (item.type === 'player') {
-      offset = getTankOffset(
-        keysState,
-        delta,
-        item.object.speed,
-        item.object.direction
-      )
+      offset = getTankOffset(keysState, delta, item.speed, item.direction)
     } else {
       // Вражеские танки пока стоят на месте
-      offset = { coordinate: { x: 0, y: 0 }, direction: item.object.direction }
+      offset = { coordinate: { x: 0, y: 0 }, direction: item.direction }
     }
 
-    updateTank(item.object, offset)
+    updateTank(item, offset)
   })
 }
 
@@ -29,7 +24,7 @@ function updateTank(tank: Tank, offset: Offset | null) {
 
   tank.updateCoordinate({ x: offset.coordinate.x, y: offset.coordinate.y }) // Обновляем текущую позицию
   const objectsForCollisionCalculation = [
-    ...config.tankObjects.filter((item) => item.object.id !== tank.id),
+    ...config.tankObjects.filter((item) => item.id !== tank.id),
     ...config.decorationObjects,
   ]
 
@@ -51,23 +46,18 @@ function updateTank(tank: Tank, offset: Offset | null) {
 
   if (collisionObjects) {
     tank.takeDamage()
-    config.bulletObjects = config.bulletObjects.filter(
-      (item) => item.object.id !== collisionObjects[1].object.id
-    )
-    console.log('getCollision', tank.healthPoint)
+    collisionObjects[1].setMarkForDelete(true) // Отмечаем пулю для удаления
 
     if (tank.healthPoint <= 0) {
-      config.tankObjects = config.tankObjects.filter(
-        (item) => item.object.id !== tank.id
-      )
+      collisionObjects[0].setMarkForDelete(true) // Отмечаем танк для удаления
     }
   }
 }
 
 export function updateAllBullets(delta: number) {
   config.bulletObjects.forEach((bullet) => {
-    const offset = getBulletOffset(bullet.object, delta)
-    updateBullet(bullet.object, offset)
+    const offset = getBulletOffset(bullet, delta)
+    updateBullet(bullet, offset)
   })
 }
 
@@ -75,23 +65,27 @@ function updateBullet(bullet: Bullet, offset: Offset) {
   bullet.updateCoordinate(offset.coordinate)
   const objectsForCollisionCalculation = [...config.decorationObjects]
 
-  if (
-    getCollision(bullet, objectsForCollisionCalculation) ||
-    checkFrameCollision(bullet)
-  ) {
-    config.bulletObjects = config.bulletObjects.filter((item) => {
-      return item.object.id !== bullet.id
-    })
+  const collisionObjects = getCollision(bullet, objectsForCollisionCalculation)
+
+  if (collisionObjects || checkFrameCollision(bullet)) {
+    bullet.setMarkForDelete(true)
   }
 }
 
-export function shot() {
+export function playerShotHandler() {
   const playerTank = config.tankObjects.find((item) => item.type === 'player')
 
   if (playerTank) {
-    const newBullet = playerTank.object.shot()
+    const newBullet = playerTank.shot()
     config.bulletObjects.push(newBullet)
   }
+}
+
+export function deleteMarkedObjects() {
+  config.tankObjects = config.tankObjects.filter((item) => !item.markForDelete)
+  config.bulletObjects = config.bulletObjects.filter(
+    (item) => !item.markForDelete
+  )
 }
 
 function getTankOffset(

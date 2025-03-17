@@ -1,28 +1,25 @@
 import { ShapeObject } from '../types'
-import {
-  BulletObject,
-  config,
-  DecorationObject,
-  TankObject,
-} from '../config/gameConfig'
+import { config } from '../config/gameConfig'
+import { Shape } from '../objects/shape'
 
 export function getCollision(
-  shapeObject: ShapeObject,
-  objectsForCollisionCalculation: (
-    | TankObject
-    | DecorationObject
-    | BulletObject
-  )[]
-): [ShapeObject, TankObject | DecorationObject | BulletObject] | null {
+  shapeObject: Shape,
+  objectsForCollisionCalculation: Shape[]
+): [Shape, Shape] | null {
   let isCollision = false
+
+  const targetShape = {
+    coordinate: { x: shapeObject.coordinate.x, y: shapeObject.coordinate.y },
+    size: { width: shapeObject.size.width, height: shapeObject.size.height },
+  }
 
   for (const item of [...objectsForCollisionCalculation]) {
     const decorationShape: ShapeObject = {
-      coordinate: { x: item.object.coordinate.x, y: item.object.coordinate.y },
-      size: { width: item.object.size.width, height: item.object.size.height },
+      coordinate: { x: item.coordinate.x, y: item.coordinate.y },
+      size: { width: item.size.width, height: item.size.height },
     }
 
-    isCollision = checkCollision(shapeObject, decorationShape)
+    isCollision = checkCollision(targetShape, decorationShape)
 
     if (isCollision) {
       return [shapeObject, item]
