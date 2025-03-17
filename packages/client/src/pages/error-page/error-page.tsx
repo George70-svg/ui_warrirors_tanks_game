@@ -1,10 +1,10 @@
-import { Layout, Typography } from 'antd'
-import styles from './error-page.module.pcss'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Flex, Typography } from 'antd'
+import { Link, useLocation } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
+import { AppLayout } from '../../shared/ui/app-layout'
+import styles from './error-page.module.pcss'
 
-const { Content } = Layout
-const { Title, Link, Text } = Typography
+const { Title, Text } = Typography
 
 export function ErrorPage({
   title,
@@ -18,14 +18,17 @@ export function ErrorPage({
   const displayedMessage =
     message || location.state?.message || 'Something was wrong'
   return (
-    <Layout className={styles.layout}>
-      <Content className={styles.container}>
+    <AppLayout>
+      <Flex
+        justify="center"
+        align="center"
+        vertical={true}
+        className={styles.container}
+      >
         <Title>{displayedTitle}</Title>
         <Text>{displayedMessage}</Text>
-        <RouterLink to={ROUTES.HOME}>
-          <Link>Go to home page</Link>
-        </RouterLink>
-      </Content>
-    </Layout>
+        <Link to={ROUTES.HOME}>Go to home page</Link>
+      </Flex>
+    </AppLayout>
   )
 }

@@ -4,6 +4,7 @@ import { apiCall } from '../../shared/api'
 import { ApiError } from '../../shared/api/api-error'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
+import { useError } from '../../shared/ui'
 
 type InitialState = {
   isLoading: boolean
@@ -14,6 +15,7 @@ export function useUserSignUp() {
   const [state, setState] = useState<InitialState>(() => ({
     isLoading: false,
   }))
+  const showError = useError()
 
   const navigate = useNavigate()
   const fn = useCallback(
@@ -30,11 +32,12 @@ export function useUserSignUp() {
           ...state,
           error: error as ApiError,
         }))
+        showError(error)
       } finally {
         setState((state) => ({ ...state, isLoading: false }))
       }
     },
-    [navigate]
+    [navigate, showError]
   )
 
   return {

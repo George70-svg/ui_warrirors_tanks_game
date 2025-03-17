@@ -4,7 +4,6 @@ import {
   Flex,
   Form,
   FormProps,
-  Input,
   Modal,
   Skeleton,
   Typography,
@@ -15,7 +14,8 @@ import { CSSProperties, useEffect, useState } from 'react'
 import { useUserEditInfo } from '../../entities/user/use-user-change-profile'
 import { UserInfoDto } from '../../entities/user/types'
 import { UploadOutlined } from '@ant-design/icons'
-
+import styles from './profile-page.module.pcss'
+import { InputField } from '../../shared/ui'
 const paragraphStyle: CSSProperties = { margin: 0 }
 
 export const ProfilePage = () => {
@@ -72,8 +72,8 @@ export const ProfilePage = () => {
   }
 
   return (
-    <Flex justify="space-around">
-      <Flex gap={140}>
+    <Flex justify="space-around" className={styles.container}>
+      <Flex>
         <Flex align="center" justify="space-between" gap={17}>
           <Avatar
             onClick={showModal}
@@ -98,98 +98,28 @@ export const ProfilePage = () => {
         form={form}
         layout="horizontal"
         name="basic"
-        labelCol={{ span: 10 }}
+        labelCol={{ span: 8 }}
+        size="large"
         initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete="off"
+        className={styles.form}
       >
-        <Form.Item<UserInfoDto>
-          label="Name"
-          name="display_name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your name!',
-              type: 'string',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item<UserInfoDto>
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-              type: 'email',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item<UserInfoDto>
-          label="First name"
-          name="first_name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your name!',
-              type: 'string',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item<UserInfoDto>
-          label="Second name"
-          name="second_name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your name!',
-              type: 'string',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item<UserInfoDto>
-          label="Login"
-          name="login"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your login!',
-              type: 'string',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item<UserInfoDto>
-          label="Phone"
-          name="phone"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your phone!',
-              type: 'string',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+        <InputField name="display_name" showLabel={true} />
+        <InputField name="email" showLabel={true} />
+        <InputField name="first_name" showLabel={true} />
+        <InputField name="second_name" showLabel={true} />
+        <InputField name="login" showLabel={true} />
+        <InputField name="phone" showLabel={true} />
 
-        <Form.Item<UserInfoDto>>
+        <Form.Item<UserInfoDto> className={styles.button}>
           <Button loading={userLoading} htmlType="submit">
             Save
           </Button>
         </Form.Item>
       </Form>
       <Modal
-        title="Update avatar"
+        title="Upload avatar"
         open={isModalOpen}
         onOk={handleUpdateAvatar}
         onCancel={handleCancel}
