@@ -10,6 +10,7 @@ export function LeaderboardPage() {
   const data = useLeaderboard()
   return (
     <List
+      className={styles.container}
       size="small"
       itemLayout="horizontal"
       dataSource={data}
