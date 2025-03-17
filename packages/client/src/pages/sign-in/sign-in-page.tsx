@@ -1,31 +1,34 @@
-import { useId } from 'react'
 import { useUserSignIn } from '../../entities/user'
+import { ROUTES } from '../../shared/config'
+import { AuthForm, InputField } from '../../shared/ui'
+
+interface Fields {
+  login: string
+  password: string
+}
 
 export function SignInPage() {
-  const { fn, error, isLoading } = useUserSignIn()
-  const loginId = useId()
-  const passwordId = useId()
+  const { fn, isLoading } = useUserSignIn()
+
+  const handleSubmit = (values: Fields) => {
+    fn({
+      login: values.login,
+      password: values.password,
+    })
+  }
+
   return (
-    <form
-      style={{ display: 'flex', flexDirection: 'column' }}
-      onSubmit={(e) => {
-        e.preventDefault()
-        const data = new FormData(e.currentTarget)
-        fn({
-          login: String(data.get('login')),
-          password: String(data.get('password')),
-        })
-      }}
+    <AuthForm<Fields>
+      title="Sign in"
+      submitButtonText="Sign in"
+      onSubmit={handleSubmit}
+      footerLink={ROUTES.SIGN_UP}
+      footerText="Don't have an account yet?"
+      linkText="Sign up"
+      disabled={isLoading}
     >
-      {error && <div>{error.message}</div>}
-      {error?.data && <div>{JSON.stringify(error.data)}</div>}
-      <label htmlFor={loginId}>Login</label>
-      <input type="text" id={loginId} name="login" />
-      <label htmlFor={passwordId}>Password</label>
-      <input type="password" id={passwordId} name="password" />
-      <button type="submit" disabled={isLoading}>
-        Sign in
-      </button>
-    </form>
+      <InputField name="login" />
+      <InputField name="password" />
+    </AuthForm>
   )
 }

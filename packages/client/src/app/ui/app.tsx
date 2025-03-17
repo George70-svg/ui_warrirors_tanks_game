@@ -1,0 +1,15 @@
+import { themeConfig } from './theme-config'
+import { ConfigProvider, App as AntApp } from 'antd'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './routing/router'
+import './app.pcss'
+
+export function App() {
+  return (
+    <AntApp>
+      <ConfigProvider theme={themeConfig}>
+        <RouterProvider router={router} />
+      </ConfigProvider>
+    </AntApp>
+  )
+}
