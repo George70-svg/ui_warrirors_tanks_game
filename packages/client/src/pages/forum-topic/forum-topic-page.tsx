@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import {
   Avatar,
@@ -10,14 +9,15 @@ import {
   message,
   Typography,
 } from 'antd'
+import styles from './forum-topic.module.css'
 
 const { Text } = Typography
 const { TextArea } = Input
 
+type Comment = { id: number; author: string; content: string; avatar: string }
+
 export function ForumTopicPage() {
-  const [comments, setComments] = useState<
-    { id: number; author: string; content: string; avatar: string }[]
-  >([])
+  const [comments, setComments] = useState<Comment[]>([])
   const [form] = Form.useForm()
 
   const handleAddComment = (values: { comment: string }) => {
@@ -33,31 +33,20 @@ export function ForumTopicPage() {
   }
   return (
     <>
-      <Card
-        title="Topic Title"
-        style={{ background: '#1f1f1f', color: 'white', marginBottom: 16 }}
-      >
-        <Text style={{ color: 'gray' }}>This is the content of the topic.</Text>
+      <Card title="Topic Title" className={styles.title}>
+        <Text color="gray">This is the content of the topic.</Text>
       </Card>
 
-      <Card title="Comments" style={{ background: '#1f1f1f', color: 'white' }}>
+      <Card title="Comments" className={styles.comments}>
         <List
           itemLayout="horizontal"
           dataSource={comments}
           renderItem={(item) => (
-            <List.Item
-              style={{
-                background: '#2b2b2b',
-                padding: '12px',
-                marginBottom: '8px',
-              }}
-            >
+            <List.Item className={styles.listItem}>
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
-                title={<Text style={{ color: 'white' }}>{item.author}</Text>}
-                description={
-                  <Text style={{ color: 'gray' }}>{item.content}</Text>
-                }
+                title={<Text color="white">{item.author}</Text>}
+                description={<Text color="gray">{item.content}</Text>}
               />
             </List.Item>
           )}
@@ -67,17 +56,17 @@ export function ForumTopicPage() {
           form={form}
           layout="vertical"
           onFinish={handleAddComment}
-          style={{ marginTop: 16 }}
+          className={styles.form}
         >
           <Form.Item
-            label={<span style={{ color: 'white' }}>Add a Comment</span>}
+            label={<span color="white">Add a Comment</span>}
             name="comment"
             rules={[{ required: true, message: 'Please enter your comment!' }]}
           >
             <TextArea rows={3} placeholder="Write a comment..." />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            <Button type="primary" htmlType="submit" block>
               Post Comment
             </Button>
           </Form.Item>
