@@ -6,7 +6,9 @@ export const updateProfile = createAppAsyncThunk(
   '/user/profile',
   async (data: UserUpdateProfileDto, thunkAPI) => {
     try {
-      return await API.updateProfile(data)
+      const result = await API.updateProfile(data)
+      thunkAPI.extra.message.success('User data has been successfully updated.')
+      return result
     } catch (e) {
       return thunkAPI.rejectWithValue(e)
     }
