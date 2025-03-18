@@ -36,13 +36,13 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
-    if (this.controller.wasMouseClicked()) playerShotHandler()
+    if (this.controller.wasMouseClicked()) playerShotHandler() // Обработка выстрелов игрока
+    computerShot() // Обработка выстрелов компьютера
 
-    updateAllTanks(this.controller.keysState, delta)
-    updateAllBullets(delta)
-    computerShot()
-    deleteMarkedObjects()
-    renderAllObjects(this.context)
+    updateAllTanks(this.controller.keysState, delta) // Обновляем данные танков
+    updateAllBullets(delta) // Обновляем данные пуль
+    deleteMarkedObjects() // Единожды за кадр удаляем все отмеченные объекты
+    renderAllObjects(this.context) // Рендерим все объекты на кадре
 
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }

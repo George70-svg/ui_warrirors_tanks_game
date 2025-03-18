@@ -15,10 +15,12 @@ export function updateAllTanks(keysState: KeysState, delta: number) {
   config.tankObjects.forEach((item) => {
     let offset
 
+    // Обработка движения танка игрока
     if (item.type === 'player') {
       offset = getTankOffset(keysState, delta, item.speed, item.direction)
     }
 
+    // Обработка движения компьютерных танков
     if (item instanceof ComputerTank) {
       offset = getComputerTankOffset(item, delta)
     }
