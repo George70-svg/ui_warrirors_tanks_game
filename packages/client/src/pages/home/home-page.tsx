@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
 import styles from './home-page.module.pcss'
 
-const { Paragraph, Link: TypographyLink } = Typography
+const { Paragraph, Text } = Typography
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -37,9 +37,9 @@ export function HomePage() {
       </Paragraph>
       <Paragraph>
         Join the discussion on{' '}
-        <Link to={ROUTES.FORUM}>
-          <TypographyLink>our forum</TypographyLink>
-        </Link>{' '}
+        <Text>
+          <Link to={ROUTES.FORUM}>our forum</Link>{' '}
+        </Text>
         to share strategies, exchange custom maps, and connect with other tank
         commanders.
       </Paragraph>
