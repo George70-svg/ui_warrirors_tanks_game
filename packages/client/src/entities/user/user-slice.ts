@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 import { getUserData } from './api/get-user-data'
 import { UserInfoDto } from './api/types'
 import { logout } from './api/logout'
@@ -39,56 +39,47 @@ const userSlice = createSlice({
         state.fetchUserAuthStatus = 'success'
         state.data = action.payload
       })
-      .addCase(logout.pending, (state) => {
-        state.isUserDataUpdating = true
-      })
       .addCase(logout.fulfilled, (state) => {
         state.isUserDataUpdating = false
         state.data = null
       })
-      .addCase(logout.rejected, (state) => {
-        state.isUserDataUpdating = false
-      })
-      .addCase(signIn.pending, (state) => {
-        state.isUserDataUpdating = true
-      })
-      .addCase(signIn.fulfilled, (state, action) => {
-        state.isUserDataUpdating = false
-        state.data = action.payload
-      })
-      .addCase(signIn.rejected, (state) => {
-        state.isUserDataUpdating = false
-      })
-      .addCase(signUp.pending, (state) => {
-        state.isUserDataUpdating = true
-      })
-      .addCase(signUp.fulfilled, (state, action) => {
-        state.isUserDataUpdating = false
-        state.data = action.payload
-      })
-      .addCase(signUp.rejected, (state) => {
-        state.isUserDataUpdating = false
-      })
-      .addCase(updateProfile.pending, (state) => {
-        state.isUserDataUpdating = true
-      })
-      .addCase(updateProfile.fulfilled, (state, action) => {
-        state.isUserDataUpdating = false
-        state.data = action.payload
-      })
-      .addCase(updateProfile.rejected, (state) => {
-        state.isUserDataUpdating = false
-      })
-      .addCase(uploadAvatar.pending, (state) => {
-        state.isUserDataUpdating = true
-      })
-      .addCase(uploadAvatar.fulfilled, (state, action) => {
-        state.isUserDataUpdating = false
-        state.data = action.payload
-      })
-      .addCase(uploadAvatar.rejected, (state) => {
-        state.isUserDataUpdating = false
-      })
+      .addMatcher(
+        isAnyOf(
+          logout.pending,
+          signIn.pending,
+          signUp.pending,
+          updateProfile.pending,
+          uploadAvatar.pending
+        ),
+        (state) => {
+          state.isUserDataUpdating = true
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          logout.rejected,
+          signIn.rejected,
+          updateProfile.rejected,
+          signUp.rejected,
+          updateProfile.rejected,
+          uploadAvatar.rejected
+        ),
+        (state) => {
+          state.isUserDataUpdating = false
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          uploadAvatar.fulfilled,
+          updateProfile.fulfilled,
+          signUp.fulfilled,
+          signIn.fulfilled
+        ),
+        (state, action) => {
+          state.isUserDataUpdating = false
+          state.data = action.payload
+        }
+      )
   },
 })
 
