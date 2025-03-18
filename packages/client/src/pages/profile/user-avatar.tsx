@@ -8,6 +8,7 @@ import {
 import { useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { RESOURCE_URL } from '../../shared/config'
+import styles from './user-avatar.module.pcss'
 
 const { Text } = Typography
 
@@ -19,8 +20,9 @@ export function UserAvatar() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [avatar, setAvatar] = useState<File | null>(null)
 
-  const beforeUpload = async (file: File) => {
+  const beforeUpload = (file: File) => {
     setAvatar(file)
+    return false
   }
 
   const showModal = () => {
@@ -47,7 +49,7 @@ export function UserAvatar() {
       <Flex align="center" justify="space-between" gap={17}>
         <Avatar
           onClick={showModal}
-          style={{ cursor: 'pointer' }}
+          className={styles.avatar}
           src={RESOURCE_URL + data.avatar}
           size={107}
         />
