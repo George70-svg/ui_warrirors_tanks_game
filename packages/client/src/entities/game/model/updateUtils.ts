@@ -1,9 +1,15 @@
 import { config } from '../config/gameConfig'
 import { Tank } from '../objects/tank'
 import { Direction, KeysState, Offset } from '../types'
-import { checkFrameCollision, getCollision } from './collisionUtils'
+import {
+  checkFrameCollision,
+  checkStrictCollision,
+  getCollision,
+} from './collisionUtils'
 import { Bullet } from '../objects/bullet'
 import { Shape } from '../objects/shape'
+import { getComputerTankOffset } from './ai'
+import { ComputerTank } from '../objects/computerTank'
 
 export function updateAllTanks(keysState: KeysState, delta: number) {
   config.tankObjects.forEach((item) => {
@@ -11,12 +17,15 @@ export function updateAllTanks(keysState: KeysState, delta: number) {
 
     if (item.type === 'player') {
       offset = getTankOffset(keysState, delta, item.speed, item.direction)
-    } else {
-      // Вражеские танки пока стоят на месте
-      offset = { coordinate: { x: 0, y: 0 }, direction: item.direction }
     }
 
-    updateTank(item, offset)
+    if (item instanceof ComputerTank) {
+      offset = getComputerTankOffset(item, delta)
+    }
+
+    if (offset) {
+      updateTank(item, offset)
+    }
   })
 }
 
@@ -28,7 +37,7 @@ export function updateAllBullets(delta: number) {
 }
 
 // Обновление движения танка с учётом коллизий
-function updateTank(tank: Tank, offset: Offset | null) {
+function updateTank(tank: Tank | ComputerTank, offset: Offset | null) {
   if (!offset) return
 
   tank.updateCoordinate({ x: offset.coordinate.x, y: offset.coordinate.y }) // Обновляем текущую позицию
@@ -47,7 +56,11 @@ function updateBullet(bullet: Bullet, offset: Offset) {
   bullet.updateCoordinate(offset.coordinate)
   const objectsForCollisionCalculation = [...config.decorationObjects]
 
-  const collisionObjects = getCollision(bullet, objectsForCollisionCalculation)
+  const collisionObjects = getCollision(
+    bullet,
+    objectsForCollisionCalculation,
+    checkStrictCollision
+  )
 
   if (collisionObjects || checkFrameCollision(bullet)) {
     bullet.setMarkForDelete(true)
@@ -63,7 +76,8 @@ function checkEnvironmentCollision(shape: Shape) {
 
   const hasObjectsCollision = !!getCollision(
     shape,
-    objectsForCollisionCalculation
+    objectsForCollisionCalculation,
+    checkStrictCollision
   )
   const hasFrameCollision = checkFrameCollision(shape)
 
@@ -76,7 +90,11 @@ function handleBulletCollision(tank: Tank) {
     ...config.bulletObjects.filter((item) => item.tankId !== tank.id),
   ]
 
-  const collisionObjects = getCollision(tank, enemyBullets)
+  const collisionObjects = getCollision(
+    tank,
+    enemyBullets,
+    checkStrictCollision
+  )
 
   if (collisionObjects) {
     tank.takeDamage()
@@ -106,7 +124,7 @@ export function deleteMarkedObjects() {
   )
 }
 
-function getTankOffset(
+export function getTankOffset(
   keys: KeysState,
   delta: number,
   speed: number,

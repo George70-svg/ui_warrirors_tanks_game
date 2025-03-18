@@ -4,10 +4,25 @@ import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
 
 export function GamePage() {
-  const [game] = useState(() => new Game())
+  const gamePage = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [game, setGame] = useState<Game | null>(null)
 
   useEffect(() => {
+    if (!gamePage.current) return
+
+    // Инициализирую игру с привязкой к странице
+    const newGame = new Game(gamePage.current)
+    setGame(newGame)
+
+    return () => {
+      newGame.stop()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!game || !canvasRef.current) return
+
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
 
@@ -24,7 +39,7 @@ export function GamePage() {
   }, [game])
 
   return (
-    <div className={styles.container}>
+    <div ref={gamePage} className={styles.container}>
       <canvas
         ref={canvasRef}
         width={config.frameWidth}

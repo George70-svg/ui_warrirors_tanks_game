@@ -11,13 +11,20 @@ import {
 } from './config/gameConfig'
 import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
+import { computerShot } from './model/ai'
 
 export class Game {
+  pageContext: HTMLDivElement
   context?: CanvasRenderingContext2D
   frameCb?: number
   lastTimestamp = 0
-  private controller = new Controller()
+  private controller
   private boundLoop = this.loop.bind(this)
+
+  constructor(pageContext: HTMLDivElement) {
+    this.pageContext = pageContext
+    this.controller = new Controller(this.pageContext)
+  }
 
   public loop(timestamp: number) {
     if (!this.context) {
@@ -33,6 +40,7 @@ export class Game {
 
     updateAllTanks(this.controller.keysState, delta)
     updateAllBullets(delta)
+    computerShot()
     deleteMarkedObjects()
     renderAllObjects(this.context)
 

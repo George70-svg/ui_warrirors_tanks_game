@@ -12,10 +12,10 @@ export class Controller {
     clicked: false,
   }
 
-  constructor() {
+  constructor(pageContext: HTMLDivElement) {
     window.addEventListener('keydown', this.handleKeyDown.bind(this))
     window.addEventListener('keyup', this.handleKeyUp.bind(this))
-    window.addEventListener('mousedown', this.handleMouseDown.bind(this))
+    pageContext.addEventListener('mousedown', this.handleMouseDown.bind(this))
   }
 
   get keysState() {

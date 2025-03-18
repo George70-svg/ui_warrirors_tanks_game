@@ -2,9 +2,12 @@ import { ShapeObject } from '../types'
 import { config } from '../config/gameConfig'
 import { Shape } from '../objects/shape'
 
+type CollisionFbType = (shape1: ShapeObject, shape2: ShapeObject) => boolean
+
 export function getCollision(
   shapeObject: Shape,
-  objectsForCollisionCalculation: Shape[]
+  objectsForCollisionCalculation: Shape[],
+  collisionFn: CollisionFbType
 ): [Shape, Shape] | null {
   let isCollision = false
 
@@ -19,7 +22,7 @@ export function getCollision(
       size: { width: item.size.width, height: item.size.height },
     }
 
-    isCollision = checkCollision(targetShape, decorationShape)
+    isCollision = collisionFn(targetShape, decorationShape)
 
     if (isCollision) {
       return [shapeObject, item]
@@ -29,7 +32,10 @@ export function getCollision(
   return null
 }
 
-export function checkCollision(shape1: ShapeObject, shape2: ShapeObject) {
+export function checkStrictCollision(
+  shape1: ShapeObject,
+  shape2: ShapeObject
+): boolean {
   const shape1Coordinates = getShapeCoordinates(shape1)
   const shape2Coordinates = getShapeCoordinates(shape2)
 
@@ -47,6 +53,29 @@ export function checkCollision(shape1: ShapeObject, shape2: ShapeObject) {
 
   // Если есть пересечения по обоим осям, то фигуры пересекаются
   return hasHorizontalCollision && hasVerticalCollision
+}
+
+export function checkNotStrictCollision(
+  shape1: ShapeObject,
+  shape2: ShapeObject
+): boolean {
+  const shape1Coordinates = getShapeCoordinates(shape1)
+  const shape2Coordinates = getShapeCoordinates(shape2)
+
+  // Проверяю есть ли горизантольное пересечение
+  const hasHorizontalCollision = isIntervalsIntersect(
+    [shape1Coordinates.xMin, shape1Coordinates.xMax],
+    [shape2Coordinates.xMin, shape2Coordinates.xMax]
+  )
+
+  // Проверяю есть ли вертикальное пересечение
+  const hasVerticalCollision = isIntervalsIntersect(
+    [shape1Coordinates.yMin, shape1Coordinates.yMax],
+    [shape2Coordinates.yMin, shape2Coordinates.yMax]
+  )
+
+  // Если есть пересечения по одной из осей
+  return hasHorizontalCollision || hasVerticalCollision
 }
 
 export function checkFrameCollision(shape: ShapeObject) {
