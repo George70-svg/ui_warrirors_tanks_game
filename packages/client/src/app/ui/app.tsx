@@ -1,20 +1,22 @@
-import { store } from './store'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './routing/router'
 import './app.pcss'
-import { Provider } from 'react-redux'
-import { App as AntApp, ConfigProvider } from 'antd'
-import { themeConfig } from './theme-config'
-import React from 'react'
+import { message } from 'antd'
+import { useEffect } from 'react'
+import { messageProvider } from '../../shared/lib'
 
 export function App() {
+  const [msgApi, contextHolder] = message.useMessage({
+    duration: 2,
+    maxCount: 1,
+  })
+  useEffect(() => {
+    messageProvider.setMessageApi(msgApi)
+  }, [msgApi])
   return (
-    <AntApp>
-      <ConfigProvider theme={themeConfig}>
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
-      </ConfigProvider>
-    </AntApp>
+    <>
+      {contextHolder}
+      <RouterProvider router={router} />
+    </>
   )
 }

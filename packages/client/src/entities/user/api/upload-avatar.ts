@@ -6,7 +6,7 @@ export const uploadAvatar = createAppAsyncThunk(
   async (data: FormData, thunkAPI) => {
     try {
       const result = await API.uploadAvatar(data)
-      thunkAPI.extra.message.success(
+      thunkAPI.extra.messageProvider.success(
         "The user's avatar has been successfully updated."
       )
       return result

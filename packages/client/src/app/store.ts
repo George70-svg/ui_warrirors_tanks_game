@@ -3,21 +3,20 @@ import {
   isRejectedWithValue,
   Middleware,
 } from '@reduxjs/toolkit'
-import { message } from 'antd'
-import { userReducer } from '../../entities/user'
-import { router } from './routing/router'
-import { isErrorPlainObject } from '../../shared/lib'
-import { ROUTES } from '../../shared/config'
+import { userReducer } from '../entities/user'
+import { router } from './ui/routing/router'
+import { isErrorPlainObject, messageProvider } from '../shared/lib'
+import { ROUTES } from '../shared/config'
 
 export const extraArgument = {
-  message,
+  messageProvider,
 }
 
-type Message = typeof message
 type Router = typeof router
+type MessageProvider = typeof messageProvider
 
 const createErrorMiddleware = (
-  messageSender: Message,
+  messageProvider: MessageProvider,
   router: Router
 ): Middleware => {
   return () => (next) => (action) => {
@@ -31,7 +30,7 @@ const createErrorMiddleware = (
             state: { message: messageToSend, title: statusCode },
           })
         } else {
-          messageSender.error(messageToSend)
+          messageProvider.error(messageToSend)
         }
       }
     }
@@ -45,6 +44,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: { extraArgument } }).concat(
-      createErrorMiddleware(message, router)
+      createErrorMiddleware(messageProvider, router)
     ),
 })
