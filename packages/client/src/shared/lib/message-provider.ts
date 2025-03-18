@@ -12,7 +12,7 @@ class MessageProvider {
   }
 
   public success = (message: string) => {
-    this.msgApi?.error(message)
+    this.msgApi?.success(message)
   }
 }
 
