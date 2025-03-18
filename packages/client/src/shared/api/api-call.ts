@@ -23,7 +23,11 @@ export async function apiCall<T>(config: ConfigFacade) {
     return result.data
   } catch (error) {
     if (isAxiosError(error)) {
-      throw new ApiError(error.message, error.status, error.response?.data)
+      throw new ApiError(
+        error.message,
+        error.status,
+        error.response?.data?.reason
+      )
     } else if (error instanceof Error) {
       throw new ApiError(error.message)
     }

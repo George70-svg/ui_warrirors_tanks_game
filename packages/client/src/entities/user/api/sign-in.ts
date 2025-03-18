@@ -1,6 +1,7 @@
 import { createAppAsyncThunk } from '../../../shared/lib'
 import { UserSignInDto } from './types'
 import { API } from './api'
+import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const signIn = createAppAsyncThunk(
   'user/sign-in',
@@ -9,7 +10,7 @@ export const signIn = createAppAsyncThunk(
       await API.signIn(data)
       return await API.getUserData()
     } catch (e) {
-      return thunkAPI.rejectWithValue(e)
+      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import type { store, extraArgument } from '../../app/store'
+import type { store, extraArgument } from '../../app/ui/store'
 
 export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
