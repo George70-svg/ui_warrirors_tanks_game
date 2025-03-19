@@ -1,5 +1,6 @@
 export enum ROUTES {
   FORUM = '/forum',
+  CREATE_TOPIC = '/forum/create-topic',
   GAME = '/game',
   HOME = '/',
   LEADERBOARD = '/leaderboard',
