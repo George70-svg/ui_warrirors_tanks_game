@@ -92,18 +92,18 @@ function handleBulletCollision(tank: Tank) {
     ...config.bulletObjects.filter((item) => item.tankId !== tank.id),
   ]
 
-  const collisionObjects = getCollision(
+  const [tankObject, bulletObject] = getCollision(
     tank,
     enemyBullets,
     checkStrictCollision
-  )
+  ) || [null, null]
 
-  if (collisionObjects) {
+  if (tankObject && bulletObject) {
     tank.takeDamage()
-    collisionObjects[1].setMarkForDelete(true) // Отмечаем пулю для удаления
+    bulletObject.setMarkForDelete(true) // Отмечаем пулю для удаления
 
     if (tank.healthPoint <= 0) {
-      collisionObjects[0].setMarkForDelete(true) // Отмечаем танк для удаления
+      tankObject.setMarkForDelete(true) // Отмечаем танк для удаления
     }
   }
 }

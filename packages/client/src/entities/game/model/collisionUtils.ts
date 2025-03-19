@@ -105,9 +105,12 @@ const isIntervalsIntersect = (
   range1: [number, number],
   range2: [number, number]
 ): boolean => {
+  const [x1min, x1max] = range1
+  const [x2min, x2max] = range2
+
   // Проверяю, что один интервал пересекается с другим
   return (
     // (range1[0] > range2[0] && range1[0] < range2[1]) || (range1[1] > range2[0] && range1[1] < range2[1]) // version 1
-    Math.max(range1[0], range2[0]) < Math.min(range1[1], range2[1]) // version 2
+    Math.max(x1min, x2min) < Math.min(x1max, x2max) // version 2
   )
 }

@@ -21,7 +21,9 @@ export function GamePage() {
   }, [])
 
   useEffect(() => {
-    if (!game || !canvasRef.current) return
+    if (!game || !canvasRef.current) {
+      return
+    }
 
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')

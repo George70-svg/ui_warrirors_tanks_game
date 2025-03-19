@@ -36,7 +36,9 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
-    if (this.controller.wasMouseClicked()) playerShotHandler() // Обработка выстрелов игрока
+    if (this.controller.wasMouseClicked()) {
+      playerShotHandler() // Обработка выстрелов игрока
+    }
     computerShot() // Обработка выстрелов компьютера
 
     updateAllTanks(this.controller.keysState, delta) // Обновляем данные танков
