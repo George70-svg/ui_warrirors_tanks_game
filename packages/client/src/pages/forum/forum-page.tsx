@@ -12,7 +12,7 @@ const topics = new Array(6).fill({
   id: Math.floor(Math.random() * 1000),
 })
 
-const { Title, Text } = Typography
+const { Text } = Typography
 
 export function ForumPage() {
   const navigate = useNavigate()
@@ -27,29 +27,22 @@ export function ForumPage() {
           Create new topic
         </Button>
       </Flex>
-      <Card title="TOPICS" style={{ background: '#1f1f1f', color: 'white' }}>
+      <Card title="TOPICS">
         <List
           itemLayout="horizontal"
           dataSource={topics}
           renderItem={(item) => (
-            <List.Item
-              style={{
-                background: '#2b2b2b',
-                padding: '12px',
-                marginBottom: '8px',
-              }}
-              onClick={() => handleNavigate(item.id)}
-            >
+            <List.Item onClick={() => handleNavigate(item.id)}>
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
-                title={<Text style={{ color: 'white' }}>{item.title}</Text>}
+                title={<Text>{item.title}</Text>}
                 description={
-                  <Text style={{ color: 'gray' }}>
+                  <Text>
                     Author: {item.author}, {item.time}
                   </Text>
                 }
               />
-              <Text style={{ color: 'gray' }}>{item.messages} messages</Text>
+              <Text>{item.messages} messages</Text>
             </List.Item>
           )}
         />

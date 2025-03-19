@@ -33,7 +33,7 @@ export function ForumTopicPage() {
   return (
     <>
       <Card title="Topic Title">
-        <Text color="gray">This is the content of the topic.</Text>
+        <Text>This is the content of the topic.</Text>
       </Card>
 
       <Card title="Comments">
@@ -44,8 +44,8 @@ export function ForumTopicPage() {
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
-                title={<Text color="white">{item.author}</Text>}
-                description={<Text color="gray">{item.content}</Text>}
+                title={<Text>{item.author}</Text>}
+                description={<Text>{item.content}</Text>}
               />
             </List.Item>
           )}
@@ -53,7 +53,7 @@ export function ForumTopicPage() {
 
         <Form form={form} layout="vertical" onFinish={handleAddComment}>
           <Form.Item
-            label={<span color="white">Add a Comment</span>}
+            label={<span>Add a Comment</span>}
             name="comment"
             rules={[{ required: true, message: 'Please enter your comment!' }]}
           >
