@@ -1,13 +1,30 @@
-import { updateAllTanks } from './model/updateUtils'
-import { config } from './config/gameConfig'
-import { renderAllDecoration, renderAllTanks } from './model/renderUtils'
+import {
+  deleteMarkedObjects,
+  playerShotHandler,
+  updateAllBullets,
+  updateAllTanks,
+} from './model/updateUtils'
+import {
+  config,
+  initializeDecorationObjects,
+  initializeTankObjects,
+} from './config/gameConfig'
+import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
+import { computerShot } from './model/ai'
 
 export class Game {
+  pageContext: HTMLDivElement
   context?: CanvasRenderingContext2D
   frameCb?: number
   lastTimestamp = 0
-  private controller = new Controller()
+  private controller
+  private boundLoop = this.loop.bind(this)
+
+  constructor(pageContext: HTMLDivElement) {
+    this.pageContext = pageContext
+    this.controller = new Controller(this.pageContext)
+  }
 
   public loop(timestamp: number) {
     if (!this.context) {
@@ -19,15 +36,24 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
-    updateAllTanks(this.controller.keysState, delta)
-    renderAllTanks(this.context)
-    renderAllDecoration(this.context)
-    this.frameCb = requestAnimationFrame(this.loop.bind(this))
+    if (this.controller.shotClicked()) {
+      playerShotHandler() // Обработка выстрелов игрока
+    }
+    computerShot() // Обработка выстрелов компьютера
+
+    updateAllTanks(this.controller.keysState, delta) // Обновляем данные танков
+    updateAllBullets(delta) // Обновляем данные пуль
+    deleteMarkedObjects() // Единожды за кадр удаляем все отмеченные объекты
+    renderAllObjects(this.context) // Рендерим все объекты на кадре
+
+    this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
   public start(context: CanvasRenderingContext2D) {
     this.context = context
-    this.frameCb = requestAnimationFrame(this.loop.bind(this))
+    initializeTankObjects(context)
+    initializeDecorationObjects(context)
+    this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
   public stop() {

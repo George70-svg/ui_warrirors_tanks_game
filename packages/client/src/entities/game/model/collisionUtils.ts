@@ -1,29 +1,54 @@
 import { ShapeObject } from '../types'
-import { config, decorationObjects, tankObjects } from '../config/gameConfig'
+import { config } from '../config/gameConfig'
+import { Shape } from '../objects/shape'
 
-export function getCollision(shapeObject: ShapeObject): boolean {
+type CollisionFbType = (shape1: ShapeObject, shape2: ShapeObject) => boolean
+type CollisionMode = 'strict' | 'notStrict'
+
+export function getCollision(
+  shapeObject: Shape,
+  objectsForCollisionCalculation: Shape[],
+  collisionFn: CollisionFbType
+): [Shape, Shape] | null {
   let isCollision = false
 
-  for (const item of [
-    ...Object.values(decorationObjects),
-    ...Object.values(tankObjects),
-  ]) {
+  const targetShape = {
+    coordinate: { x: shapeObject.coordinate.x, y: shapeObject.coordinate.y },
+    size: { width: shapeObject.size.width, height: shapeObject.size.height },
+  }
+
+  for (const item of [...objectsForCollisionCalculation]) {
     const decorationShape: ShapeObject = {
-      coordinate: { x: item.object.coordinate.x, y: item.object.coordinate.y },
-      size: { width: item.object.size.width, height: item.object.size.height },
+      coordinate: { x: item.coordinate.x, y: item.coordinate.y },
+      size: { width: item.size.width, height: item.size.height },
     }
 
-    isCollision = checkCollision(shapeObject, decorationShape)
+    isCollision = collisionFn(targetShape, decorationShape)
 
     if (isCollision) {
-      return isCollision
+      return [shapeObject, item]
     }
   }
 
-  return isCollision
+  return null
 }
 
-export function checkCollision(shape1: ShapeObject, shape2: ShapeObject) {
+export function checkStrictCollision(shape1: ShapeObject, shape2: ShapeObject) {
+  return checkCollision(shape1, shape2, 'strict')
+}
+
+export function checkNotStrictCollision(
+  shape1: ShapeObject,
+  shape2: ShapeObject
+) {
+  return checkCollision(shape1, shape2, 'notStrict')
+}
+
+function checkCollision(
+  shape1: ShapeObject,
+  shape2: ShapeObject,
+  mode: CollisionMode
+): boolean {
   const shape1Coordinates = getShapeCoordinates(shape1)
   const shape2Coordinates = getShapeCoordinates(shape2)
 
@@ -39,8 +64,12 @@ export function checkCollision(shape1: ShapeObject, shape2: ShapeObject) {
     [shape2Coordinates.yMin, shape2Coordinates.yMax]
   )
 
-  // Если есть пересечения по обоим осям, то фигуры пересекаются
-  return hasHorizontalCollision && hasVerticalCollision
+  // В зависимости от режима выбираем правило оценки пересечений
+  if (mode === 'strict') {
+    return hasHorizontalCollision && hasVerticalCollision
+  } else {
+    return hasHorizontalCollision || hasVerticalCollision
+  }
 }
 
 export function checkFrameCollision(shape: ShapeObject) {
@@ -70,9 +99,12 @@ const isIntervalsIntersect = (
   range1: [number, number],
   range2: [number, number]
 ): boolean => {
+  const [x1min, x1max] = range1
+  const [x2min, x2max] = range2
+
   // Проверяю, что один интервал пересекается с другим
   return (
-    (range1[0] > range2[0] && range1[0] < range2[1]) ||
-    (range1[1] > range2[0] && range1[1] < range2[1])
+    // (range1[0] > range2[0] && range1[0] < range2[1]) || (range1[1] > range2[0] && range1[1] < range2[1]) // version 1
+    Math.max(x1min, x2min) < Math.min(x1max, x2max) // version 2
   )
 }

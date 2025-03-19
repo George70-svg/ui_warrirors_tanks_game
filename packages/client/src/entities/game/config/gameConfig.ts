@@ -1,77 +1,111 @@
 import { Tank } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
+import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
+import { ComputerTank } from '../objects/computerTank'
 
 type Config = {
   frameWidth: number
   frameHeight: number
+  tankObjects: (Tank | ComputerTank)[]
+  decorationObjects: Decoration[]
+  bulletObjects: Bullet[]
+}
+
+const cellSize = 50 // Можно будет сделать значение относительным от размера экрана
+
+function toPixels(size: number): number {
+  return size * cellSize
 }
 
 export const config: Config = {
-  frameWidth: 1200,
-  frameHeight: 700,
+  frameWidth: toPixels(25),
+  frameHeight: toPixels(12),
+  tankObjects: [],
+  decorationObjects: [],
+  bulletObjects: [],
 }
 
-export const tankObjects = {
-  tank1: {
-    object: new Tank({
-      startPosition: { x: 600, y: 630 },
+export function initializeTankObjects(context: CanvasRenderingContext2D) {
+  config.tankObjects = [
+    new Tank({
+      id: crypto.randomUUID(),
+      context,
+      startPosition: { x: toPixels(12), y: toPixels(10) },
       direction: 'up',
       speed: 0.15,
-      size: { width: 50, height: 60 },
+      size: { width: 50, height: 64 },
       imageSrc: tankImg,
+      healthPoint: 100,
     }),
-    type: 'player',
-  },
-  tank2: {
-    object: new Tank({
-      startPosition: { x: 100, y: 100 },
+    new ComputerTank({
+      context,
+      startPosition: { x: toPixels(2), y: toPixels(2) },
       direction: 'right',
       speed: 0.15,
-      size: { width: 50, height: 60 },
+      size: { width: 50, height: 65 },
       imageSrc: tankImg,
+      healthPoint: 100,
     }),
-    type: 'enemy',
-  },
-  tank3: {
-    object: new Tank({
-      startPosition: { x: 900, y: 200 },
+    new ComputerTank({
+      context,
+      startPosition: { x: toPixels(20), y: toPixels(4) },
       direction: 'left',
       speed: 0.15,
-      size: { width: 50, height: 60 },
+      size: { width: 50, height: 65 },
       imageSrc: tankImg,
+      healthPoint: 100,
     }),
-    type: 'enemy',
-  },
+    new ComputerTank({
+      context,
+      startPosition: { x: toPixels(5), y: toPixels(9) },
+      direction: 'left',
+      speed: 0.15,
+      size: { width: 50, height: 65 },
+      imageSrc: tankImg,
+      healthPoint: 100,
+    }),
+    new ComputerTank({
+      context,
+      startPosition: { x: toPixels(20), y: toPixels(9) },
+      direction: 'left',
+      speed: 0.15,
+      size: { width: 50, height: 65 },
+      imageSrc: tankImg,
+      healthPoint: 100,
+    }),
+  ]
 }
 
-export const decorationObjects = {
-  decoration1: {
-    object: new Decoration({
-      position: { x: 100, y: 300 },
-      size: { width: 350, height: 50 },
+export function initializeDecorationObjects(context: CanvasRenderingContext2D) {
+  config.decorationObjects = [
+    new Decoration({
+      id: crypto.randomUUID(),
+      context,
+      position: { x: toPixels(3), y: toPixels(6) },
+      size: { width: toPixels(6), height: toPixels(1) },
       color: '#46efe9',
     }),
-  },
-  decoration2: {
-    object: new Decoration({
-      position: { x: 750, y: 300 },
-      size: { width: 350, height: 50 },
-      color: '#0BA5EC',
-    }),
-  },
-  decoration3: {
-    object: new Decoration({
-      position: { x: 450, y: 170 },
-      size: { width: 50, height: 300 },
+    new Decoration({
+      id: crypto.randomUUID(),
+      context,
+      position: { x: toPixels(9), y: toPixels(3) },
+      size: { width: toPixels(1), height: toPixels(7) },
       color: '#46efe9',
     }),
-  },
-  decoration4: {
-    object: new Decoration({
-      position: { x: 700, y: 170 },
-      size: { width: 50, height: 300 },
+    new Decoration({
+      id: crypto.randomUUID(),
+      context,
+      position: { x: toPixels(16), y: toPixels(6) },
+      size: { width: toPixels(6), height: toPixels(1) },
       color: '#0BA5EC',
     }),
-  },
+    new Decoration({
+      id: crypto.randomUUID(),
+      context,
+      position: { x: toPixels(15), y: toPixels(3) },
+      size: { width: toPixels(1), height: toPixels(7) },
+      color: '#0BA5EC',
+    }),
+  ]
 }
