@@ -1,5 +1,4 @@
 import { Coordinate, Direction, Size } from '../types'
-import { v4 as makeUUID } from 'uuid'
 import { Bullet } from './bullet'
 import { Shape } from './shape'
 
@@ -67,7 +66,7 @@ export class Tank extends Shape {
 
   public shot() {
     return new Bullet({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       tankId: this.id,
       context: this.context,
       startPosition: {

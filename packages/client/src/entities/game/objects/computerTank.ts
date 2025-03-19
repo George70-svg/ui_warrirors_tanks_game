@@ -1,4 +1,3 @@
-import { v4 as makeUUID } from 'uuid'
 import { Coordinate, Direction, KeysState, Size } from '../types'
 import { Tank } from './tank'
 
@@ -18,7 +17,7 @@ export class ComputerTank extends Tank {
 
   constructor(props: TankComputerProps) {
     super({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       context: props.context,
       startPosition: props.startPosition,
       direction: props.direction,

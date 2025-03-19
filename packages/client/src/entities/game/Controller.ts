@@ -6,6 +6,7 @@ export class Controller {
     a: false,
     s: false,
     d: false,
+    Space: false,
   }
 
   private _mouseState = {
@@ -32,11 +33,17 @@ export class Controller {
     return this._mouseState
   }
 
-  public wasMouseClicked(): boolean {
+  public shotClicked(): boolean {
     if (this.mouseState.clicked) {
       this.mouseState.clicked = false
       return true
     }
+
+    if (this.keysState.Space) {
+      this.keysState.Space = false
+      return true
+    }
+
     return false
   }
 
@@ -71,7 +78,7 @@ export class Controller {
   public destroy() {
     window.removeEventListener('keydown', this.handleKeyDown.bind(this))
     window.removeEventListener('keyup', this.handleKeyUp.bind(this))
-    this.pageContent.addEventListener(
+    this.pageContent.removeEventListener(
       'mousedown',
       this.handleMouseDown.bind(this)
     )

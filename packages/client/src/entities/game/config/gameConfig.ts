@@ -1,4 +1,3 @@
-import { v4 as makeUUID } from 'uuid'
 import { Tank } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
@@ -30,7 +29,7 @@ export const config: Config = {
 export function initializeTankObjects(context: CanvasRenderingContext2D) {
   config.tankObjects = [
     new Tank({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       context,
       startPosition: { x: toPixels(12), y: toPixels(10) },
       direction: 'up',
@@ -81,28 +80,28 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
 export function initializeDecorationObjects(context: CanvasRenderingContext2D) {
   config.decorationObjects = [
     new Decoration({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       context,
       position: { x: toPixels(3), y: toPixels(6) },
       size: { width: toPixels(6), height: toPixels(1) },
       color: '#46efe9',
     }),
     new Decoration({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       context,
       position: { x: toPixels(9), y: toPixels(3) },
       size: { width: toPixels(1), height: toPixels(7) },
       color: '#46efe9',
     }),
     new Decoration({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       context,
       position: { x: toPixels(16), y: toPixels(6) },
       size: { width: toPixels(6), height: toPixels(1) },
       color: '#0BA5EC',
     }),
     new Decoration({
-      id: makeUUID(),
+      id: crypto.randomUUID(),
       context,
       position: { x: toPixels(15), y: toPixels(3) },
       size: { width: toPixels(1), height: toPixels(7) },

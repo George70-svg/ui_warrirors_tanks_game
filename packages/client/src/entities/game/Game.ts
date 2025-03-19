@@ -36,7 +36,7 @@ export class Game {
 
     this.context.clearRect(0, 0, config.frameWidth, config.frameHeight) // Очистка холста
 
-    if (this.controller.wasMouseClicked()) {
+    if (this.controller.shotClicked()) {
       playerShotHandler() // Обработка выстрелов игрока
     }
     computerShot() // Обработка выстрелов компьютера
