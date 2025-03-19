@@ -1,5 +1,6 @@
 import { createAppAsyncThunk } from '../../../shared/lib'
 import { API } from './api'
+import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const uploadAvatar = createAppAsyncThunk(
   '/user/profile/avatar',
@@ -11,7 +12,7 @@ export const uploadAvatar = createAppAsyncThunk(
       )
       return result
     } catch (e) {
-      return thunkAPI.rejectWithValue(e)
+      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )

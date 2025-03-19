@@ -1,6 +1,7 @@
 import { createAppAsyncThunk } from '../../../shared/lib'
 import { UserUpdateProfileDto } from './types'
 import { API } from './api'
+import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const updateProfile = createAppAsyncThunk(
   '/user/profile',
@@ -12,7 +13,7 @@ export const updateProfile = createAppAsyncThunk(
       )
       return result
     } catch (e) {
-      return thunkAPI.rejectWithValue(e)
+      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )

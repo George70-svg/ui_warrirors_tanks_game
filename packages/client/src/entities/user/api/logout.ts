@@ -1,5 +1,6 @@
 import { createAppAsyncThunk } from '../../../shared/lib'
 import { API } from './api'
+import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const logout = createAppAsyncThunk(
   'user/logout',
@@ -7,7 +8,7 @@ export const logout = createAppAsyncThunk(
     try {
       await API.logout()
     } catch (e) {
-      return thunkAPI.rejectWithValue(e)
+      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )
