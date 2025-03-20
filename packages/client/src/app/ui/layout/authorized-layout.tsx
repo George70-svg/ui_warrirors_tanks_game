@@ -1,13 +1,16 @@
 import React, { ReactNode } from 'react'
 import { AppLayout, Logo } from '../../../shared/ui'
-import { useUserLogout } from '../../../entities/user/use-user-logout'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Button, Flex, Typography } from 'antd'
 import { ROUTES } from '../../../shared/config'
 import { LogoutOutlined } from '@ant-design/icons'
+import { useAppDispatch, useAppSelector } from '../../../shared/lib'
+import { logout, selectIsUserDataUpdating } from '../../../entities/user'
 
 export function AuthorizedLayout({ children }: { children: ReactNode }) {
-  const { fn, logoutLoading } = useUserLogout()
+  const dispatch = useAppDispatch()
+  const isUserUpdating = useAppSelector(selectIsUserDataUpdating)
+
   const { pathname } = useLocation()
   const currentPageName = pathname
     .split('/')[1]
@@ -58,10 +61,10 @@ export function AuthorizedLayout({ children }: { children: ReactNode }) {
             <Button
               color="danger"
               variant="filled"
-              disabled={logoutLoading}
+              disabled={isUserUpdating}
               iconPosition="start"
               icon={<LogoutOutlined />}
-              onClick={fn}
+              onClick={() => dispatch(logout())}
             >
               Logout
             </Button>

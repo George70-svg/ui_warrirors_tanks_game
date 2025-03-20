@@ -12,10 +12,12 @@ import { ProtectedRoutes } from './protected-routes'
 import { NoAuthRoutes } from './no-auth-routes'
 import { ErrorElement } from '../error-element'
 import { ErrorPage } from '../../../pages/error-page'
+import { LoadUserRoute } from './load-user-route'
 
 export const router = createBrowserRouter([
   {
     path: '/',
+    element: <LoadUserRoute />,
     errorElement: <ErrorElement />,
     children: [
       {
