@@ -2,10 +2,14 @@ import { useEffect, useRef } from 'react'
 import styles from './game-page.module.pcss'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
+import gameBgImage from '../../assets/images/game_bg.jpg'
 
 export function GamePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const canvasStyle = {
+    backgroundImage: `url(${gameBgImage})`,
+  }
 
   useEffect(() => {
     const container = containerRef.current
@@ -36,6 +40,7 @@ export function GamePage() {
         ref={canvasRef}
         width={config.frameWidth}
         height={config.frameHeight}
+        style={canvasStyle}
       />
     </div>
   )

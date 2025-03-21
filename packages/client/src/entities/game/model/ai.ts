@@ -4,7 +4,7 @@ import { getTankOffset } from './updateUtils'
 import { config } from '../config/gameConfig'
 import { checkNotStrictCollision, getCollision } from './collisionUtils'
 import { Tank } from '../objects/tank'
-import { MOVE_KEYS } from '../../../shared/config/constants'
+import { MOVE_KEYS } from '../constants'
 
 // Логика движения противников
 export function getComputerTankOffset(

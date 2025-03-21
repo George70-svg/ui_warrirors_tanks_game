@@ -1,4 +1,4 @@
-import { MOVE_KEYS } from '../../../shared/config/constants'
+import { MOVE_KEYS } from '../constants'
 import { Coordinate, Direction, KeysState, Size } from '../types'
 import { Tank } from './tank'
 
