@@ -1,6 +1,7 @@
 import { AuthForm, InputField } from '../../shared/ui'
 import { ROUTES } from '../../shared/config'
-import { useUserSignUp } from '../../entities/user'
+import { useAppDispatch, useAppSelector } from '../../shared/lib'
+import { selectIsUserDataUpdating, signUp } from '../../entities/user'
 
 interface Fields {
   first_name: string
@@ -12,15 +13,16 @@ interface Fields {
 }
 
 export function SignUpPage() {
-  const { fn, isLoading } = useUserSignUp()
+  const dispatch = useAppDispatch()
+  const isUserDataUpdating = useAppSelector(selectIsUserDataUpdating)
 
   const handleSubmit = (values: Fields) => {
-    fn({ ...values })
+    dispatch(signUp(values))
   }
 
   return (
     <AuthForm<Fields>
-      disabled={isLoading}
+      disabled={isUserDataUpdating}
       title="Sign up"
       submitButtonText="Sign up"
       onSubmit={handleSubmit}

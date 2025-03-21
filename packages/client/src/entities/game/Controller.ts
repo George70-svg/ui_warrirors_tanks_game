@@ -6,15 +6,45 @@ export class Controller {
     a: false,
     s: false,
     d: false,
+    Space: false,
   }
 
-  constructor() {
+  private _mouseState = {
+    clicked: false,
+  }
+
+  private pageContent: HTMLDivElement
+
+  constructor(pageContext: HTMLDivElement) {
+    this.pageContent = pageContext
     window.addEventListener('keydown', this.handleKeyDown.bind(this))
     window.addEventListener('keyup', this.handleKeyUp.bind(this))
+    this.pageContent.addEventListener(
+      'mousedown',
+      this.handleMouseDown.bind(this)
+    )
   }
 
   get keysState() {
     return this._keysState
+  }
+
+  get mouseState() {
+    return this._mouseState
+  }
+
+  public shotClicked(): boolean {
+    if (this.mouseState.clicked) {
+      this.mouseState.clicked = false
+      return true
+    }
+
+    if (this.keysState.Space) {
+      this.keysState.Space = false
+      return true
+    }
+
+    return false
   }
 
   handleKeyDown(event: KeyboardEvent) {
@@ -41,8 +71,16 @@ export class Controller {
     }
   }
 
+  handleMouseDown() {
+    this.mouseState.clicked = true
+  }
+
   public destroy() {
-    window.removeEventListener('keydown', this.handleKeyDown)
-    window.removeEventListener('keyup', this.handleKeyUp)
+    window.removeEventListener('keydown', this.handleKeyDown.bind(this))
+    window.removeEventListener('keyup', this.handleKeyUp.bind(this))
+    this.pageContent.removeEventListener(
+      'mousedown',
+      this.handleMouseDown.bind(this)
+    )
   }
 }

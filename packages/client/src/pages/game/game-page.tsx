@@ -1,30 +1,37 @@
-import { useEffect, useRef, useState } from 'react'
-import './game-page.pcss'
+import { useEffect, useRef } from 'react'
+import styles from './game-page.module.pcss'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
 
 export function GamePage() {
-  const [game] = useState(() => new Game())
+  const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
+    const container = containerRef.current
     const canvas = canvasRef.current
-    const context = canvas?.getContext('2d')
-
-    if (!canvas || !context) {
-      throw new Error("Can't find a canvas context")
+    if (!container || !canvas) {
+      return
     }
 
-    game.start(context)
+    // Инициализируем игру
+    const newGame = new Game(container)
 
-    // Cleaner после unmount
+    const context = canvas.getContext('2d')
+
+    if (!context) {
+      throw new Error("Can't find a 2D context for canvas")
+    }
+
+    newGame.start(context)
+
     return () => {
-      game.stop()
+      newGame.stop()
     }
-  }, [game])
+  }, [])
 
   return (
-    <div className="canvas-container">
+    <div ref={containerRef} className={styles.container}>
       <canvas
         ref={canvasRef}
         width={config.frameWidth}

@@ -1,23 +1,30 @@
 import { Coordinate, Size } from '../types'
 export type ShapeProps = {
+  id: string
+  context: CanvasRenderingContext2D
   position: Coordinate
   size: Size
+  markForDelete: boolean
 }
 
 export abstract class Shape {
+  id: string
+  context: CanvasRenderingContext2D
   coordinate: Coordinate = { x: 0, y: 0 }
   size: Size = { width: 0, height: 0 }
+  markForDelete = false
 
-  constructor(props: ShapeProps) {
+  protected constructor(props: ShapeProps) {
+    this.context = props.context
     this.coordinate = props.position
     this.size = props.size
+    this.id = props.id
+    this.markForDelete = props.markForDelete
   }
 
-  setPosition(position: Coordinate) {
-    this.coordinate = position
+  setMarkForDelete(markForDelete: boolean) {
+    this.markForDelete = markForDelete
   }
 
-  setSize(size: Size) {
-    this.size = size
-  }
+  abstract render(): void
 }

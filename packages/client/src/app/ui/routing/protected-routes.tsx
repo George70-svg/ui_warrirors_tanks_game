@@ -1,17 +1,12 @@
-import { useUserInfo } from '../../../entities/user'
-import { Spin } from 'antd'
+import { useUserAuth } from '../../../entities/user'
 import { Navigate, Outlet } from 'react-router-dom'
 import { ROUTES } from '../../../shared/config'
 import { AuthorizedLayout } from '../layout/authorized-layout'
 
 export function ProtectedRoutes() {
-  const { error, isLoading } = useUserInfo()
+  const { isUserAuthorized } = useUserAuth()
 
-  if (isLoading) {
-    return <Spin />
-  }
-
-  if (error) {
+  if (!isUserAuthorized) {
     return <Navigate to={ROUTES.SIGN_IN} replace={true} />
   }
 

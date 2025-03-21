@@ -1,6 +1,7 @@
-import { useUserSignIn } from '../../entities/user'
+import { selectIsUserDataUpdating, signIn } from '../../entities/user'
 import { ROUTES } from '../../shared/config'
 import { AuthForm, InputField } from '../../shared/ui'
+import { useAppDispatch, useAppSelector } from '../../shared/lib'
 
 interface Fields {
   login: string
@@ -8,13 +9,11 @@ interface Fields {
 }
 
 export function SignInPage() {
-  const { fn, isLoading } = useUserSignIn()
+  const dispatch = useAppDispatch()
+  const isUserDataUpdating = useAppSelector(selectIsUserDataUpdating)
 
   const handleSubmit = (values: Fields) => {
-    fn({
-      login: values.login,
-      password: values.password,
-    })
+    dispatch(signIn(values))
   }
 
   return (
@@ -25,7 +24,7 @@ export function SignInPage() {
       footerLink={ROUTES.SIGN_UP}
       footerText="Don't have an account yet?"
       linkText="Sign up"
-      disabled={isLoading}
+      disabled={isUserDataUpdating}
     >
       <InputField name="login" />
       <InputField name="password" />

@@ -1,9 +1,4 @@
-export type UserSignInDto = {
-  login: string
-  password: string
-}
-
-export type ProfileDto = {
+export type UserSignUpDto = {
   first_name: string
   second_name: string
   login: string
@@ -11,14 +6,24 @@ export type ProfileDto = {
   password: string
   phone: string
 }
+export type UserSignInDto = Pick<UserSignUpDto, 'password' | 'login'>
 
 export type UserInfoDto = {
   id: number
   first_name: string
   second_name: string
   display_name: string
-  phone: string
   login: string
   avatar: string
   email: string
+  phone: string
+}
+
+export type UserUpdateProfileDto = {
+  display_name: string
+  first_name: string
+  second_name: string
+  login: string
+  email: string
+  phone: string
 }
