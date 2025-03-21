@@ -4,7 +4,9 @@ import { getTankOffset } from './updateUtils'
 import { config } from '../config/gameConfig'
 import { checkNotStrictCollision, getCollision } from './collisionUtils'
 import { Tank } from '../objects/tank'
+import { MOVE_KEYS } from '../../../shared/config/constants'
 
+// Логика движения противников
 export function getComputerTankOffset(
   tank: ComputerTank,
   delta: number
@@ -16,11 +18,12 @@ export function getComputerTankOffset(
     tank.keysAI = getRandomControlKeys()
   }
 
-  const keys = tank.keysAI ?? { w: false, s: false, a: false, d: false }
+  const keys = tank.keysAI
 
   return getTankOffset(keys, delta, tank.speed, tank.direction)
 }
 
+// Логика стрельбы противников
 export function computerShot() {
   const playerTank = config.tankObjects.find((item) => item.type === 'player')
   const computerTanks = config.tankObjects.filter(
@@ -55,7 +58,7 @@ function getRandomNumber(min: number, max: number): number {
 }
 
 function getRandomControlKeys(): KeysState {
-  const newKeysState: KeysState = { w: false, s: false, a: false, d: false }
+  const newKeysState: KeysState = structuredClone(MOVE_KEYS)
 
   const keyNumber = getRandomNumber(0, 3)
   const randomKey = Object.keys(newKeysState)[keyNumber] as keyof KeysState

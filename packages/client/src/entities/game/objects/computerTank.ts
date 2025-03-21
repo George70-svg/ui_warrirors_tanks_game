@@ -1,3 +1,4 @@
+import { MOVE_KEYS } from '../../../shared/config/constants'
 import { Coordinate, Direction, KeysState, Size } from '../types'
 import { Tank } from './tank'
 
@@ -13,7 +14,7 @@ export type TankComputerProps = {
 
 export class ComputerTank extends Tank {
   timeBeforeChangeDirectionAI = 0
-  keysAI?: KeysState
+  keysAI: KeysState = structuredClone(MOVE_KEYS)
 
   constructor(props: TankComputerProps) {
     super({

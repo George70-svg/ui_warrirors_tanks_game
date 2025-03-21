@@ -1,4 +1,4 @@
-import { Keys, KeysCode } from './types'
+import { KeysCode, KeysCodeKeys, KeysCodeValues } from './types'
 
 export class Controller {
   private _keysState = {
@@ -6,7 +6,7 @@ export class Controller {
     a: false,
     s: false,
     d: false,
-    Space: false,
+    space: false,
   }
 
   private _mouseState = {
@@ -17,8 +17,8 @@ export class Controller {
 
   constructor(pageContext: HTMLDivElement) {
     this.pageContent = pageContext
-    window.addEventListener('keydown', this.handleKeyDown.bind(this))
-    window.addEventListener('keyup', this.handleKeyUp.bind(this))
+    window.addEventListener('keydown', this.toggleKeyState.bind(this, 'down'))
+    window.addEventListener('keyup', this.toggleKeyState.bind(this, 'up'))
     this.pageContent.addEventListener(
       'mousedown',
       this.handleMouseDown.bind(this)
@@ -39,34 +39,22 @@ export class Controller {
       return true
     }
 
-    if (this.keysState.Space) {
-      this.keysState.Space = false
+    if (this.keysState.space) {
+      this.keysState.space = false
       return true
     }
 
     return false
   }
 
-  handleKeyDown(event: KeyboardEvent) {
-    const currentKeyCode = event.code
+  toggleKeyState(type: 'up' | 'down' = 'up', evt: KeyboardEvent) {
+    const currentKeyCode = evt.code as KeysCodeKeys
 
     if (currentKeyCode in KeysCode) {
-      const key = KeysCode[currentKeyCode as keyof typeof KeysCode]
+      const key: KeysCodeValues = KeysCode[currentKeyCode]
 
       if (Object.prototype.hasOwnProperty.call(this.keysState, key)) {
-        this.keysState[key as Keys] = true
-      }
-    }
-  }
-
-  handleKeyUp(event: KeyboardEvent) {
-    const currentKeyCode = event.code
-
-    if (currentKeyCode in KeysCode) {
-      const key = KeysCode[currentKeyCode as keyof typeof KeysCode]
-
-      if (Object.prototype.hasOwnProperty.call(this.keysState, key)) {
-        this.keysState[key as Keys] = false
+        this.keysState[key] = type === 'down' ? true : false
       }
     }
   }
@@ -76,8 +64,11 @@ export class Controller {
   }
 
   public destroy() {
-    window.removeEventListener('keydown', this.handleKeyDown.bind(this))
-    window.removeEventListener('keyup', this.handleKeyUp.bind(this))
+    window.removeEventListener(
+      'keydown',
+      this.toggleKeyState.bind(this, 'down')
+    )
+    window.removeEventListener('keyup', this.toggleKeyState.bind(this, 'up'))
     this.pageContent.removeEventListener(
       'mousedown',
       this.handleMouseDown.bind(this)
