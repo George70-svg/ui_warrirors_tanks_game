@@ -12,6 +12,12 @@ import {
 import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
 import { computerShot } from './model/ai'
+import { isGameOver } from './model/gameUtils'
+
+type GameProps = {
+  pageContext: HTMLDivElement
+  onGameOver: () => void
+}
 
 export class Game {
   pageContext: HTMLDivElement
@@ -20,10 +26,12 @@ export class Game {
   lastTimestamp = 0
   private controller
   private boundLoop = this.loop.bind(this)
+  onGameOver: () => void
 
-  constructor(pageContext: HTMLDivElement) {
-    this.pageContext = pageContext
+  constructor(props: GameProps) {
+    this.pageContext = props.pageContext
     this.controller = new Controller(this.pageContext)
+    this.onGameOver = props.onGameOver
   }
 
   public loop(timestamp: number) {
@@ -45,6 +53,12 @@ export class Game {
     updateAllBullets(delta) // Обновляем данные пуль
     deleteMarkedObjects() // Единожды за кадр удаляем все отмеченные объекты
     renderAllObjects(this.context) // Рендерим все объекты на кадре
+
+    if (isGameOver()) {
+      this.stop()
+      this.onGameOver()
+      return
+    }
 
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }

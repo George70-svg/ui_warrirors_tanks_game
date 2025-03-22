@@ -9,11 +9,15 @@ export type TankComputerProps = {
   imageSrc: string
   size: Size
   healthPoint: number
+  scorePoint: number
+  addScore: (score: number) => void
 }
 
 export class ComputerTank extends Tank {
   timeBeforeChangeDirectionAI = 0
+  scorePoint = 50
   keysAI?: KeysState
+  addScore: (score: number) => void
 
   constructor(props: TankComputerProps) {
     super({
@@ -25,8 +29,12 @@ export class ComputerTank extends Tank {
       size: props.size,
       healthPoint: props.healthPoint,
       imageSrc: props.imageSrc,
+      scorePoint: props.scorePoint,
+      addScore: props.addScore,
     })
 
     this.type = 'computer'
+    this.scorePoint = props.scorePoint
+    this.addScore = props.addScore
   }
 }

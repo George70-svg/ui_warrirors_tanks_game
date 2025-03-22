@@ -103,6 +103,7 @@ function handleBulletCollision(tank: Tank) {
     bulletObject.setMarkForDelete(true) // Отмечаем пулю для удаления
 
     if (tank.healthPoint <= 0) {
+      tank.setScorePoint()
       tankObject.setMarkForDelete(true) // Отмечаем танк для удаления
     }
   }
