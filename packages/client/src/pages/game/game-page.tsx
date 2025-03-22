@@ -28,7 +28,6 @@ export function GamePage() {
   }
 
   function endGame() {
-    console.log('endGame')
     setGamePhase('end')
   }
 
