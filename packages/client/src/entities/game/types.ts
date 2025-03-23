@@ -4,7 +4,7 @@ export type Coordinate = { x: number; y: number }
 
 export type Size = { width: number; height: number }
 
-export type Keys = 'w' | 's' | 'a' | 'd' | 'Space'
+export type Keys = 'w' | 's' | 'a' | 'd' | 'space'
 
 export type KeysState = Record<Keys, boolean>
 

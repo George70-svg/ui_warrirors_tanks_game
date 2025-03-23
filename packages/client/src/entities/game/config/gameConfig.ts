@@ -18,7 +18,7 @@ type Config = {
 
 const cellSize = 50 // Можно будет сделать значение относительным от размера экрана
 
-function toPixels(size: number): number {
+export function toPixels(size: number): number {
   return size * cellSize
 }
 
