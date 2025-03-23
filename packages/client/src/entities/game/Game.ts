@@ -11,7 +11,7 @@ import {
 } from './config/gameConfig'
 import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
-import { computerShot } from './model/ai'
+import { computerShot, computerTankGeneration } from './model/ai'
 import { isGameOver } from './model/gameUtils'
 
 type GameProps = {
@@ -51,6 +51,7 @@ export class Game {
 
     updateAllTanks(this.controller.keysState, delta) // Обновляем данные танков
     updateAllBullets(delta) // Обновляем данные пуль
+    computerTankGeneration(this.context) // Генерируем компьютерные танки
     deleteMarkedObjects() // Единожды за кадр удаляем все отмеченные объекты
     renderAllObjects(this.context) // Рендерим все объекты на кадре
 

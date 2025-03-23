@@ -4,11 +4,13 @@ import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
 import { ComputerTank } from '../objects/computerTank'
 import { addScorePoint } from '../model/gameUtils'
+import { Coordinate } from '../types'
 
 type Config = {
   frameWidth: number
   frameHeight: number
   score: number
+  computerRespawnPosition: Coordinate[]
   tankObjects: (Tank | ComputerTank)[]
   decorationObjects: Decoration[]
   bulletObjects: Bullet[]
@@ -24,6 +26,12 @@ export const config: Config = {
   frameWidth: toPixels(27),
   frameHeight: toPixels(14),
   score: 0,
+  computerRespawnPosition: [
+    { x: toPixels(2), y: toPixels(2) },
+    { x: toPixels(25), y: toPixels(2) },
+    { x: toPixels(2), y: toPixels(12) },
+    { x: toPixels(25), y: toPixels(12) },
+  ],
   tankObjects: [],
   decorationObjects: [],
   bulletObjects: [],
@@ -39,63 +47,8 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       speed: 0.15,
       size: { width: 50, height: 64 },
       imageSrc: tankImg,
-      healthPoint: 50,
-      scorePoint: 50,
-      addScore: addScorePoint,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(13), y: toPixels(5) },
-      direction: 'right',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
-      scorePoint: 50,
-      addScore: addScorePoint,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(2), y: toPixels(2) },
-      direction: 'right',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
-      scorePoint: 50,
-      addScore: addScorePoint,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(25), y: toPixels(2) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
-      scorePoint: 50,
-      addScore: addScorePoint,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(2), y: toPixels(12) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
       healthPoint: 150,
-      scorePoint: 100,
-      addScore: addScorePoint,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(25), y: toPixels(12) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 150,
-      scorePoint: 100,
+      scorePoint: 50,
       addScore: addScorePoint,
     }),
   ]
