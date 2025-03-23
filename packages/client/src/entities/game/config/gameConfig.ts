@@ -2,9 +2,20 @@ import { Tank } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
+import computerTankImg from '../../../assets/images/computer-tank.png'
+import brickImg from '../../../assets/images/brick.png'
+import metalImg from '../../../assets/images/metal.png'
 import { ComputerTank } from '../objects/computerTank'
+import {
+  FIGURE1_COORDS,
+  FIGURE2_COORDS,
+  FIGURE3_COORDS,
+  FIGURE4_COORDS,
+} from '../constants/decorations'
+import { toPixels } from '../utils'
+import { createDecorationFigure } from '../model/renderUtils'
 
-type Config = {
+export type Config = {
   frameWidth: number
   frameHeight: number
   tankObjects: (Tank | ComputerTank)[]
@@ -12,11 +23,10 @@ type Config = {
   bulletObjects: Bullet[]
 }
 
-const cellSize = 50 // Можно будет сделать значение относительным от размера экрана
-
-function toPixels(size: number): number {
-  return size * cellSize
-}
+export type TConfigObjects = Pick<
+  Config,
+  'tankObjects' | 'bulletObjects' | 'decorationObjects'
+>
 
 export const config: Config = {
   frameWidth: toPixels(25),
@@ -37,6 +47,7 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       size: { width: 50, height: 64 },
       imageSrc: tankImg,
       healthPoint: 100,
+      bulletColor: '#00e413',
     }),
     new ComputerTank({
       context,
@@ -44,8 +55,9 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       direction: 'right',
       speed: 0.15,
       size: { width: 50, height: 65 },
-      imageSrc: tankImg,
+      imageSrc: computerTankImg,
       healthPoint: 100,
+      bulletColor: '#fc2323',
     }),
     new ComputerTank({
       context,
@@ -53,8 +65,9 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       direction: 'left',
       speed: 0.15,
       size: { width: 50, height: 65 },
-      imageSrc: tankImg,
+      imageSrc: computerTankImg,
       healthPoint: 100,
+      bulletColor: '#4df3ff',
     }),
     new ComputerTank({
       context,
@@ -62,8 +75,9 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       direction: 'left',
       speed: 0.15,
       size: { width: 50, height: 65 },
-      imageSrc: tankImg,
+      imageSrc: computerTankImg,
       healthPoint: 100,
+      bulletColor: '#3866fd',
     }),
     new ComputerTank({
       context,
@@ -71,41 +85,80 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       direction: 'left',
       speed: 0.15,
       size: { width: 50, height: 65 },
-      imageSrc: tankImg,
+      imageSrc: computerTankImg,
       healthPoint: 100,
+      bulletColor: '#b760ff',
     }),
   ]
 }
 
 export function initializeDecorationObjects(context: CanvasRenderingContext2D) {
+  const hasDeletable = true
+  const figure1 = createDecorationFigure(
+    FIGURE1_COORDS,
+    context,
+    'brick',
+    hasDeletable,
+    brickImg
+  )
+  const figure2 = createDecorationFigure(
+    FIGURE2_COORDS,
+    context,
+    'brick',
+    hasDeletable,
+    brickImg
+  )
+  const figure3 = createDecorationFigure(
+    FIGURE3_COORDS,
+    context,
+    'metal',
+    !hasDeletable,
+    metalImg
+  )
+  const figure4 = createDecorationFigure(
+    FIGURE4_COORDS,
+    context,
+    'metal',
+    !hasDeletable,
+    metalImg
+  )
+
   config.decorationObjects = [
+    ...figure1,
+    ...figure2,
+    ...figure3,
+    ...figure4,
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(3), y: toPixels(6) },
-      size: { width: toPixels(6), height: toPixels(1) },
+      position: { x: toPixels(3), y: toPixels(3) },
+      size: { width: toPixels(1), height: toPixels(1) },
       color: '#46efe9',
+      hasDeletable: false,
     }),
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(9), y: toPixels(3) },
-      size: { width: toPixels(1), height: toPixels(7) },
+      position: { x: toPixels(10), y: toPixels(5) },
+      size: { width: toPixels(1), height: toPixels(1) },
+      color: '#0BA5EC',
+      hasDeletable: false,
+    }),
+    new Decoration({
+      id: crypto.randomUUID(),
+      context,
+      position: { x: toPixels(14), y: toPixels(8) },
+      size: { width: toPixels(1), height: toPixels(1) },
       color: '#46efe9',
+      hasDeletable: false,
     }),
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(16), y: toPixels(6) },
-      size: { width: toPixels(6), height: toPixels(1) },
+      position: { x: toPixels(20), y: toPixels(10) },
+      size: { width: toPixels(1), height: toPixels(1) },
       color: '#0BA5EC',
-    }),
-    new Decoration({
-      id: crypto.randomUUID(),
-      context,
-      position: { x: toPixels(15), y: toPixels(3) },
-      size: { width: toPixels(1), height: toPixels(7) },
-      color: '#0BA5EC',
+      hasDeletable: false,
     }),
   ]
 }

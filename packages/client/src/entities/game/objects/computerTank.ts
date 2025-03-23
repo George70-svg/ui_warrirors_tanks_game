@@ -10,6 +10,7 @@ export type TankComputerProps = {
   imageSrc: string
   size: Size
   healthPoint: number
+  bulletColor?: string
 }
 
 export class ComputerTank extends Tank {
@@ -26,6 +27,7 @@ export class ComputerTank extends Tank {
       size: props.size,
       healthPoint: props.healthPoint,
       imageSrc: props.imageSrc,
+      bulletColor: props?.bulletColor,
     })
 
     this.type = 'computer'
