@@ -3,6 +3,7 @@ import {
   UserInfoDto,
   UserSignInDto,
   UserSignUpDto,
+  UserUpdatePasswordDto,
   UserUpdateProfileDto,
 } from './types'
 
@@ -27,6 +28,12 @@ export const API = {
       url: '/auth/signup',
       data,
       method: 'POST',
+    }),
+  updatePassword: (data: UserUpdatePasswordDto) =>
+    apiCall({
+      url: '/user/password',
+      data,
+      method: 'PUT',
     }),
   updateProfile: (data: UserUpdateProfileDto) =>
     apiCall<UserInfoDto>({

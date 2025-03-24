@@ -19,6 +19,8 @@ export type InputName =
   | 'password'
   | 'phone'
   | 'second_name'
+  | 'oldPassword'
+  | 'newPassword'
 
 type FieldConfig = {
   [key in InputName]: {
@@ -52,6 +54,18 @@ export const FIELD_CONFIG: FieldConfig = {
     text: 'Login',
     Icon: UserOutlined,
     rules: VALIDATIONS.login,
+  },
+  newPassword: {
+    Component: Password,
+    text: 'New password',
+    Icon: LockOutlined,
+    rules: VALIDATIONS.password,
+  },
+  oldPassword: {
+    Component: Password,
+    text: 'Old password',
+    Icon: LockOutlined,
+    rules: VALIDATIONS.password,
   },
   password: {
     Component: Password,

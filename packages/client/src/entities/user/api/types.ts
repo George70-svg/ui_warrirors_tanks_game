@@ -27,3 +27,8 @@ export type UserUpdateProfileDto = {
   email: string
   phone: string
 }
+
+export type UserUpdatePasswordDto = {
+  oldPassword: string
+  newPassword: string
+}
