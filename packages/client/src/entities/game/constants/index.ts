@@ -5,5 +5,3 @@ export const MOVE_KEYS = {
   d: false,
   space: false,
 }
-
-export const CELL_SIZE = 50

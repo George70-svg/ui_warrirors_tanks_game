@@ -17,8 +17,9 @@ export class Controller {
 
   constructor(pageContext: HTMLDivElement) {
     this.pageContent = pageContext
-    window.addEventListener('keydown', this.toggleKeyState.bind(this, 'down'))
-    window.addEventListener('keyup', this.toggleKeyState.bind(this, 'up'))
+    const isDown = true
+    window.addEventListener('keydown', this.toggleKeyState.bind(this, isDown))
+    window.addEventListener('keyup', this.toggleKeyState.bind(this, !isDown))
     this.pageContent.addEventListener(
       'mousedown',
       this.handleMouseDown.bind(this)
@@ -47,14 +48,14 @@ export class Controller {
     return false
   }
 
-  toggleKeyState(type: 'up' | 'down' = 'up', evt: KeyboardEvent) {
+  toggleKeyState(isDownKey = false, evt: KeyboardEvent) {
     const currentKeyCode = evt.code as KeysCodeKeys
 
     if (currentKeyCode in KeysCode) {
       const key: KeysCodeValues = KeysCode[currentKeyCode]
 
       if (Object.prototype.hasOwnProperty.call(this.keysState, key)) {
-        this.keysState[key] = type === 'down' ? true : false
+        this.keysState[key] = isDownKey
       }
     }
   }
@@ -64,11 +65,15 @@ export class Controller {
   }
 
   public destroy() {
+    const isDownKey = false
     window.removeEventListener(
       'keydown',
-      this.toggleKeyState.bind(this, 'down')
+      this.toggleKeyState.bind(this, isDownKey)
     )
-    window.removeEventListener('keyup', this.toggleKeyState.bind(this, 'up'))
+    window.removeEventListener(
+      'keyup',
+      this.toggleKeyState.bind(this, isDownKey)
+    )
     this.pageContent.removeEventListener(
       'mousedown',
       this.handleMouseDown.bind(this)

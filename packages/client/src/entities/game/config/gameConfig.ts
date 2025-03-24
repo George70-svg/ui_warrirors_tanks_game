@@ -1,5 +1,5 @@
 import { Tank } from '../objects/tank'
-import { Decoration } from '../objects/decoration'
+import { Decoration, DecorationProps } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
 import computerTankImg from '../../../assets/images/computer-tank.png'
@@ -12,8 +12,13 @@ import {
   FIGURE3_COORDS,
   FIGURE4_COORDS,
 } from '../constants/decorations'
-import { toPixels } from '../utils'
-import { createDecorationFigure } from '../model/renderUtils'
+import { Coordinate } from '../types'
+
+export const CELL_SIZE = 50
+
+export function toPixels(size: number): number {
+  return size * CELL_SIZE
+}
 
 export type Config = {
   frameWidth: number
@@ -34,6 +39,29 @@ export const config: Config = {
   tankObjects: [],
   decorationObjects: [],
   bulletObjects: [],
+}
+
+function createDecorationFigure(
+  coords: Coordinate[],
+  context: CanvasRenderingContext2D,
+  type: NonNullable<DecorationProps['typeDecoration']>,
+  hasDeletable?: DecorationProps['markForDelete'],
+  imageSrc?: string,
+  color?: string
+): Decoration[] {
+  return coords.map(
+    ({ x: coordX, y: coordY }) =>
+      new Decoration({
+        id: crypto.randomUUID(),
+        context,
+        position: { x: toPixels(coordX), y: toPixels(coordY) },
+        size: { width: toPixels(1), height: toPixels(1) },
+        color,
+        typeDecoration: type,
+        imageSrc,
+        hasDeletable,
+      })
+  )
 }
 
 export function initializeTankObjects(context: CanvasRenderingContext2D) {

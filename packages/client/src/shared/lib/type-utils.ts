@@ -9,10 +9,6 @@ export function isHasMessageStringProp(
   )
 }
 
-export function isGuardType<T>(type: T): type is T {
-  return Boolean(type)
-}
-
 export function isErrorPlainObject(obj: unknown): obj is {
   message: string
   statusCode?: number

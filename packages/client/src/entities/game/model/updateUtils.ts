@@ -10,6 +10,7 @@ import { Bullet } from '../objects/bullet'
 import { getComputerTankOffset } from './ai'
 import { ComputerTank } from '../objects/computerTank'
 import { Decoration } from '../objects/decoration'
+import { Shape } from '../objects/shape'
 
 export function updateAllTanks(keysState: KeysState, delta: number) {
   config.tankObjects.forEach((item) => {
@@ -84,18 +85,18 @@ function updateBullet(bullet: Bullet, offset: Offset) {
 }
 
 // Метод для проверки коллизий с рамками карты, танками и декорациями
-function checkEnvironmentCollision(tank: Tank) {
+function checkEnvironmentCollision(shape: Shape) {
   const objectsForCollisionCalculation = [
-    ...config.tankObjects.filter((obj) => obj.id !== tank.id),
+    ...config.tankObjects.filter((obj) => obj.id !== shape.id),
     ...config.decorationObjects,
   ]
 
   const hasObjectsCollision = !!getCollision(
-    tank,
+    shape,
     objectsForCollisionCalculation,
     checkStrictCollision
   )
-  const hasFrameCollision = checkFrameCollision(tank)
+  const hasFrameCollision = checkFrameCollision(shape)
   return hasObjectsCollision || hasFrameCollision
 }
 
@@ -131,22 +132,15 @@ export function playerShotHandler() {
   }
 }
 
-function filterMarkedObject(
-  key: keyof TConfigObjects
-): (Tank | ComputerTank | Bullet | Decoration)[] {
-  return config[key].filter((item) => !item.markForDelete)
-}
-
 // Общий метод удаления объектов
 export function deleteMarkedObjects() {
-  config.tankObjects = filterMarkedObject('tankObjects') as (
-    | Tank
-    | ComputerTank
-  )[]
-  config.bulletObjects = filterMarkedObject('bulletObjects') as Bullet[]
-  config.decorationObjects = filterMarkedObject(
-    'decorationObjects'
-  ) as Decoration[]
+  config.tankObjects = config.tankObjects.filter((item) => !item.markForDelete)
+  config.bulletObjects = config.bulletObjects.filter(
+    (item) => !item.markForDelete
+  )
+  config.decorationObjects = config.decorationObjects.filter(
+    (item) => !item.markForDelete
+  )
 }
 
 export function getTankOffset(
