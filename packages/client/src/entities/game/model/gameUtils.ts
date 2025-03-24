@@ -7,7 +7,3 @@ export function isGameOver() {
     return true
   }
 }
-
-export function addScorePoint(score: number) {
-  config.score += score
-}

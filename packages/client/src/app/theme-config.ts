@@ -10,7 +10,7 @@ export const themeConfig: ThemeConfig = {
     colorPrimary: COLORS.WHITE,
     colorSplit: COLORS.BORDER_GRAY,
     colorText: COLORS.WHITE,
-    colorWarning: COLORS.RED,
+    colorWarningText: COLORS.RED,
     colorTextPlaceholder: COLORS.WHITE,
     fontFamily: 'Nunito Sans, sans-serif',
     fontSize: 20,

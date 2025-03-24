@@ -3,14 +3,10 @@ import { Decoration } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
 import { ComputerTank } from '../objects/computerTank'
-import { addScorePoint } from '../model/gameUtils'
-import { Coordinate } from '../types'
 
 type Config = {
   frameWidth: number
   frameHeight: number
-  score: number
-  computerRespawnPosition: Coordinate[]
   tankObjects: (Tank | ComputerTank)[]
   decorationObjects: Decoration[]
   bulletObjects: Bullet[]
@@ -25,13 +21,6 @@ export function toPixels(size: number): number {
 export const config: Config = {
   frameWidth: toPixels(27),
   frameHeight: toPixels(14),
-  score: 0,
-  computerRespawnPosition: [
-    { x: toPixels(2), y: toPixels(2) },
-    { x: toPixels(25), y: toPixels(2) },
-    { x: toPixels(2), y: toPixels(12) },
-    { x: toPixels(25), y: toPixels(12) },
-  ],
   tankObjects: [],
   decorationObjects: [],
   bulletObjects: [],
@@ -49,7 +38,6 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       imageSrc: tankImg,
       healthPoint: 150,
       scorePoint: 50,
-      addScore: addScorePoint,
     }),
   ]
 }

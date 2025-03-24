@@ -12,7 +12,6 @@ export type TankProps = {
   size: Size
   healthPoint: number
   scorePoint: number
-  addScore: (score: number) => void
 }
 
 export class Tank extends Shape {
@@ -23,7 +22,6 @@ export class Tank extends Shape {
   damage = 50
   scorePoint = 50
   type: 'player' | 'computer'
-  addScore: (score: number) => void
 
   constructor(props: TankProps) {
     super({
@@ -40,7 +38,6 @@ export class Tank extends Shape {
     this.healthPoint = props.healthPoint
     this.type = 'player'
     this.scorePoint = props.scorePoint
-    this.addScore = props.addScore
   }
 
   public updateCoordinate(coordinate: Coordinate) {
@@ -87,10 +84,6 @@ export class Tank extends Shape {
 
   takeDamage() {
     this.healthPoint -= this.damage
-  }
-
-  setScorePoint() {
-    this.addScore(this.scorePoint)
   }
 
   public render() {
