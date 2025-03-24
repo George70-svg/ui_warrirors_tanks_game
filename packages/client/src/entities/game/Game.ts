@@ -9,28 +9,31 @@ import {
   initializeDecorationObjects,
   initializeTankObjects,
 } from './config/gameConfig'
-import { renderAllObjects } from './model/renderUtils'
 import { Controller } from './Controller'
 import { computerShot } from './model/ai'
+import { renderAllObjects } from './model/renderUtils'
+
+type GameProps = {
+  pageContext: HTMLDivElement
+  context: CanvasRenderingContext2D
+  onGameOver: () => void
+}
 
 export class Game {
-  pageContext: HTMLDivElement
-  context?: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D
   frameCb?: number
   lastTimestamp = 0
   private controller
   private boundLoop = this.loop.bind(this)
+  private onGameOver
 
-  constructor(pageContext: HTMLDivElement) {
-    this.pageContext = pageContext
-    this.controller = new Controller(this.pageContext)
+  constructor({ context, pageContext, onGameOver }: GameProps) {
+    this.controller = new Controller(pageContext)
+    this.onGameOver = onGameOver
+    this.context = context
   }
 
   public loop(timestamp: number) {
-    if (!this.context) {
-      throw new Error("Can't find a context")
-    }
-
     const delta = timestamp - this.lastTimestamp
     this.lastTimestamp = timestamp
 
@@ -49,10 +52,9 @@ export class Game {
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
-  public start(context: CanvasRenderingContext2D) {
-    this.context = context
-    initializeTankObjects(context)
-    initializeDecorationObjects(context)
+  public start() {
+    initializeTankObjects(this.context)
+    initializeDecorationObjects(this.context)
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
