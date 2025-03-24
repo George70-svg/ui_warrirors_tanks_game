@@ -6,7 +6,7 @@ export class Controller {
     a: false,
     s: false,
     d: false,
-    Space: false,
+    space: false,
   }
 
   private _mouseState = {
@@ -39,8 +39,8 @@ export class Controller {
       return true
     }
 
-    if (this.keysState.Space) {
-      this.keysState.Space = false
+    if (this.keysState.space) {
+      this.keysState.space = false
       return true
     }
 

@@ -15,13 +15,13 @@ import { computerShot, computerTankGeneration } from './model/ai'
 import { isGameOver } from './model/gameUtils'
 
 type GameProps = {
+  context: CanvasRenderingContext2D
   pageContext: HTMLDivElement
   onGameOver: () => void
 }
 
 export class Game {
-  pageContext: HTMLDivElement
-  context?: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D
   frameCb?: number
   lastTimestamp = 0
   private controller
@@ -29,8 +29,8 @@ export class Game {
   onGameOver: () => void
 
   constructor(props: GameProps) {
-    this.pageContext = props.pageContext
-    this.controller = new Controller(this.pageContext)
+    this.context = props.context
+    this.controller = new Controller(props.pageContext)
     this.onGameOver = props.onGameOver
   }
 
@@ -64,10 +64,9 @@ export class Game {
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
-  public start(context: CanvasRenderingContext2D) {
-    this.context = context
-    initializeTankObjects(context)
-    initializeDecorationObjects(context)
+  public start() {
+    initializeTankObjects(this.context)
+    initializeDecorationObjects(this.context)
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 

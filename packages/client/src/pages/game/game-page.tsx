@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { router } from '../../app/ui/routing/router'
 import { ROUTES } from '../../shared/config'
 import { config } from '../../entities/game/config/gameConfig'
@@ -8,68 +8,74 @@ import { StartGame } from './start-game'
 import { EndGame } from './end-game'
 import styles from './game-page.module.pcss'
 
+type GamePhase = 'start' | 'running' | 'end'
+type State = { gamePhase: GamePhase }
+type GamePhaseModalProps = { title: string; successText: string }
+
+const getGamePhaseModalProps = (phase: GamePhase): GamePhaseModalProps => {
+  if (phase === 'start') {
+    return { title: 'Ready to play?', successText: 'Start' }
+  } else if (phase === 'end') {
+    return { title: 'Game Over', successText: 'Restart' }
+  } else {
+    return {} as GamePhaseModalProps
+  }
+}
+
 export function GamePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [gamePhase, setGamePhase] = useState<'start' | 'running' | 'end'>(
-    'start'
-  )
-  const [gameInstance, setGameInstance] = useState<Game | null>(null)
-  let modalContent = null
-  let isModalIOpen = false
+  const [state, setState] = useState<State>(() => ({ gamePhase: 'start' }))
+  const gameInstance = useRef<Game | null>(null)
 
-  function startGame() {
-    const container = containerRef.current
+  const { gamePhase } = state
+  const isModalIOpen = gamePhase === 'start' || gamePhase === 'end'
 
-    if (container) {
-      setGameInstance(new Game({ pageContext: container, onGameOver: endGame }))
-      setGamePhase('running')
-    }
-  }
+  const startGame = useCallback(() => {
+    gameInstance.current?.start()
+    setState((prev) => ({ ...prev, gamePhase: 'running' }))
+  }, [])
 
-  function endGame() {
-    setGamePhase('end')
-  }
+  const endGame = useCallback(() => {
+    setState((prev) => ({ ...prev, gamePhase: 'end' }))
+  }, [])
 
-  function restartGame() {
-    if (gameInstance) gameInstance.stop()
-    startGame()
-  }
-
-  function exitGame() {
-    if (gameInstance) gameInstance.stop()
-    isModalIOpen = false
+  const exitGame = useCallback(() => {
     router.navigate(ROUTES.HOME)
-  }
-
-  if (gamePhase === 'start') {
-    isModalIOpen = true
-    modalContent = (
-      <StartGame startGameHandler={startGame} exitGame={exitGame} />
-    )
-  } else if (gamePhase === 'end') {
-    isModalIOpen = true
-    modalContent = <EndGame restartGame={restartGame} exitGame={exitGame} />
-  }
+  }, [])
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d')
+    const container = containerRef.current
 
-    if (gameInstance && context) {
-      gameInstance.start(context)
+    if (!context || !container) {
+      throw new Error('Not find canvas context or page context')
     }
+
+    gameInstance.current = new Game({
+      context: context,
+      pageContext: containerRef.current,
+      onGameOver: endGame,
+    })
 
     return () => {
-      if (gameInstance) {
-        console.log('stop')
-        gameInstance.stop()
-      }
+      console.log('stop')
+      gameInstance.current?.stop()
     }
-  }, [gameInstance])
+  }, [endGame, gameInstance])
 
   return (
     <div ref={containerRef} className={styles.container}>
-      <GameModal modalOpen={isModalIOpen}>{modalContent}</GameModal>
+      <GameModal
+        modalOpen={isModalIOpen}
+        cancelText="Exit"
+        successAction={startGame}
+        cancelAction={exitGame}
+        {...getGamePhaseModalProps(gamePhase)}
+      >
+        {gamePhase === 'start' && <StartGame />}
+        {gamePhase === 'end' && <EndGame />}
+      </GameModal>
 
       <canvas
         ref={canvasRef}
