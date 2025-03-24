@@ -16,11 +16,7 @@ import { Coordinate } from '../types'
 
 export const CELL_SIZE = 50
 
-export function toPixels(size: number): number {
-  return size * CELL_SIZE
-}
-
-export type Config = {
+type Config = {
   frameWidth: number
   frameHeight: number
   tankObjects: (Tank | ComputerTank)[]
@@ -28,14 +24,17 @@ export type Config = {
   bulletObjects: Bullet[]
 }
 
+export function toPixels(size: number): number {
+  return size * CELL_SIZE
+}
 export type TConfigObjects = Pick<
   Config,
   'tankObjects' | 'bulletObjects' | 'decorationObjects'
 >
 
 export const config: Config = {
-  frameWidth: toPixels(25),
-  frameHeight: toPixels(12),
+  frameWidth: toPixels(27),
+  frameHeight: toPixels(14),
   tankObjects: [],
   decorationObjects: [],
   bulletObjects: [],
@@ -69,53 +68,12 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
     new Tank({
       id: crypto.randomUUID(),
       context,
-      startPosition: { x: toPixels(12), y: toPixels(10) },
+      startPosition: { x: toPixels(13), y: toPixels(7) },
       direction: 'up',
       speed: 0.15,
       size: { width: 50, height: 64 },
       imageSrc: tankImg,
-      healthPoint: 100,
-      bulletColor: '#00e413',
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(2), y: toPixels(2) },
-      direction: 'right',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: computerTankImg,
-      healthPoint: 100,
-      bulletColor: '#fc2323',
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(20), y: toPixels(4) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: computerTankImg,
-      healthPoint: 100,
-      bulletColor: '#4df3ff',
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(5), y: toPixels(9) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: computerTankImg,
-      healthPoint: 100,
-      bulletColor: '#3866fd',
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(20), y: toPixels(9) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: computerTankImg,
-      healthPoint: 100,
-      bulletColor: '#b760ff',
+      healthPoint: 150,
     }),
   ]
 }

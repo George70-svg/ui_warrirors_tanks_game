@@ -1,10 +1,13 @@
 import { KeysState, Offset } from '../types'
 import { ComputerTank } from '../objects/computerTank'
 import { getTankOffset } from './updateUtils'
-import { config } from '../config/gameConfig'
+import { config, toPixels } from '../config/gameConfig'
 import { checkNotStrictCollision, getCollision } from './collisionUtils'
 import { Tank } from '../objects/tank'
+import tankImg from '../../../assets/images/tank.png'
 import { MOVE_KEYS } from '../constants'
+
+let generationTime = 0
 
 // Логика движения противников
 export function getComputerTankOffset(
@@ -51,6 +54,34 @@ export function computerShot() {
       config.bulletObjects.push(newBullet)
     }
   })
+}
+
+export function computerTankGeneration(context: CanvasRenderingContext2D) {
+  const now = performance.now()
+  const computerTankNumber = config.tankObjects.length
+  // const respawnCoordinate: Coordinate = [...computerRespawnPosition][(getRandomNumber(0, 1))]
+  /*const randomDirection: Direction = ['right', 'left', 'up', 'down'][
+    getRandomNumber(0, 3)
+  ] as Direction*/
+
+  if (now > generationTime && computerTankNumber < 10) {
+    const newTank = new ComputerTank({
+      context,
+      startPosition:
+        Math.floor(Math.random() * 2) > 0
+          ? { x: toPixels(4), y: toPixels(4) }
+          : { x: toPixels(24), y: toPixels(4) },
+      direction: 'up',
+      speed: 0.15,
+      size: { width: 50, height: 65 },
+      imageSrc: tankImg,
+      healthPoint: 100,
+    })
+
+    config.tankObjects = [...config.tankObjects, newTank]
+
+    generationTime = now + 5000 // Добавляем следующую генерацию через 5 секунд
+  }
 }
 
 function getRandomNumber(min: number, max: number): number {

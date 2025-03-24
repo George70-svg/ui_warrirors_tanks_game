@@ -20,6 +20,7 @@ export class Tank extends Shape {
   speed = 0
   healthPoint = 100
   damage = 50
+  scorePoint = 50
   type: 'player' | 'computer'
   bulletColor: string
 

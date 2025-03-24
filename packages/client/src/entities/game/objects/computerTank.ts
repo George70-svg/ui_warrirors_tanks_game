@@ -1,4 +1,3 @@
-import { MOVE_KEYS } from '../constants'
 import { Coordinate, Direction, KeysState, Size } from '../types'
 import { Tank } from './tank'
 
@@ -10,11 +9,13 @@ export type TankComputerProps = {
   imageSrc: string
   size: Size
   healthPoint: number
+  scorePoint: number
   bulletColor?: string
 }
 
 export class ComputerTank extends Tank {
   timeBeforeChangeDirectionAI = 0
+  scorePoint = 50
   keysAI: KeysState = structuredClone(MOVE_KEYS)
 
   constructor(props: TankComputerProps) {
@@ -31,5 +32,6 @@ export class ComputerTank extends Tank {
     })
 
     this.type = 'computer'
+    this.scorePoint = props.scorePoint
   }
 }
