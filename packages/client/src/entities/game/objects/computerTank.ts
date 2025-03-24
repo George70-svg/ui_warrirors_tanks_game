@@ -9,10 +9,12 @@ export type TankComputerProps = {
   imageSrc: string
   size: Size
   healthPoint: number
+  scorePoint: number
 }
 
 export class ComputerTank extends Tank {
   timeBeforeChangeDirectionAI = 0
+  scorePoint = 50
   keysAI?: KeysState
 
   constructor(props: TankComputerProps) {
@@ -25,8 +27,10 @@ export class ComputerTank extends Tank {
       size: props.size,
       healthPoint: props.healthPoint,
       imageSrc: props.imageSrc,
+      scorePoint: props.scorePoint,
     })
 
     this.type = 'computer'
+    this.scorePoint = props.scorePoint
   }
 }

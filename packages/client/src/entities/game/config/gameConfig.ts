@@ -14,13 +14,13 @@ type Config = {
 
 const cellSize = 50 // Можно будет сделать значение относительным от размера экрана
 
-function toPixels(size: number): number {
+export function toPixels(size: number): number {
   return size * cellSize
 }
 
 export const config: Config = {
-  frameWidth: toPixels(25),
-  frameHeight: toPixels(12),
+  frameWidth: toPixels(27),
+  frameHeight: toPixels(14),
   tankObjects: [],
   decorationObjects: [],
   bulletObjects: [],
@@ -31,48 +31,13 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
     new Tank({
       id: crypto.randomUUID(),
       context,
-      startPosition: { x: toPixels(12), y: toPixels(10) },
+      startPosition: { x: toPixels(13), y: toPixels(7) },
       direction: 'up',
       speed: 0.15,
       size: { width: 50, height: 64 },
       imageSrc: tankImg,
-      healthPoint: 100,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(2), y: toPixels(2) },
-      direction: 'right',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(20), y: toPixels(4) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(5), y: toPixels(9) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
-    }),
-    new ComputerTank({
-      context,
-      startPosition: { x: toPixels(20), y: toPixels(9) },
-      direction: 'left',
-      speed: 0.15,
-      size: { width: 50, height: 65 },
-      imageSrc: tankImg,
-      healthPoint: 100,
+      healthPoint: 150,
+      scorePoint: 50,
     }),
   ]
 }
@@ -82,28 +47,28 @@ export function initializeDecorationObjects(context: CanvasRenderingContext2D) {
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(3), y: toPixels(6) },
+      position: { x: toPixels(3), y: toPixels(7) },
       size: { width: toPixels(6), height: toPixels(1) },
       color: '#46efe9',
     }),
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(9), y: toPixels(3) },
+      position: { x: toPixels(9), y: toPixels(4) },
       size: { width: toPixels(1), height: toPixels(7) },
       color: '#46efe9',
     }),
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(16), y: toPixels(6) },
+      position: { x: toPixels(18), y: toPixels(7) },
       size: { width: toPixels(6), height: toPixels(1) },
       color: '#0BA5EC',
     }),
     new Decoration({
       id: crypto.randomUUID(),
       context,
-      position: { x: toPixels(15), y: toPixels(3) },
+      position: { x: toPixels(17), y: toPixels(4) },
       size: { width: toPixels(1), height: toPixels(7) },
       color: '#0BA5EC',
     }),
