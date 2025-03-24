@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { Image, Flex } from 'antd'
 import wideLogoPng from '../../../assets/wide_logo.png'
 import gameplayVideoWebm from '../../../assets/gameplay_video.webm'
-import { AppLayout } from '../../../shared/ui/app-layout'
+import { AppLayout } from '../../../shared/ui'
 import styles from './auth-layout.module.pcss'
 
 interface AuthLayoutProps {

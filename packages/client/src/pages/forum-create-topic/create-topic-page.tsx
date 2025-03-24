@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
 import { Button, Card, Form, Input, message } from 'antd'
+import styles from './create-topic-page.module.pcss'
 
 const { TextArea } = Input
 
@@ -14,7 +15,7 @@ export function ForumCreateTopicPage() {
   }
 
   return (
-    <Card title="Create New Topic">
+    <Card title="Create New Topic" className={styles.container} type="inner">
       <Form layout="vertical" onFinish={onFinish}>
         <Form.Item
           label={<span>Title</span>}
