@@ -2,7 +2,6 @@ import { Tank } from '../objects/tank'
 import { Decoration, DecorationProps } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
 import tankImg from '../../../assets/images/tank.png'
-import computerTankImg from '../../../assets/images/computer-tank.png'
 import brickImg from '../../../assets/images/brick.png'
 import metalImg from '../../../assets/images/metal.png'
 import { ComputerTank } from '../objects/computerTank'
@@ -74,6 +73,7 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       size: { width: 50, height: 64 },
       imageSrc: tankImg,
       healthPoint: 150,
+      bulletColor: '#00e413',
     }),
   ]
 }

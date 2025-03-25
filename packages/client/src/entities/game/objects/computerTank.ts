@@ -1,5 +1,6 @@
 import { Coordinate, Direction, KeysState, Size } from '../types'
 import { Tank } from './tank'
+import { MOVE_KEYS } from '../constants'
 
 export type TankComputerProps = {
   context: CanvasRenderingContext2D
