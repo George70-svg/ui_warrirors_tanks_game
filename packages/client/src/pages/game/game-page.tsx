@@ -4,7 +4,6 @@ import { ROUTES } from '../../shared/config'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
 import { EndGame } from './end-game'
-import gameBgImage from '../../assets/images/game_bg.jpg'
 import styles from './game-page.module.pcss'
 import { GameModal } from './game-modal'
 import { StartGame } from './start-game'
@@ -28,10 +27,6 @@ export function GamePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [state, setState] = useState<State>(() => ({ gamePhase: 'start' }))
   const gameInstance = useRef<Game | null>(null)
-
-  const canvasStyle = {
-    backgroundImage: `url(${gameBgImage})`,
-  }
 
   const { gamePhase } = state
   const isModalIOpen = gamePhase === 'start' || gamePhase === 'end'
@@ -85,7 +80,6 @@ export function GamePage() {
         ref={canvasRef}
         width={config.frameWidth}
         height={config.frameHeight}
-        style={canvasStyle}
       />
     </div>
   )
