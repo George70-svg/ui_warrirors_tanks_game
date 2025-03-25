@@ -6,6 +6,7 @@ import { Game } from '../../entities/game/Game'
 import { GameModal } from './game-modal'
 import { StartGame } from './start-game'
 import { EndGame } from './end-game'
+import gameBgImage from '../../assets/images/game_bg.jpg'
 import styles from './game-page.module.pcss'
 
 type GamePhase = 'start' | 'running' | 'end'
@@ -27,6 +28,10 @@ export function GamePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [state, setState] = useState<State>(() => ({ gamePhase: 'start' }))
   const gameInstance = useRef<Game | null>(null)
+
+  const canvasStyle = {
+    backgroundImage: `url(${gameBgImage})`,
+  }
 
   const { gamePhase } = state
   const isModalIOpen = gamePhase === 'start' || gamePhase === 'end'
@@ -81,6 +86,7 @@ export function GamePage() {
         ref={canvasRef}
         width={config.frameWidth}
         height={config.frameHeight}
+        style={canvasStyle}
       />
     </div>
   )

@@ -4,10 +4,12 @@ import { getTankOffset } from './updateUtils'
 import { config, toPixels } from '../config/gameConfig'
 import { checkNotStrictCollision, getCollision } from './collisionUtils'
 import { Tank } from '../objects/tank'
-import tankImg from '../../../assets/images/tank.png'
+import computerTankImg from '../../../assets/images/computer-tank.png'
+import { MOVE_KEYS } from '../constants'
 
 let generationTime = 0
 
+// Логика движения противников
 export function getComputerTankOffset(
   tank: ComputerTank,
   delta: number
@@ -19,17 +21,12 @@ export function getComputerTankOffset(
     tank.keysAI = getRandomControlKeys()
   }
 
-  const keys = tank.keysAI ?? {
-    w: false,
-    s: false,
-    a: false,
-    d: false,
-    space: false,
-  }
+  const keys = tank.keysAI
 
   return getTankOffset(keys, delta, tank.speed, tank.direction)
 }
 
+// Логика стрельбы противников
 export function computerShot() {
   const playerTank = config.tankObjects.find((item) => item.type === 'player')
   const computerTanks = config.tankObjects.filter(
@@ -62,10 +59,6 @@ export function computerShot() {
 export function computerTankGeneration(context: CanvasRenderingContext2D) {
   const now = performance.now()
   const computerTankNumber = config.tankObjects.length
-  // const respawnCoordinate: Coordinate = [...computerRespawnPosition][(getRandomNumber(0, 1))]
-  /*const randomDirection: Direction = ['right', 'left', 'up', 'down'][
-    getRandomNumber(0, 3)
-  ] as Direction*/
 
   if (now > generationTime && computerTankNumber < 10) {
     const newTank = new ComputerTank({
@@ -77,9 +70,10 @@ export function computerTankGeneration(context: CanvasRenderingContext2D) {
       direction: 'up',
       speed: 0.15,
       size: { width: 50, height: 65 },
-      imageSrc: tankImg,
+      imageSrc: computerTankImg,
       healthPoint: 100,
       scorePoint: 50,
+      bulletColor: '#fc2323',
     })
 
     config.tankObjects = [...config.tankObjects, newTank]
@@ -93,13 +87,7 @@ function getRandomNumber(min: number, max: number): number {
 }
 
 function getRandomControlKeys(): KeysState {
-  const newKeysState: KeysState = {
-    w: false,
-    s: false,
-    a: false,
-    d: false,
-    space: false,
-  }
+  const newKeysState: KeysState = structuredClone(MOVE_KEYS)
 
   const keyNumber = getRandomNumber(0, 3)
   const randomKey = Object.keys(newKeysState)[keyNumber] as keyof KeysState

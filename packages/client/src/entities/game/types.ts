@@ -4,9 +4,10 @@ export type Coordinate = { x: number; y: number }
 
 export type Size = { width: number; height: number }
 
-export type Keys = 'w' | 's' | 'a' | 'd' | 'space'
+export type KeysCodeValues = `${KeysCode}`
+export type KeysCodeKeys = keyof typeof KeysCode
 
-export type KeysState = Record<Keys, boolean>
+export type KeysState = Record<KeysCodeValues, boolean>
 
 export type Offset = {
   coordinate: { x: number; y: number }

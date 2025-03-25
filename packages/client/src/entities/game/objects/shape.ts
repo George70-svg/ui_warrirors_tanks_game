@@ -5,6 +5,7 @@ export type ShapeProps = {
   position: Coordinate
   size: Size
   markForDelete: boolean
+  hasDeletable?: boolean
 }
 
 export abstract class Shape {

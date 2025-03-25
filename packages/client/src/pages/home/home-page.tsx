@@ -7,6 +7,7 @@ const { Paragraph, Text } = Typography
 
 export function HomePage() {
   const navigate = useNavigate()
+
   return (
     <Flex
       align="center"
