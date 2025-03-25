@@ -3,12 +3,14 @@ import {
   Avatar,
   Button,
   Card,
+  Flex,
   Form,
   Input,
   List,
   message,
   Typography,
 } from 'antd'
+import styles from './forum-topic-page.module.pcss'
 
 const { Text } = Typography
 const { TextArea } = Input
@@ -31,12 +33,12 @@ export function ForumTopicPage() {
     message.success('Comment added!')
   }
   return (
-    <>
-      <Card title="Topic Title">
+    <Flex vertical={true} gap={20} className={styles.container}>
+      <Card title="Topic Title" type="inner">
         <Text>This is the content of the topic.</Text>
       </Card>
 
-      <Card title="Comments">
+      <Card title="Comments" type="inner">
         <List
           itemLayout="horizontal"
           dataSource={comments}
@@ -66,6 +68,6 @@ export function ForumTopicPage() {
           </Form.Item>
         </Form>
       </Card>
-    </>
+    </Flex>
   )
 }

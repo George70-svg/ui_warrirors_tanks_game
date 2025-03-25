@@ -3,11 +3,10 @@ import { router } from '../../app/ui/routing/router'
 import { ROUTES } from '../../shared/config'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
+import { EndGame } from './end-game'
+import styles from './game-page.module.pcss'
 import { GameModal } from './game-modal'
 import { StartGame } from './start-game'
-import { EndGame } from './end-game'
-import gameBgImage from '../../assets/images/game_bg.jpg'
-import styles from './game-page.module.pcss'
 
 type GamePhase = 'start' | 'running' | 'end'
 type State = { gamePhase: GamePhase }
@@ -29,10 +28,6 @@ export function GamePage() {
   const [state, setState] = useState<State>(() => ({ gamePhase: 'start' }))
   const gameInstance = useRef<Game | null>(null)
 
-  const canvasStyle = {
-    backgroundImage: `url(${gameBgImage})`,
-  }
-
   const { gamePhase } = state
   const isModalIOpen = gamePhase === 'start' || gamePhase === 'end'
 
@@ -51,23 +46,22 @@ export function GamePage() {
 
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d')
-    const container = containerRef.current
+    const pageContext = containerRef.current
 
-    if (!context || !container) {
+    if (!context || !pageContext) {
       throw new Error('Not find canvas context or page context')
     }
 
     gameInstance.current = new Game({
       context: context,
-      pageContext: containerRef.current,
+      pageContext: pageContext,
       onGameOver: endGame,
     })
 
     return () => {
-      console.log('stop')
       gameInstance.current?.stop()
     }
-  }, [endGame, gameInstance])
+  }, [endGame])
 
   return (
     <div ref={containerRef} className={styles.container}>
@@ -86,7 +80,6 @@ export function GamePage() {
         ref={canvasRef}
         width={config.frameWidth}
         height={config.frameHeight}
-        style={canvasStyle}
       />
     </div>
   )

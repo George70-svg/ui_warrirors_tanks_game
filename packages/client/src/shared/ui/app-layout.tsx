@@ -1,9 +1,8 @@
 import { ReactNode } from 'react'
-import { theme, Layout } from 'antd'
+import { Layout } from 'antd'
 import styles from './app-layout.module.pcss'
 
 const { Content, Header } = Layout
-const { useToken } = theme
 
 export function AppLayout({
   children,
@@ -12,17 +11,9 @@ export function AppLayout({
   children: ReactNode
   header?: ReactNode
 }) {
-  const { token } = useToken()
   return (
     <Layout className={styles.layout}>
-      {header && (
-        <Header
-          className={styles.header}
-          style={{ borderBottom: `1px solid ${token.colorSplit}` }}
-        >
-          {header}
-        </Header>
-      )}
+      {header && <Header className={styles.header}>{header}</Header>}
       <Content className={styles.content}>{children}</Content>
     </Layout>
   )

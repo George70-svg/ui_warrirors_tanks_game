@@ -6,6 +6,7 @@ import { signIn } from './api/sign-in'
 import { signUp } from './api/sign-up'
 import { updateProfile } from './api/update-profile'
 import { uploadAvatar } from './api/upload-avatar'
+import { updatePassword } from './api/update-password'
 
 type UserState = {
   fetchUserAuthStatus: 'idle' | 'pending' | 'success'
@@ -49,7 +50,8 @@ const userSlice = createSlice({
           signIn.pending,
           signUp.pending,
           updateProfile.pending,
-          uploadAvatar.pending
+          uploadAvatar.pending,
+          updatePassword.pending
         ),
         (state) => {
           state.isUserDataUpdating = true
@@ -61,7 +63,8 @@ const userSlice = createSlice({
           signIn.rejected,
           updateProfile.rejected,
           signUp.rejected,
-          updateProfile.rejected,
+          updatePassword.rejected,
+          updatePassword.fulfilled,
           uploadAvatar.rejected
         ),
         (state) => {

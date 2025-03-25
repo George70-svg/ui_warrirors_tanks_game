@@ -1,7 +1,7 @@
 import { Flex, Typography } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { ROUTES } from '../../shared/config'
-import { AppLayout } from '../../shared/ui/app-layout'
+import { AppLayout } from '../../shared/ui'
 import styles from './error-page.module.pcss'
 
 const { Title, Text } = Typography

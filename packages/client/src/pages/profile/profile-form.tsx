@@ -1,59 +1,37 @@
-import { Button, Form } from 'antd'
+import { Button, Form, FormInstance } from 'antd'
 import styles from './profile-form.module.pcss'
-import { InputField } from '../../shared/ui'
-import { useAppDispatch, useAppSelector } from '../../shared/lib'
-import {
-  selectIsUserDataUpdating,
-  updateProfile,
-  selectUserData,
-} from '../../entities/user'
+import { useAppSelector } from '../../shared/lib'
+import { selectIsUserDataUpdating } from '../../entities/user'
+import { ReactNode } from 'react'
 
-interface Fields {
-  display_name: string
-  first_name: string
-  second_name: string
-  login: string
-  email: string
-  phone: string
-}
-
-export function ProfileForm() {
-  const dispatch = useAppDispatch()
+export function ProfileForm<T>({
+  onSubmit,
+  children,
+  initialValues,
+}: {
+  onSubmit: (values: T, form: FormInstance<T>) => void
+  children: ReactNode
+  initialValues?: T
+}) {
   const isUserDataUpdating = useAppSelector(selectIsUserDataUpdating)
-  const data = useAppSelector(selectUserData)!
-  const [form] = Form.useForm<Fields>()
-
-  const handleSubmit = (values: Fields) => {
-    dispatch(updateProfile(values))
-  }
+  const [form] = Form.useForm<T>()
 
   return (
-    <Form<Fields>
+    <Form<T>
       form={form}
       layout="horizontal"
       name="basic"
       labelCol={{ span: 8 }}
       size="large"
-      onFinish={handleSubmit}
+      onFinish={(values) => onSubmit(values, form)}
       autoComplete="off"
       className={styles.form}
       initialValues={{
-        display_name: data.display_name,
-        first_name: data.first_name,
-        second_name: data.second_name,
-        login: data.login,
-        email: data.email,
-        phone: data.phone,
+        ...initialValues,
       }}
     >
-      <InputField name="display_name" showLabel={true} />
-      <InputField name="email" showLabel={true} />
-      <InputField name="first_name" showLabel={true} />
-      <InputField name="second_name" showLabel={true} />
-      <InputField name="login" showLabel={true} />
-      <InputField name="phone" showLabel={true} />
-
-      <Form.Item<Fields> className={styles.button}>
+      {children}
+      <Form.Item<T> className={styles.button}>
         <Button disabled={isUserDataUpdating} htmlType="submit">
           Save
         </Button>

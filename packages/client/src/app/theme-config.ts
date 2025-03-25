@@ -2,6 +2,7 @@ import { theme, ThemeConfig } from 'antd'
 import { COLORS } from './colors'
 
 export const themeConfig: ThemeConfig = {
+  cssVar: true,
   algorithm: theme.darkAlgorithm,
   token: {
     borderRadiusLG: 16,
@@ -10,7 +11,6 @@ export const themeConfig: ThemeConfig = {
     colorPrimary: COLORS.WHITE,
     colorSplit: COLORS.BORDER_GRAY,
     colorText: COLORS.WHITE,
-    colorWarningText: COLORS.RED,
     colorTextPlaceholder: COLORS.WHITE,
     fontFamily: 'Nunito Sans, sans-serif',
     fontSize: 20,

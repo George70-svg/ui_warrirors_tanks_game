@@ -13,6 +13,7 @@ import { NoAuthRoutes } from './no-auth-routes'
 import { ErrorElement } from '../error-element'
 import { ErrorPage } from '../../../pages/error-page'
 import { LoadUserRoute } from './load-user-route'
+import { ForumCreateTopicPage } from '../../../pages/forum-create-topic'
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.FORUM,
             element: <ForumPage />,
+          },
+          {
+            path: `${ROUTES.CREATE_TOPIC}`,
+            element: <ForumCreateTopicPage />,
           },
           {
             path: `${ROUTES.FORUM}/:topicId`,
