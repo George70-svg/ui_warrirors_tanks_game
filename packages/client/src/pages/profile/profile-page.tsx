@@ -14,7 +14,7 @@ type Option = {
 }
 
 const SELECT_OPTIONS: Option[] = [
-  { value: 'personnel', label: 'Personnel data' },
+  { value: 'personnel', label: 'Personal data' },
   { value: 'password', label: 'Password data' },
 ]
 
