@@ -11,7 +11,7 @@ export type TankProps = {
   imageSrc: string
   size: Size
   healthPoint: number
-  scorePoint: number
+  bulletColor?: string
 }
 
 export class Tank extends Shape {
@@ -22,6 +22,7 @@ export class Tank extends Shape {
   damage = 50
   scorePoint = 50
   type: 'player' | 'computer'
+  bulletColor: string
 
   constructor(props: TankProps) {
     super({
@@ -37,7 +38,7 @@ export class Tank extends Shape {
     this.image.src = props.imageSrc
     this.healthPoint = props.healthPoint
     this.type = 'player'
-    this.scorePoint = props.scorePoint
+    this.bulletColor = props?.bulletColor ?? ''
   }
 
   public updateCoordinate(coordinate: Coordinate) {
@@ -79,6 +80,7 @@ export class Tank extends Shape {
       direction: this.direction,
       speed: 0.4,
       size: { width: 6, height: 6 },
+      color: this.bulletColor,
     })
   }
 

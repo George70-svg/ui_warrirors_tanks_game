@@ -6,11 +6,20 @@ export type DecorationProps = {
   context: CanvasRenderingContext2D
   position: Coordinate
   size: Size
-  color: string
+  color?: string
+  typeDecoration?: 'brick' | 'metal'
+  imageSrc?: string
+  markForDelete?: boolean
+  hasDeletable?: boolean
 }
 
 export class Decoration extends Shape {
-  color = '#FFF'
+  type = 'decoration'
+  typeDecoration: 'brick' | 'metal' = 'brick'
+  image: HTMLImageElement = new Image()
+  color = '#0ff'
+  imageSrc = ''
+  hasDeletable = false
 
   constructor(props: DecorationProps) {
     super({
@@ -18,19 +27,33 @@ export class Decoration extends Shape {
       context: props.context,
       position: props.position,
       size: props.size,
-      markForDelete: false,
+      markForDelete: props?.markForDelete ?? false,
     })
 
-    this.color = props.color
+    this.typeDecoration = props?.typeDecoration ?? 'brick'
+    this.imageSrc = props?.imageSrc ?? ''
+    this.image.src = props?.imageSrc ?? ''
+    this.color = props?.color ?? '#0ff'
+    this.hasDeletable = props?.hasDeletable ?? false
   }
 
   render() {
-    this.context.fillStyle = this.color
-    this.context.fillRect(
-      this.coordinate.x,
-      this.coordinate.y,
-      this.size.width,
-      this.size.height
-    )
+    if (this.imageSrc) {
+      this.context.drawImage(
+        this.image,
+        this.coordinate.x,
+        this.coordinate.y,
+        this.size.width,
+        this.size.height
+      )
+    } else {
+      this.context.fillStyle = this.color
+      this.context.fillRect(
+        this.coordinate.x,
+        this.coordinate.y,
+        this.size.width,
+        this.size.height
+      )
+    }
   }
 }

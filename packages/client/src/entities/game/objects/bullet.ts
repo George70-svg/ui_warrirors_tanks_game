@@ -9,6 +9,7 @@ export type BulletProps = {
   direction: Direction
   speed: number
   size: Size
+  color?: string
 }
 
 export class Bullet extends Shape {
@@ -16,6 +17,7 @@ export class Bullet extends Shape {
   color = '#ffcf35'
   direction
   speed = 0
+  type = 'bullet'
 
   constructor(props: BulletProps) {
     super({
@@ -29,6 +31,7 @@ export class Bullet extends Shape {
     this.direction = props.direction
     this.speed = props.speed
     this.tankId = props.tankId
+    this.color = props?.color ?? '#ffcf35'
   }
 
   public updateCoordinate(coordinate: Coordinate) {

@@ -1,4 +1,4 @@
-import { config } from '../config/gameConfig'
+import { config, TConfigObjects } from '../config/gameConfig'
 import { Tank } from '../objects/tank'
 import { Direction, KeysState, Offset } from '../types'
 import {
@@ -7,9 +7,10 @@ import {
   getCollision,
 } from './collisionUtils'
 import { Bullet } from '../objects/bullet'
-import { Shape } from '../objects/shape'
 import { getComputerTankOffset } from './ai'
 import { ComputerTank } from '../objects/computerTank'
+import { Decoration } from '../objects/decoration'
+import { Shape } from '../objects/shape'
 
 export function updateAllTanks(keysState: KeysState, delta: number) {
   config.tankObjects.forEach((item) => {
@@ -50,22 +51,36 @@ function updateTank(tank: Tank | ComputerTank, offset: Offset | null) {
     tank.setDirection(offset.direction) // Обновляем текущее направление
   }
 
-  handleBulletCollision(tank)
+  handleBulletCollisionWithTank(tank)
 }
 
 // Обновление движения пули с учётом коллизий
 function updateBullet(bullet: Bullet, offset: Offset) {
-  bullet.updateCoordinate(offset.coordinate)
+  const playerTank = config.tankObjects.find(
+    (item) => item.type === 'player'
+  ) as Tank
   const objectsForCollisionCalculation = [...config.decorationObjects]
 
-  const collisionObjects = getCollision(
+  bullet.updateCoordinate(offset.coordinate)
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, shapeObject] = getCollision(
     bullet,
     objectsForCollisionCalculation,
     checkStrictCollision
-  )
+  ) || [null, null]
 
-  if (collisionObjects || checkFrameCollision(bullet)) {
+  if (shapeObject || checkFrameCollision(bullet)) {
     bullet.setMarkForDelete(true)
+  }
+
+  // Если пуля игрока попадает в декорацию
+  if (
+    shapeObject &&
+    (shapeObject as Decoration).hasDeletable &&
+    bullet.tankId === playerTank.id
+  ) {
+    shapeObject.setMarkForDelete(true)
   }
 }
 
@@ -82,12 +97,11 @@ function checkEnvironmentCollision(shape: Shape) {
     checkStrictCollision
   )
   const hasFrameCollision = checkFrameCollision(shape)
-
   return hasObjectsCollision || hasFrameCollision
 }
 
 // Обработка столкновений танков и пуль
-function handleBulletCollision(tank: Tank) {
+function handleBulletCollisionWithTank(tank: Tank) {
   const enemyBullets = [
     ...config.bulletObjects.filter((item) => item.tankId !== tank.id),
   ]
@@ -122,6 +136,9 @@ export function playerShotHandler() {
 export function deleteMarkedObjects() {
   config.tankObjects = config.tankObjects.filter((item) => !item.markForDelete)
   config.bulletObjects = config.bulletObjects.filter(
+    (item) => !item.markForDelete
+  )
+  config.decorationObjects = config.decorationObjects.filter(
     (item) => !item.markForDelete
   )
 }

@@ -1,5 +1,6 @@
 import { Coordinate, Direction, KeysState, Size } from '../types'
 import { Tank } from './tank'
+import { MOVE_KEYS } from '../constants'
 
 export type TankComputerProps = {
   context: CanvasRenderingContext2D
@@ -10,12 +11,13 @@ export type TankComputerProps = {
   size: Size
   healthPoint: number
   scorePoint: number
+  bulletColor?: string
 }
 
 export class ComputerTank extends Tank {
   timeBeforeChangeDirectionAI = 0
   scorePoint = 50
-  keysAI?: KeysState
+  keysAI: KeysState = structuredClone(MOVE_KEYS)
 
   constructor(props: TankComputerProps) {
     super({
@@ -27,7 +29,7 @@ export class ComputerTank extends Tank {
       size: props.size,
       healthPoint: props.healthPoint,
       imageSrc: props.imageSrc,
-      scorePoint: props.scorePoint,
+      bulletColor: props?.bulletColor,
     })
 
     this.type = 'computer'
