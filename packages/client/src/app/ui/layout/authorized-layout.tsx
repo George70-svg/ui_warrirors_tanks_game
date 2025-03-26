@@ -6,6 +6,7 @@ import { ROUTES } from '../../../shared/config'
 import { LogoutOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '../../../shared/lib'
 import { logout, selectIsUserDataUpdating } from '../../../entities/user'
+import { FullscreenButton } from '../../../shared/сomponents/fullscreenToggler/FullscreenToggler'
 
 export function AuthorizedLayout({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch()
@@ -58,16 +59,19 @@ export function AuthorizedLayout({ children }: { children: ReactNode }) {
             <Typography.Title autoCapitalize="words">
               {currentPageName || 'Home'}
             </Typography.Title>
-            <Button
-              color="danger"
-              variant="filled"
-              disabled={isUserUpdating}
-              iconPosition="start"
-              icon={<LogoutOutlined />}
-              onClick={() => dispatch(logout())}
-            >
-              Logout
-            </Button>
+            <Flex gap={8} align="center">
+              <FullscreenButton />
+              <Button
+                color="danger"
+                variant="filled"
+                disabled={isUserUpdating}
+                iconPosition="start"
+                icon={<LogoutOutlined />}
+                onClick={() => dispatch(logout())}
+              >
+                Logout
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       }
