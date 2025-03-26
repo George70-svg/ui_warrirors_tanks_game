@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react'
-import { AppLayout, Logo } from '../../../shared/ui'
+import { AppLayout, Logo, FullscreenButton } from '../../../shared/ui'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Button, Flex, Typography } from 'antd'
 import { ROUTES } from '../../../shared/config'
 import { LogoutOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '../../../shared/lib'
 import { logout, selectIsUserDataUpdating } from '../../../entities/user'
-import { FullscreenButton } from '../../../shared/сomponents/fullscreenToggler/FullscreenToggler'
 
 export function AuthorizedLayout({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch()
