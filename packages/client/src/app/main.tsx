@@ -5,6 +5,9 @@ import { App as AntApp, ConfigProvider } from 'antd'
 import { themeConfig } from './theme-config'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { startServiceWorker } from '../../serviceWorker'
+
+startServiceWorker()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
