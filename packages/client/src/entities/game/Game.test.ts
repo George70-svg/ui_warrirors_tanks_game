@@ -78,8 +78,7 @@ describe('Game', () => {
   describe('loop()', () => {
     it('Должны обновляться и рендериться игровые объекты', () => {
       game.start()
-      const mockTimestamp = 3000
-      ;(game as any).loop(mockTimestamp)
+      game.loop(3000)
 
       expect(mockContext.clearRect).toHaveBeenCalledWith(
         0,
@@ -96,7 +95,7 @@ describe('Game', () => {
 
     it('Должен стрелять танк врага', () => {
       game.start()
-      ;(game as any).loop(1000)
+      game.loop(1000)
 
       expect(computerShot).toHaveBeenCalled()
     })
@@ -125,7 +124,7 @@ describe('Game', () => {
     it('Должна остановиться игра, если игра окончена', () => {
       ;(isGameOver as jest.Mock).mockReturnValue(true)
       game.start()
-      ;(game as any).loop(1000)
+      game.loop(1000)
 
       expect(mockOnGameOver).toHaveBeenCalled()
       expect(cancelAnimationFrame).toHaveBeenCalled()
