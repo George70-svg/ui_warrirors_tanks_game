@@ -10,7 +10,7 @@ export function startServiceWorker() {
           )
         })
         .catch((error: string) => {
-          console.log('ServiceWorkerRegistration failed: ', error)
+          console.error('ServiceWorkerRegistration failed: ', error)
         })
     })
   }

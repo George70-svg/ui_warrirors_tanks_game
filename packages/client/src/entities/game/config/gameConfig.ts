@@ -1,9 +1,9 @@
 import { Tank } from '../objects/tank'
 import { Decoration, DecorationProps } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
-import tankImg from '../../../assets/images/tank.png'
-import brickImg from '../../../assets/images/brick.png'
-import metalImg from '../../../assets/images/metal.png'
+import tankImg from '../../../../public/images/tank.png'
+import brickImg from '../../../../public/images/brick.png'
+import metalImg from '../../../../public/images/metal.png'
 import { ComputerTank } from '../objects/computerTank'
 import {
   FIGURE1_COORDS,

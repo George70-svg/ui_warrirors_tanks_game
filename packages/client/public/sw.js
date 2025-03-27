@@ -1,14 +1,12 @@
 const CACHE_NAME = 'battle-city-cache-v1'
 
 const URLS = [
-  '/forum',
   '/game',
-  '/',
-  '/leaderboard',
-  '/profile',
-  '/server-error',
-  '/sign-in',
-  '/sign-up',
+  '/images/brick.png',
+  '/images/computer-tank.png',
+  '/images/game-bg.jpg',
+  '/images/metal.png',
+  '/images/tank.png',
 ]
 
 this.addEventListener('install', (event) => {
@@ -16,11 +14,10 @@ this.addEventListener('install', (event) => {
     caches
       .open(CACHE_NAME)
       .then((cache) => {
-        console.log('Opened cache')
         return cache.addAll(URLS)
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         throw err
       })
   )
@@ -29,11 +26,7 @@ this.addEventListener('install', (event) => {
 this.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      )
+      return Promise.all(cacheNames.map((name) => caches.delete(name)))
     })
   )
 })
