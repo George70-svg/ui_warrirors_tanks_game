@@ -39,7 +39,7 @@ export const config: Config = {
   bulletObjects: [],
 }
 
-function createDecorationFigure(
+export function createDecorationFigure(
   coords: Coordinate[],
   context: CanvasRenderingContext2D,
   type: NonNullable<DecorationProps['typeDecoration']>,
