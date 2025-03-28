@@ -102,7 +102,7 @@ describe('Game', () => {
 
     it('Не должен выстрелить танк игрока', () => {
       game.start()
-      ;(game as any).loop(1000)
+      game.loop(1000)
 
       expect(playerShotHandler).not.toHaveBeenCalled()
     })

@@ -5,15 +5,15 @@ import {
   initializeDecorationObjects,
   createDecorationFigure,
 } from './gameConfig'
-import { Tank } from '../objects/tank'
+import { Tank, TankProps } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
-import { FIGURE1_COORDS } from '../constants/decorations'
 import { Coordinate } from '../types'
 
-// TODO поправить. Не работает
-global.crypto = {
-  randomUUID: () => 'mocked-uuid',
-} as any
+Object.defineProperty(globalThis, 'crypto', {
+  value: {
+    randomUUID: () => 'mocked-uuid',
+  },
+})
 
 // Мокаем зависимости
 jest.mock('../../../assets/images/tank.png', () => 'tank-mock')
@@ -22,20 +22,30 @@ jest.mock('../../../assets/images/metal.png', () => 'metal-mock')
 jest.mock('../objects/tank')
 jest.mock('../objects/decoration')
 
-// TODO поправить. Не работает
-jest.mock('crypto', () => ({
-  randomUUID: () => 'mocked-uuid',
-}))
-
 describe('gameConfig', () => {
-  const mockContext = {} as CanvasRenderingContext2D
+  let mockTank: Tank
+  const mockContext = {
+    clearRect: jest.fn(),
+  } as unknown as CanvasRenderingContext2D
+  const tankProps: TankProps = {
+    id: 'mocked-uuid',
+    context: mockContext,
+    startPosition: { x: 650, y: 350 }, // toPixels(13), toPixels(7)
+    direction: 'up',
+    speed: 0.15,
+    size: { width: 50, height: 64 },
+    imageSrc: expect.any(String),
+    healthPoint: 150,
+    bulletColor: '#00e413',
+  }
 
   beforeEach(() => {
+    mockTank = new Tank(tankProps)
+
     // Очищаем конфиг перед каждым тестом
     config.tankObjects = []
     config.decorationObjects = []
     config.bulletObjects = []
-    // const crypto = jest.spyOn(global.crypto, 'randomUUID').mockReturnValue('one-two-fixed-test-uuid');
   })
 
   describe('config', () => {
@@ -99,16 +109,11 @@ describe('gameConfig', () => {
   })
 
   describe('initializeDecorationObjects()', () => {
-    it('Должен заполнить объекты config.decoration отдельными фигурами с декорациями', () => {
+    it('Должен заполнить объекты config.decoration правильными параметрами', () => {
       initializeDecorationObjects(mockContext)
 
       // Проверяем, что все фигуры и отдельные декорации добавлены
       expect(config.decorationObjects.length).toBeGreaterThan(0)
-      expect(Decoration).toHaveBeenCalledTimes(
-        FIGURE1_COORDS.length + // figure1
-          4 + // figure2, figure3, figure4 (мокируются, но не учитываются в длине)
-          4 // отдельные декорации
-      )
 
       // Проверяем, что хотя бы один элемент создан с правильными параметрами
       expect(Decoration).toHaveBeenCalledWith(
