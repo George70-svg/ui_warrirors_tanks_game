@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { AppLayout, Logo } from '../../../shared/ui'
+import { AppLayout, Logo, FullscreenButton } from '../../../shared/ui'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Button, Flex, Typography } from 'antd'
 import { ROUTES } from '../../../shared/config'
@@ -58,16 +58,19 @@ export function AuthorizedLayout({ children }: { children: ReactNode }) {
             <Typography.Title autoCapitalize="words">
               {currentPageName || 'Home'}
             </Typography.Title>
-            <Button
-              color="danger"
-              variant="filled"
-              disabled={isUserUpdating}
-              iconPosition="start"
-              icon={<LogoutOutlined />}
-              onClick={() => dispatch(logout())}
-            >
-              Logout
-            </Button>
+            <Flex gap={8} align="center">
+              <FullscreenButton />
+              <Button
+                color="danger"
+                variant="filled"
+                disabled={isUserUpdating}
+                iconPosition="start"
+                icon={<LogoutOutlined />}
+                onClick={() => dispatch(logout())}
+              >
+                Logout
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       }
