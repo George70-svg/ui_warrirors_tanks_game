@@ -109,7 +109,6 @@ describe('Game', () => {
 
     it('Должен выстрелить танк игрока', () => {
       game.start()
-
       ;(Controller.prototype.shotClicked as jest.Mock)
         .mockReturnValueOnce(true)
         .mockReturnValueOnce(false)
