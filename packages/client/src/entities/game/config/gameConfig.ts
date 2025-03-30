@@ -21,15 +21,12 @@ type Config = {
   tankObjects: (Tank | ComputerTank)[]
   decorationObjects: Decoration[]
   bulletObjects: Bullet[]
+  score: number
 }
 
 export function toPixels(size: number): number {
   return size * CELL_SIZE
 }
-export type TConfigObjects = Pick<
-  Config,
-  'tankObjects' | 'bulletObjects' | 'decorationObjects'
->
 
 export const config: Config = {
   frameWidth: toPixels(27),
@@ -37,6 +34,7 @@ export const config: Config = {
   tankObjects: [],
   decorationObjects: [],
   bulletObjects: [],
+  score: 0,
 }
 
 function createDecorationFigure(

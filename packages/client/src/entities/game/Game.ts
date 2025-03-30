@@ -18,6 +18,7 @@ type GameProps = {
   context: CanvasRenderingContext2D
   pageContext: HTMLDivElement
   onGameOver: () => void
+  setScorePoint: (value: number) => void
 }
 
 export class Game {
@@ -27,11 +28,13 @@ export class Game {
   private controller
   private boundLoop = this.loop.bind(this)
   onGameOver: () => void
+  setScorePoint: (value: number) => void
 
   constructor(props: GameProps) {
     this.context = props.context
     this.controller = new Controller(props.pageContext)
     this.onGameOver = props.onGameOver
+    this.setScorePoint = props.setScorePoint
   }
 
   public loop(timestamp: number) {
@@ -51,7 +54,7 @@ export class Game {
 
     updateAllTanks(this.controller.keysState, delta) // Обновляем данные танков
     updateAllBullets(delta) // Обновляем данные пуль
-    computerTankGeneration(this.context) // Генерируем компьютерные танки
+    computerTankGeneration(this.context, this.setScorePoint) // Генерируем компьютерные танки
     deleteMarkedObjects() // Единожды за кадр удаляем все отмеченные объекты
     renderAllObjects(this.context) // Рендерим все объекты на кадре
 
