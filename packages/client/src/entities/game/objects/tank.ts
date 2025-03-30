@@ -84,7 +84,7 @@ export class Tank extends Shape {
     })
   }
 
-  takeDamage() {
+  public takeDamage() {
     this.healthPoint -= this.damage
   }
 
