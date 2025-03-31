@@ -1,9 +1,8 @@
 import { KeysState, Offset } from '../types'
 import { ComputerTank } from '../objects/computerTank'
-import { getTankOffset } from './updateUtils'
+import { getTankOffset, hasTankBullet } from './updateUtils'
 import { config, toPixels } from '../config/gameConfig'
 import { checkNotStrictCollision, getCollision } from './collisionUtils'
-import { Tank } from '../objects/tank'
 import computerTankImg from '../../../assets/images/computer-tank.png'
 import { MOVE_KEYS } from '../constants'
 
@@ -44,7 +43,7 @@ export function computerShot() {
       checkNotStrictCollision
     )
 
-    // Если Танк уже выстрелил и пуля ещё есть, то пока он стрелять не может
+    // Если танк уже выстрелил и пуля ещё есть, то пока он стрелять не может
     if (hasTankBullet(item)) {
       return
     }
@@ -56,7 +55,10 @@ export function computerShot() {
   })
 }
 
-export function computerTankGeneration(context: CanvasRenderingContext2D) {
+export function computerTankGeneration(
+  context: CanvasRenderingContext2D,
+  setScorePoint: (value: number) => void
+) {
   const now = performance.now()
   const computerTankNumber = config.tankObjects.length
 
@@ -71,9 +73,10 @@ export function computerTankGeneration(context: CanvasRenderingContext2D) {
       speed: 0.15,
       size: { width: 50, height: 65 },
       imageSrc: computerTankImg,
-      healthPoint: 100,
-      scorePoint: 50,
+      healthPoint: 50,
+      scorePoint: 100,
       bulletColor: '#fc2323',
+      setScorePoint: setScorePoint,
     })
 
     config.tankObjects = [...config.tankObjects, newTank]
@@ -94,11 +97,4 @@ function getRandomControlKeys(): KeysState {
   newKeysState[randomKey] = true
 
   return newKeysState
-}
-
-function hasTankBullet(tank: Tank): boolean {
-  const tankBullet = config.bulletObjects.find(
-    (item) => item.tankId === tank.id
-  )
-  return !!tankBullet
 }

@@ -12,12 +12,14 @@ export type TankComputerProps = {
   healthPoint: number
   scorePoint: number
   bulletColor?: string
+  setScorePoint: (score: number) => void
 }
 
 export class ComputerTank extends Tank {
   timeBeforeChangeDirectionAI = 0
   scorePoint = 50
   keysAI: KeysState = structuredClone(MOVE_KEYS)
+  setScorePoint: (score: number) => void
 
   constructor(props: TankComputerProps) {
     super({
@@ -34,5 +36,11 @@ export class ComputerTank extends Tank {
 
     this.type = 'computer'
     this.scorePoint = props.scorePoint
+    this.setScorePoint = props.setScorePoint
+  }
+
+  public updateScore() {
+    console.log('updateScore', this.scorePoint)
+    this.setScorePoint(this.scorePoint)
   }
 }
