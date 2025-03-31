@@ -72,7 +72,7 @@ export function GamePage() {
     return () => {
       gameInstance.current?.stop()
     }
-  }, [endGame])
+  }, [setScorePoint, endGame])
 
   return (
     <div ref={containerRef} className={styles.container}>
