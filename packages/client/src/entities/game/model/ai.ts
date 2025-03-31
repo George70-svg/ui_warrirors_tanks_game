@@ -68,7 +68,7 @@ export function computerTankGeneration(context: CanvasRenderingContext2D) {
           ? { x: toPixels(4), y: toPixels(4) }
           : { x: toPixels(24), y: toPixels(4) },
       direction: 'up',
-      speed: 0.15,
+      speed: 0.16,
       size: { width: 50, height: 65 },
       imageSrc: computerTankImg,
       healthPoint: 100,
