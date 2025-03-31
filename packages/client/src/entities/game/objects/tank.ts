@@ -78,7 +78,7 @@ export class Tank extends Shape {
         y: this.coordinate.y + this.size.height / 2,
       }, // Позиционируем пулю по центру танка
       direction: this.direction,
-      speed: 0.4,
+      speed: 0.45,
       size: { width: 6, height: 6 },
       color: this.bulletColor,
     })

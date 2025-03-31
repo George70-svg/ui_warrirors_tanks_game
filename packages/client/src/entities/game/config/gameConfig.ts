@@ -36,7 +36,7 @@ export function initializeTankObjects(context: CanvasRenderingContext2D) {
       context,
       startPosition: { x: toPixels(13), y: toPixels(12) },
       direction: 'up',
-      speed: 0.15,
+      speed: 0.16,
       size: { width: 50, height: 64 },
       imageSrc: tankImg,
       healthPoint: 150,
