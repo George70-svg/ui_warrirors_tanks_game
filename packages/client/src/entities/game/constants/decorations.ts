@@ -1,5 +1,5 @@
-import brickImg from '../../../assets/images/brick.png'
-import metalImg from '../../../assets/images/metal.png'
+import brickImg from '../../../../public/images/brick.png'
+import metalImg from '../../../../public/images/metal.png'
 import { Coordinate } from '../types'
 import { Decoration, DecorationProps } from '../objects/decoration'
 import { toPixels } from '../config/gameConfig'
