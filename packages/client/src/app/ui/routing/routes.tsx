@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { RouteObject } from 'react-router-dom'
 import { HomePage } from '../../../pages/home'
 import { ROUTES } from '../../../shared/config'
 import { ForumPage } from '../../../pages/forum'
@@ -15,7 +15,7 @@ import { ErrorPage } from '../../../pages/error-page'
 import { LoadUserRoute } from './load-user-route'
 import { ForumCreateTopicPage } from '../../../pages/forum-create-topic'
 
-export const router = createBrowserRouter([
+export const routes: RouteObject[] = [
   {
     path: '/',
     element: <LoadUserRoute />,
@@ -77,4 +77,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+]

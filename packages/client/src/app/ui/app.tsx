@@ -1,22 +1,15 @@
-import { RouterProvider } from 'react-router-dom'
-import { router } from './routing/router'
 import './app.pcss'
-import { message } from 'antd'
-import { useEffect } from 'react'
-import { messageProvider } from '../../shared/lib'
+import { ReactElement } from 'react'
+import { App as AntApp, ConfigProvider } from 'antd'
+import { themeConfig } from './theme-config'
+import { MessageProvider } from './message-provider'
 
-export function App() {
-  const [msgApi, contextHolder] = message.useMessage({
-    duration: 2,
-    maxCount: 1,
-  })
-  useEffect(() => {
-    messageProvider.setMessageApi(msgApi)
-  }, [msgApi])
+export function App({ children }: { children: ReactElement }) {
   return (
-    <>
-      {contextHolder}
-      <RouterProvider router={router} />
-    </>
+    <AntApp>
+      <ConfigProvider theme={themeConfig}>
+        <MessageProvider>{children}</MessageProvider>
+      </ConfigProvider>
+    </AntApp>
   )
 }

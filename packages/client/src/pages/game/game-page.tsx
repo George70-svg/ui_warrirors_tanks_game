@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { router } from '../../app/ui/routing/router'
 import { ROUTES } from '../../shared/config'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
@@ -8,6 +7,7 @@ import styles from './game-page.module.pcss'
 import { GameModal } from './game-modal'
 import { StartGame } from './start-game'
 import { Typography } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 type GamePhase = 'start' | 'running' | 'end'
 type State = { gamePhase: GamePhase; score: number }
@@ -33,6 +33,7 @@ export function GamePage() {
     score: 0,
   }))
   const gameInstance = useRef<Game | null>(null)
+  const navigate = useNavigate()
 
   const { gamePhase } = state
   const isModalIOpen = gamePhase === 'start' || gamePhase === 'end'
@@ -47,8 +48,8 @@ export function GamePage() {
   }, [])
 
   const exitGame = useCallback(() => {
-    router.navigate(ROUTES.HOME)
-  }, [])
+    navigate(ROUTES.HOME)
+  }, [navigate])
 
   const setScorePoint = useCallback((value: number) => {
     setState((prev) => ({ ...prev, score: prev.score + value }))
