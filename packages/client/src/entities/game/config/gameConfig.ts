@@ -1,7 +1,7 @@
 import { Tank } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
-import tankImg from '../../../assets/images/tank.png'
+import tankImg from '../../../../public/images/tank.png'
 import { ComputerTank } from '../objects/computerTank'
 import { getDecorations } from '../constants/decorations'
 
