@@ -8,7 +8,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter(routes)
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <Provider store={createStore(router)}>
       <App>
