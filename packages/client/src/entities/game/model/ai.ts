@@ -3,7 +3,7 @@ import { ComputerTank } from '../objects/computerTank'
 import { getTankOffset, hasTankBullet } from './updateUtils'
 import { config, toPixels } from '../config/gameConfig'
 import { checkNotStrictCollision, getCollision } from './collisionUtils'
-import computerTankImg from '../../../assets/images/computer-tank.png'
+import computerTankImg from '../../../../public/images/computer-tank.png'
 import { MOVE_KEYS } from '../constants'
 
 let generationTime = 0
