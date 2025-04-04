@@ -1,9 +1,10 @@
 import { renderToString } from 'react-dom/server'
-
-const TestSSR = () => {
-  return <div>TestSSR</div>
-}
+import { App } from './src/app/ui/app'
 
 export async function render() {
-  return renderToString(<TestSSR />)
+  return renderToString(
+    <App>
+      <span>TestSSR</span>
+    </App>
+  )
 }
