@@ -5,6 +5,9 @@ import { Provider } from 'react-redux'
 import { createStore } from './store'
 import { routes } from './ui/routing/routes'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { startServiceWorker } from '../../serviceWorker'
+
+startServiceWorker()
 
 const router = createBrowserRouter(routes)
 
