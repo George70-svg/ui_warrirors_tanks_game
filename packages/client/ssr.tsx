@@ -4,6 +4,6 @@ const TestSSR = () => {
   return <div>TestSSR</div>
 }
 
-export function render() {
+export async function render() {
   return renderToString(<TestSSR />)
 }
