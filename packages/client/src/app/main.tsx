@@ -10,7 +10,6 @@ import { startServiceWorker } from '../../serviceWorker'
 if (process.env.NODE_ENV === 'production') {
   startServiceWorker()
 }
-
 const router = createBrowserRouter(routes)
 
 ReactDOM.hydrateRoot(
