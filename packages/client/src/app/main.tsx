@@ -1,42 +1,24 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './ui/app'
-import { App as AntApp, ConfigProvider } from 'antd'
-import { themeConfig } from './theme-config'
 import { Provider } from 'react-redux'
-import { store } from './store'
+import { createStore } from './store'
+import { routes } from './ui/routing/routes'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { startServiceWorker } from '../../serviceWorker'
 
-startServiceWorker()
-
-const Main = () => {
-  useEffect(() => {
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        console.log(`[PERF ENTRY]`, entry)
-      }
-    })
-
-    observer.observe({ entryTypes: ['paint', 'resource', 'longtask'] })
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
-
-  return (
-    <React.StrictMode>
-      <AntApp>
-        <ConfigProvider theme={themeConfig}>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </ConfigProvider>
-      </AntApp>
-    </React.StrictMode>
-  )
+if (process.env.NODE_ENV === 'production') {
+  startServiceWorker()
 }
+const router = createBrowserRouter(routes)
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <Main />
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
+  <React.StrictMode>
+    <Provider store={createStore(router)}>
+      <App>
+        <RouterProvider router={router} />
+      </App>
+    </Provider>
+  </React.StrictMode>
 )

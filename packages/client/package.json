@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build --config vite.config.ts",
+    "build:ssr": "vite build --config ssr.config.ts",
     "preview": "vite preview",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:css": "stylelint \"**/*.pcss\"",

@@ -1,22 +1,29 @@
-import { RouterProvider } from 'react-router-dom'
-import { router } from './routing/router'
 import './app.pcss'
-import { message } from 'antd'
-import { useEffect } from 'react'
-import { messageProvider } from '../../shared/lib'
+import { ReactElement, useEffect } from 'react'
+import { App as AntApp, ConfigProvider } from 'antd'
+import { themeConfig } from './theme-config'
+import { MessageProvider } from './message-provider'
 
-export function App() {
-  const [msgApi, contextHolder] = message.useMessage({
-    duration: 2,
-    maxCount: 1,
-  })
+export function App({ children }: { children: ReactElement }) {
   useEffect(() => {
-    messageProvider.setMessageApi(msgApi)
-  }, [msgApi])
+    const observer = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        console.log(`[PERF ENTRY]`, entry)
+      }
+    })
+
+    observer.observe({ entryTypes: ['paint', 'resource', 'longtask'] })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
-    <>
-      {contextHolder}
-      <RouterProvider router={router} />
-    </>
+    <AntApp>
+      <ConfigProvider theme={themeConfig}>
+        <MessageProvider>{children}</MessageProvider>
+      </ConfigProvider>
+    </AntApp>
   )
 }
