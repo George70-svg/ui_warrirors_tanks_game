@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './ui/app'
 import { App as AntApp, ConfigProvider } from 'antd'
@@ -9,14 +9,34 @@ import { startServiceWorker } from '../../serviceWorker'
 
 startServiceWorker()
 
+const Main = () => {
+  useEffect(() => {
+    const observer = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        console.log(`[PERF ENTRY]`, entry)
+      }
+    })
+
+    observer.observe({ entryTypes: ['paint', 'resource', 'longtask'] })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  return (
+    <React.StrictMode>
+      <AntApp>
+        <ConfigProvider theme={themeConfig}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </ConfigProvider>
+      </AntApp>
+    </React.StrictMode>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <AntApp>
-      <ConfigProvider theme={themeConfig}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ConfigProvider>
-    </AntApp>
-  </React.StrictMode>
+  <Main />
 )
