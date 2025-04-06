@@ -36,9 +36,7 @@ async function startServer() {
     })
 
     app.use(vite.middlewares)
-  }
-
-  if (!isDev()) {
+  } else {
     app.use('/assets', express.static(path.resolve(distPath!, 'assets')))
   }
 
@@ -56,7 +54,7 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: () => Promise<string>
+      let render: (req: unknown) => Promise<[unknown, string]>
       if (!isDev()) {
         render = (await import(ssrClientPath!)).render
       } else {
@@ -64,7 +62,8 @@ async function startServer() {
           .render
       }
 
-      const appHtml = await render()
+      const [initialState, appHtml] = await render(req)
+      console.log(initialState, initialState)
 
       const html = template.replace('<!--ssr-outlet-->', appHtml)
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)

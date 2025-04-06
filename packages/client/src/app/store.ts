@@ -14,7 +14,8 @@ export const extraArgument = {
 }
 
 type MessageProvider = typeof messageProvider
-interface Router {
+
+export interface Router {
   navigate: (to: To, opts?: RouterNavigateOptions) => void
 }
 
