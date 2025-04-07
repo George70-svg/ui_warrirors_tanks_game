@@ -5,17 +5,20 @@ import { Provider } from 'react-redux'
 import { createStore } from './store'
 import { routes } from './ui/routing/routes'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { startServiceWorker } from '../../serviceWorker'
+// import { startServiceWorker } from '../../serviceWorker'
 
-if (process.env.NODE_ENV === 'production') {
+/*if (process.env.NODE_ENV === 'production') {
   startServiceWorker()
-}
+}*/
+
+const initialState = window.initialState
+
 const router = createBrowserRouter(routes)
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
-    <Provider store={createStore(router)}>
+    <Provider store={createStore(router, initialState)}>
       <App>
         <RouterProvider router={router} />
       </App>

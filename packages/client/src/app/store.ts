@@ -42,11 +42,12 @@ const createErrorMiddleware = (
   }
 }
 
-export function createStore(router: Router) {
+export function createStore(router: Router, initialState?: unknown) {
   return configureStore({
     reducer: {
       user: userReducer,
     },
+    preloadedState: initialState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ thunk: { extraArgument } }).concat(
         createErrorMiddleware(messageProvider, router)
@@ -54,3 +55,4 @@ export function createStore(router: Router) {
   })
 }
 export type Store = ReturnType<typeof createStore>
+export type AppDispatch = ReturnType<typeof createStore>['dispatch']

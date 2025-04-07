@@ -7,6 +7,8 @@ import * as console from 'node:console'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import * as process from 'node:process'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -40,7 +42,18 @@ async function startServer() {
     app.use('/assets', express.static(path.resolve(distPath!, 'assets')))
   }
 
-  app.use('*', async (req, res, next) => {
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech',
+    })
+  )
+
+  app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
     try {
       let template: string
@@ -53,8 +66,8 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
         template = await vite!.transformIndexHtml(url, template)
       }
-
-      let render: (req: unknown) => Promise<[unknown, string]>
+      console.log('cookie', req.headers['cookie'])
+      let render: (req: unknown) => Promise<[Record<string, unknown>, string]>
       if (!isDev()) {
         render = (await import(ssrClientPath!)).render
       } else {
@@ -63,9 +76,13 @@ async function startServer() {
       }
 
       const [initialState, appHtml] = await render(req)
-      console.log(initialState, initialState)
+      console.log('initialState', initialState)
 
-      const html = template.replace('<!--ssr-outlet-->', appHtml)
+      const initStateSerialized = JSON.stringify(initialState)
+
+      const html = template
+        .replace('<!--ssr-outlet-->', appHtml)
+        .replace('<!--store-data-->', initStateSerialized)
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
       if (isDev() && e instanceof Error) {
