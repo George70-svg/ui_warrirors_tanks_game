@@ -4,8 +4,6 @@ import { Request as ExpressRequest } from 'express'
 
 export const createUrl = (req: ExpressRequest) => {
   const origin = `${req.protocol}://${req.get('host')}`
-  console.log('origin', origin)
-  console.log('req', req.originalUrl || req.url)
   return new URL(req.originalUrl || req.url, origin)
 }
 

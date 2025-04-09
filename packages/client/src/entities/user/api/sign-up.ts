@@ -5,12 +5,13 @@ import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const signUp = createAppAsyncThunk(
   'user/sign-up',
-  async (data: UserSignUpDto, thunkAPI) => {
+  async (data: UserSignUpDto, thunkApi) => {
     try {
-      await API.signUp(data)
-      return await API.getUserData()
+      const config = thunkApi.extra.apiConfig
+      await API.signUp(data, config)
+      return await API.getUserData(config)
     } catch (e) {
-      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
+      return thunkApi.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )

@@ -1,5 +1,6 @@
 import axios, { isAxiosError, ResponseType } from 'axios'
 import { ApiError } from './api-error'
+import { ApiConfig } from './api-config'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -10,16 +11,26 @@ type ConfigFacade = {
   data?: Record<string, unknown> | FormData
   responseType?: ResponseType
   signal?: AbortSignal
+  headers?: { [key: string]: string }
 }
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: 'https://ya-praktikum.tech/api/v2',
   withCredentials: true,
 })
 
-export async function apiCall<T>(config: ConfigFacade) {
+export async function apiCall<T>(config: ConfigFacade, apiConfig?: ApiConfig) {
+  const axiosConfig = {
+    ...apiConfig,
+    ...config,
+    headers: {
+      ...apiConfig?.headers,
+      ...config.headers,
+    },
+  }
+
   try {
-    const result = await axiosInstance<T>(config)
+    const result = await axiosInstance<T>(axiosConfig)
     return result.data
   } catch (error) {
     if (isAxiosError(error)) {

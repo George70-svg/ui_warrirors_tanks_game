@@ -4,9 +4,10 @@ import { API } from './api'
 
 export const getUserData = createAppAsyncThunk(
   'user/auth',
-  async () => {
+  async (_, thunkApi) => {
     try {
-      return await API.getUserData()
+      const config = thunkApi.extra.apiConfig
+      return await API.getUserData(config)
     } catch {
       return null
     }

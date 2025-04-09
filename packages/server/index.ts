@@ -46,15 +46,18 @@ async function startServer() {
     '/api/v2',
     createProxyMiddleware({
       changeOrigin: true,
-      cookieDomainRewrite: {
-        '*': '',
-      },
-      target: 'https://ya-praktikum.tech',
+      cookieDomainRewrite: { '*': '' },
+      target: 'https://ya-praktikum.tech/api/v2',
+      logger: console,
     })
   )
 
+  // http://localhost:3001/profile
+  // https://localhost:3001/api/v2/auth/user
+  // https://ya-praktikum.tech/api/v2/auth/user
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
+
     try {
       let template: string
       if (!isDev()) {
@@ -66,8 +69,12 @@ async function startServer() {
         template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
         template = await vite!.transformIndexHtml(url, template)
       }
-      console.log('cookie', req.headers['cookie'])
-      let render: (req: unknown) => Promise<[Record<string, unknown>, string]>
+
+      let render: (
+        req: unknown,
+        apiConfig: string | undefined
+      ) => Promise<[Record<string, unknown>, string]>
+
       if (!isDev()) {
         render = (await import(ssrClientPath!)).render
       } else {
@@ -75,8 +82,9 @@ async function startServer() {
           .render
       }
 
-      const [initialState, appHtml] = await render(req)
-      console.log('initialState', initialState)
+      const cookie = req.headers['cookie']
+      console.log('cookie', cookie)
+      const [initialState, appHtml] = await render(req, cookie)
 
       const initStateSerialized = JSON.stringify(initialState)
 

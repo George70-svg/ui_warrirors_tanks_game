@@ -10,9 +10,11 @@ import { App } from './src/app/ui/app'
 import { createStore } from './src/app/store'
 import { routes } from './src/app/ui/routing/routes'
 import { createFetchRequest } from './ssr.utils'
-import { getUserData } from './src/entities/user/api/get-user-data'
+import { ServerConfig } from './src/shared/api/api-config'
+import { matchRoutes } from 'react-router-dom'
 
-export async function render(req: ExpressRequest) {
+export async function render(req: ExpressRequest, cookie: string) {
+  console.log('URL', req.baseUrl)
   const { query, dataRoutes } = createStaticHandler(routes)
   const fetchRequest = createFetchRequest(req)
   const context = await query(fetchRequest)
@@ -22,21 +24,18 @@ export async function render(req: ExpressRequest) {
   }
 
   const router = createStaticRouter(dataRoutes, context)
-  const store = createStore(router)
+  const config = new ServerConfig(cookie).getConfig()
+  const store = createStore(router, config)
 
-  /*  store.dispatch({
-    type: getUserData.fulfilled.type,
-    payload: {
-      id: 3180,
-      first_name: 'Test',
-      second_name: 'Test',
-      display_name: 'Test',
-      login: 'Test',
-      avatar: '/ba5039ec-dfea-4607-bcbd-1a54ded9acc6/dbca6f76-7ea2-498e-807f-a06017e210b4_128.png',
-      email: 'Test@mail.org',
-      phone: '89221456783'
-    },
-  })*/
+  const [pathname] = req.baseUrl.split('?')
+  const currentRoutes = matchRoutes(routes, pathname)
+  const ssrLoaders = currentRoutes.map((item) => item.route.ssrLoader)
+
+  for (const loader of ssrLoaders) {
+    if (loader) {
+      await loader(store.dispatch)
+    }
+  }
 
   const initialState = store.getState()
   console.log('initialState', initialState)

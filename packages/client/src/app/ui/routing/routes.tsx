@@ -14,12 +14,21 @@ import { ErrorElement } from '../error-element'
 import { ErrorPage } from '../../../pages/error-page'
 import { LoadUserRoute } from './load-user-route'
 import { ForumCreateTopicPage } from '../../../pages/forum-create-topic'
+import { AppDispatch } from '../../store'
+import { getUserData } from '../../../entities/user/api/get-user-data'
 
-export const routes: RouteObject[] = [
+type SSRRouteObject = RouteObject & {
+  ssrLoader?: (dispatch: AppDispatch) => Promise<unknown>
+}
+
+export const routes: SSRRouteObject[] = [
   {
     path: '/',
     element: <LoadUserRoute />,
     errorElement: <ErrorElement />,
+    ssrLoader: async (dispatch: AppDispatch) => {
+      return dispatch(getUserData())
+    },
     children: [
       {
         element: <ProtectedRoutes />,

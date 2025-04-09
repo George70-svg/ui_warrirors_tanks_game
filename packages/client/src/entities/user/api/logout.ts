@@ -4,11 +4,12 @@ import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const logout = createAppAsyncThunk(
   'user/logout',
-  async (_, thunkAPI) => {
+  async (_, thunkApi) => {
     try {
-      await API.logout()
+      const config = thunkApi.extra.apiConfig
+      await API.logout(config)
     } catch (e) {
-      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
+      return thunkApi.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )
