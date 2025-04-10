@@ -52,9 +52,6 @@ async function startServer() {
     })
   )
 
-  // http://localhost:3001/profile
-  // https://localhost:3001/api/v2/auth/user
-  // https://ya-praktikum.tech/api/v2/auth/user
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
 
