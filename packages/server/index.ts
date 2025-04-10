@@ -73,7 +73,7 @@ async function startServer() {
       let render: (
         req: unknown,
         apiConfig: string | undefined
-      ) => Promise<[Record<string, unknown>, string]>
+      ) => Promise<[Record<string, unknown>, string, string]>
 
       if (!isDev()) {
         render = (await import(ssrClientPath!)).render
@@ -83,12 +83,16 @@ async function startServer() {
       }
 
       const cookie = req.headers['cookie']
-      console.log('cookie', cookie)
-      const [initialState, appHtml] = await render(req, cookie)
+
+      const [initialState, appHtml, styleText] = await render(req, cookie)
 
       const initStateSerialized = JSON.stringify(initialState)
 
       const html = template
+        .replace(
+          '<!--antd-style-data-->',
+          `<style id="antd-style">${styleText}</style>`
+        )
         .replace('<!--ssr-outlet-->', appHtml)
         .replace('<!--store-data-->', initStateSerialized)
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)

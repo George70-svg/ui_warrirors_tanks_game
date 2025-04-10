@@ -17,10 +17,16 @@ export const API = {
     apiCall({ url: '/auth/signin', data, method: 'POST' }, apiConfig),
   signUp: (data: UserSignUpDto, apiConfig: ApiConfig) =>
     apiCall({ url: '/auth/signup', data, method: 'POST' }, apiConfig),
-  updatePassword: (data: UserUpdatePasswordDto) =>
-    apiCall({ url: '/user/password', data, method: 'PUT' }),
-  updateProfile: (data: UserUpdateProfileDto) =>
-    apiCall<UserInfoDto>({ url: '/user/profile', data, method: 'PUT' }),
-  uploadAvatar: (data: FormData) =>
-    apiCall<UserInfoDto>({ url: '/user/profile/avatar', data, method: 'PUT' }),
+  updatePassword: (data: UserUpdatePasswordDto, apiConfig: ApiConfig) =>
+    apiCall({ url: '/user/password', data, method: 'PUT' }, apiConfig),
+  updateProfile: (data: UserUpdateProfileDto, apiConfig: ApiConfig) =>
+    apiCall<UserInfoDto>(
+      { url: '/user/profile', data, method: 'PUT' },
+      apiConfig
+    ),
+  uploadAvatar: (data: FormData, apiConfig: ApiConfig) =>
+    apiCall<UserInfoDto>(
+      { url: '/user/profile/avatar', data, method: 'PUT' },
+      apiConfig
+    ),
 }

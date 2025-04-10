@@ -1,5 +1,6 @@
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
+import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs'
 import { Request as ExpressRequest } from 'express'
 import {
   createStaticHandler,
@@ -14,7 +15,6 @@ import { ServerConfig } from './src/shared/api/api-config'
 import { matchRoutes } from 'react-router-dom'
 
 export async function render(req: ExpressRequest, cookie: string) {
-  console.log('URL', req.baseUrl)
   const { query, dataRoutes } = createStaticHandler(routes)
   const fetchRequest = createFetchRequest(req)
   const context = await query(fetchRequest)
@@ -37,15 +37,20 @@ export async function render(req: ExpressRequest, cookie: string) {
     }
   }
 
-  const initialState = store.getState()
-  console.log('initialState', initialState)
+  const cache = createCache()
+
   const renderResult = renderToString(
     <Provider store={store}>
-      <App>
-        <StaticRouterProvider router={router} context={context} />
-      </App>
+      <StyleProvider cache={cache}>
+        <App>
+          <StaticRouterProvider router={router} context={context} />
+        </App>
+      </StyleProvider>
     </Provider>
   )
 
-  return [initialState, renderResult]
+  const styleText = extractStyle(cache)
+  const initialState = store.getState()
+
+  return [initialState, renderResult, styleText]
 }

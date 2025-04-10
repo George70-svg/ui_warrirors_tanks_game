@@ -5,14 +5,15 @@ import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const updatePassword = createAppAsyncThunk(
   '/user/password',
-  async (data: UserUpdatePasswordDto, thunkAPI) => {
+  async (data: UserUpdatePasswordDto, thunkApi) => {
     try {
-      await API.updatePassword(data)
-      thunkAPI.extra.messageProvider.success(
+      const config = thunkApi.extra.apiConfig
+      await API.updatePassword(data, config)
+      thunkApi.extra.messageProvider.success(
         'User password has been successfully updated.'
       )
     } catch (e) {
-      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
+      return thunkApi.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )
