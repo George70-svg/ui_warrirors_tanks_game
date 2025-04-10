@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { Image, Flex } from 'antd'
 import wideLogoPng from '../../../assets/wide_logo.png'
-import gameplayVideoWebm from '../../../../public/images/gameplay_video.webm'
+import gameplayVideoWebm from '../../../assets/images/gameplay_video.webm'
 import { AppLayout } from '../../../shared/ui'
 import styles from './auth-layout.module.pcss'
 
