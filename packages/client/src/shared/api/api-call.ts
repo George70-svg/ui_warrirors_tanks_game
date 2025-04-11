@@ -14,7 +14,7 @@ type ConfigFacade = {
   headers?: { [key: string]: string }
 }
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: 'https://ya-praktikum.tech/api/v2',
   withCredentials: true,
 })
