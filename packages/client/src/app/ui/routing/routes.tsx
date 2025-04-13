@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom'
+import { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 import { HomePage } from '../../../pages/home'
 import { ROUTES } from '../../../shared/config'
 import { ForumPage } from '../../../pages/forum'
@@ -16,10 +16,18 @@ import { LoadUserRoute } from './load-user-route'
 import { ForumCreateTopicPage } from '../../../pages/forum-create-topic'
 import { AppDispatch } from '../../store'
 import { getUserData } from '../../../entities/user/api/get-user-data'
+import * as React from 'react'
 
-type SSRRouteObject = RouteObject & {
+export interface SSRIndexRouteObject extends IndexRouteObject {
+  children?: undefined
   ssrLoader?: (dispatch: AppDispatch) => Promise<unknown>
 }
+export interface SSRNonIndexRouteObject extends NonIndexRouteObject {
+  children?: SSRRouteObject[]
+  ssrLoader?: (dispatch: AppDispatch) => Promise<unknown>
+}
+
+type SSRRouteObject = SSRIndexRouteObject | SSRNonIndexRouteObject
 
 export const routes: SSRRouteObject[] = [
   {
@@ -60,6 +68,9 @@ export const routes: SSRRouteObject[] = [
           {
             path: ROUTES.PROFILE,
             element: <ProfilePage />,
+            ssrLoader: async (dispatch: AppDispatch) => {
+              return dispatch(getUserData())
+            },
           },
         ],
       },

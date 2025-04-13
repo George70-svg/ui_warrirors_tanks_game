@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { AppLayout, FullscreenButtonSafe, Logo } from '../../../shared/ui'
+import { AppLayout, FullscreenButton, Logo } from '../../../shared/ui'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Button, Flex, Typography } from 'antd'
 import { ROUTES } from '../../../shared/config'
@@ -59,7 +59,7 @@ export function AuthorizedLayout({ children }: { children: ReactNode }) {
               {currentPageName || 'Home'}
             </Typography.Title>
             <Flex gap={8} align="center">
-              <FullscreenButtonSafe />
+              <FullscreenButton />
               <Button
                 color="danger"
                 variant="filled"

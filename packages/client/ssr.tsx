@@ -13,6 +13,7 @@ import { routes } from './src/app/ui/routing/routes'
 import { createFetchRequest } from './ssr.utils'
 import { ServerConfig } from './src/shared/api/api-config'
 import { matchRoutes } from 'react-router-dom'
+import { createApiCall } from './src/shared/api'
 
 export async function render(req: ExpressRequest, cookie: string) {
   const { query, dataRoutes } = createStaticHandler(routes)
@@ -24,17 +25,20 @@ export async function render(req: ExpressRequest, cookie: string) {
   }
 
   const router = createStaticRouter(dataRoutes, context)
-  const config = new ServerConfig(cookie).getConfig()
-  const store = createStore(router, config)
+  const apiCall = createApiCall(new ServerConfig(cookie).getConfig())
+  const store = createStore(router, apiCall)
 
   const [pathname] = req.baseUrl.split('?')
   const currentRoutes = matchRoutes(routes, pathname)
-  const ssrLoaders = currentRoutes.map((item) => item.route.ssrLoader)
+
+  const ssrLoaders = currentRoutes
+    .filter((item) => item.route.ssrLoader)
+    .map((item) => {
+      return item.route.ssrLoader
+    })
 
   for (const loader of ssrLoaders) {
-    if (loader) {
-      await loader(store.dispatch)
-    }
+    await loader(store.dispatch)
   }
 
   const cache = createCache()

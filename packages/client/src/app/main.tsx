@@ -7,6 +7,7 @@ import { routes } from './ui/routing/routes'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { createCache, StyleProvider } from '@ant-design/cssinjs'
 import { ClientConfig } from '../shared/api/api-config'
+import { createApiCall } from '../shared/api'
 // import { startServiceWorker } from '../../serviceWorker'
 
 /*if (process.env.NODE_ENV === 'production') {
@@ -16,13 +17,13 @@ import { ClientConfig } from '../shared/api/api-config'
 const initialState = window.initialState
 
 const router = createBrowserRouter(routes)
-const config = new ClientConfig().getConfig()
+const apiCall = createApiCall(new ClientConfig().getConfig())
 const cache = createCache()
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
-    <Provider store={createStore(router, config, initialState)}>
+    <Provider store={createStore(router, apiCall, initialState)}>
       <StyleProvider cache={cache}>
         <App>
           <RouterProvider router={router} />

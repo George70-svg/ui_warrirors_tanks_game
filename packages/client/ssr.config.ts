@@ -1,17 +1,9 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 import * as path from 'path'
-import svgr from 'vite-plugin-svgr'
+import commonPlugins from './src/shared/config/common.config'
 
 export default defineConfig({
-  plugins: [
-    react(),
-    svgr({
-      svgrOptions: {
-        icon: true,
-      },
-    }),
-  ],
+  plugins: [...commonPlugins],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'ssr.tsx'),
