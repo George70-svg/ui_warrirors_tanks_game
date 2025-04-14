@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
 
-const commonPlugins = [
+export const commonPlugins = [
   react(),
   svgr({
     svgrOptions: {
@@ -9,5 +9,3 @@ const commonPlugins = [
     },
   }),
 ]
-
-export default commonPlugins

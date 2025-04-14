@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 import { HomePage } from '../../../pages/home'
 import { ROUTES } from '../../../shared/config'
@@ -14,9 +15,8 @@ import { ErrorElement } from '../error-element'
 import { ErrorPage } from '../../../pages/error-page'
 import { LoadUserRoute } from './load-user-route'
 import { ForumCreateTopicPage } from '../../../pages/forum-create-topic'
+import { getUserData } from '../../../entities/user'
 import { AppDispatch } from '../../store'
-import { getUserData } from '../../../entities/user/api/get-user-data'
-import * as React from 'react'
 
 export interface SSRIndexRouteObject extends IndexRouteObject {
   children?: undefined
@@ -68,9 +68,6 @@ export const routes: SSRRouteObject[] = [
           {
             path: ROUTES.PROFILE,
             element: <ProfilePage />,
-            ssrLoader: async (dispatch: AppDispatch) => {
-              return dispatch(getUserData())
-            },
           },
         ],
       },

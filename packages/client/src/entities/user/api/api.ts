@@ -4,7 +4,7 @@ import {
   UserUpdatePasswordDto,
   UserUpdateProfileDto,
 } from './types'
-import { ConfigFacade } from '../../../shared/api/api-call'
+import { ConfigFacade } from '../../../shared/api'
 
 export const apiParams = {
   getUserData: { url: '/auth/user' } as ConfigFacade,

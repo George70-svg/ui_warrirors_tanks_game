@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import * as path from 'path'
-import commonPlugins from './src/shared/config/common.config'
+import { commonPlugins } from './src/shared/config/commonConfig'
 
 export default defineConfig({
   plugins: [...commonPlugins],

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import dotenv from 'dotenv'
-import commonPlugins from './src/shared/config/common.config'
+import { commonPlugins } from './src/shared/config/commonConfig'
 dotenv.config()
 
 // https://vitejs.dev/config/
