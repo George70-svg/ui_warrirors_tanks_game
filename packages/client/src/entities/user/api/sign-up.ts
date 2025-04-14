@@ -1,16 +1,18 @@
 import { createAppAsyncThunk } from '../../../shared/lib'
-import { UserSignUpDto } from './types'
-import { API } from './api'
+import { UserInfoDto, UserSignUpDto } from './types'
+import { apiParams } from './api'
 import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 
 export const signUp = createAppAsyncThunk(
   'user/sign-up',
-  async (data: UserSignUpDto, thunkAPI) => {
+  async (data: UserSignUpDto, thunkApi) => {
     try {
-      await API.signUp(data)
-      return await API.getUserData()
+      const requestUserData = apiParams.getUserData
+      const requestSignUpData = apiParams.signUp(data)
+      await thunkApi.extra.apiCall(requestSignUpData)
+      return await thunkApi.extra.apiCall<UserInfoDto>(requestUserData)
     } catch (e) {
-      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
+      return thunkApi.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )

@@ -8,13 +8,16 @@ import { isErrorPlainObject, messageProvider } from '../shared/lib'
 import { ROUTES } from '../shared/config'
 import type { RouterNavigateOptions } from '@remix-run/router/router'
 import type { To } from 'react-router-dom'
-
-export const extraArgument = {
-  messageProvider,
-}
+import { createApiCall } from '../shared/api'
 
 type MessageProvider = typeof messageProvider
-interface Router {
+
+export type ExtraArgument = {
+  messageProvider: MessageProvider
+  apiCall: ReturnType<typeof createApiCall>
+}
+
+export interface Router {
   navigate: (to: To, opts?: RouterNavigateOptions) => void
 }
 
@@ -41,15 +44,21 @@ const createErrorMiddleware = (
   }
 }
 
-export function createStore(router: Router) {
+export function createStore(
+  router: Router,
+  apiCall: ExtraArgument['apiCall'],
+  initialState?: unknown
+) {
   return configureStore({
     reducer: {
       user: userReducer,
     },
+    preloadedState: initialState,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ thunk: { extraArgument } }).concat(
-        createErrorMiddleware(messageProvider, router)
-      ),
+      getDefaultMiddleware({
+        thunk: { extraArgument: { messageProvider, apiCall } },
+      }).concat(createErrorMiddleware(messageProvider, router)),
   })
 }
 export type Store = ReturnType<typeof createStore>
+export type AppDispatch = ReturnType<typeof createStore>['dispatch']

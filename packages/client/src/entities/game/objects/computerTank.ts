@@ -40,7 +40,6 @@ export class ComputerTank extends Tank {
   }
 
   public updateScore() {
-    console.log('updateScore', this.scorePoint)
     this.setScorePoint(this.scorePoint)
   }
 }

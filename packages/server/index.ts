@@ -7,6 +7,8 @@ import * as console from 'node:console'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import * as process from 'node:process'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -36,14 +38,23 @@ async function startServer() {
     })
 
     app.use(vite.middlewares)
-  }
-
-  if (!isDev()) {
+  } else {
     app.use('/assets', express.static(path.resolve(distPath!, 'assets')))
   }
 
-  app.use('*', async (req, res, next) => {
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: { '*': '' },
+      target: 'https://ya-praktikum.tech/api/v2',
+      logger: console,
+    })
+  )
+
+  app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
+
     try {
       let template: string
       if (!isDev()) {
@@ -56,7 +67,11 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: () => Promise<string>
+      let render: (
+        req: unknown,
+        apiConfig: string | undefined
+      ) => Promise<[Record<string, unknown>, string, string]>
+
       if (!isDev()) {
         render = (await import(ssrClientPath!)).render
       } else {
@@ -64,9 +79,19 @@ async function startServer() {
           .render
       }
 
-      const appHtml = await render()
+      const cookie = req.headers['cookie']
 
-      const html = template.replace('<!--ssr-outlet-->', appHtml)
+      const [initialState, appHtml, styleText] = await render(req, cookie)
+
+      const initStateSerialized = JSON.stringify(initialState)
+
+      const html = template
+        .replace(
+          '<!--antd-style-data-->',
+          `<style id="antd-style">${styleText}</style>`
+        )
+        .replace('<!--ssr-outlet-->', appHtml)
+        .replace('<!--store-data-->', initStateSerialized)
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
       if (isDev() && e instanceof Error) {

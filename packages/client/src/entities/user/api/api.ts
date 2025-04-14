@@ -1,50 +1,37 @@
-import { apiCall } from '../../../shared/api'
 import {
-  UserInfoDto,
   UserSignInDto,
   UserSignUpDto,
   UserUpdatePasswordDto,
   UserUpdateProfileDto,
 } from './types'
+import { ConfigFacade } from '../../../shared/api'
 
-export const API = {
-  getUserData: () =>
-    apiCall<UserInfoDto>({
-      url: '/auth/user',
-    }),
-  logout: () =>
-    apiCall({
-      url: '/auth/logout',
-      method: 'POST',
-    }),
-  signIn: (data: UserSignInDto) =>
-    apiCall({
-      url: '/auth/signin',
-      data,
-      method: 'POST',
-    }),
-  signUp: (data: UserSignUpDto) =>
-    apiCall({
-      url: '/auth/signup',
-      data,
-      method: 'POST',
-    }),
-  updatePassword: (data: UserUpdatePasswordDto) =>
-    apiCall({
-      url: '/user/password',
-      data,
-      method: 'PUT',
-    }),
-  updateProfile: (data: UserUpdateProfileDto) =>
-    apiCall<UserInfoDto>({
-      url: '/user/profile',
-      data,
-      method: 'PUT',
-    }),
-  uploadAvatar: (data: FormData) =>
-    apiCall<UserInfoDto>({
-      url: '/user/profile/avatar',
-      data,
-      method: 'PUT',
-    }),
+export const apiParams = {
+  getUserData: { url: '/auth/user' } as ConfigFacade,
+  logout: { url: '/auth/logout', method: 'POST' } as ConfigFacade,
+  signIn: (data: UserSignInDto): ConfigFacade => ({
+    url: '/auth/signin',
+    data,
+    method: 'POST',
+  }),
+  signUp: (data: UserSignUpDto): ConfigFacade => ({
+    url: '/auth/signup',
+    data,
+    method: 'POST',
+  }),
+  updatePassword: (data: UserUpdatePasswordDto): ConfigFacade => ({
+    url: '/user/password',
+    data,
+    method: 'PUT',
+  }),
+  updateProfile: (data: UserUpdateProfileDto): ConfigFacade => ({
+    url: '/user/profile',
+    data,
+    method: 'PUT',
+  }),
+  uploadAvatar: (data: FormData): ConfigFacade => ({
+    url: '/user/profile/avatar',
+    data,
+    method: 'PUT',
+  }),
 }

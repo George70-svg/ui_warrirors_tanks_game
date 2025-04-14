@@ -13,9 +13,7 @@ interface FullscreenDocument extends Document {
 }
 
 export const useFullscreen = () => {
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(
-    !!document.fullscreenElement
-  )
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false)
 
   const enterFullscreen = useCallback((element: FullscreenElement) => {
     if (element.requestFullscreen) {

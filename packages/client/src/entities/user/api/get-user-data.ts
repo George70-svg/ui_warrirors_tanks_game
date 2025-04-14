@@ -1,12 +1,14 @@
 import { selectIsUserAuthStatusIdle } from '../user-slice'
 import { createAppAsyncThunk } from '../../../shared/lib'
-import { API } from './api'
+import { apiParams } from './api'
+import { UserInfoDto } from './types'
 
 export const getUserData = createAppAsyncThunk(
   'user/auth',
-  async () => {
+  async (_, thunkApi) => {
     try {
-      return await API.getUserData()
+      const requestData = apiParams.getUserData
+      return await thunkApi.extra.apiCall<UserInfoDto>(requestData)
     } catch {
       return null
     }
