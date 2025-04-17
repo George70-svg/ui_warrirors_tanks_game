@@ -14,7 +14,6 @@ import { createClientAndConnect } from './db'
 dotenv.config()
 
 const { NODE_ENV, SERVER_PORT } = process.env
-console.log(`NODE_ENV: ${NODE_ENV}, SERVER_PORT: ${SERVER_PORT}`)
 
 const isDev = () => NODE_ENV === 'development'
 
