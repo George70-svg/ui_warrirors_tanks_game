@@ -9,8 +9,9 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT),
   },
   define: {
-    __PORT__: JSON.stringify(process.env.SERVER_PORT) || 3001,
-    __HOST__: JSON.stringify(process.env.SERVER_HOST) || 'localhost',
+    __PORT__: JSON.stringify(process.env.SERVER_PORT) || JSON.stringify(3001),
+    __HOST__:
+      JSON.stringify(process.env.SERVER_HOST) || JSON.stringify('localhost'),
   },
   plugins: [...commonPlugins],
   css: {
