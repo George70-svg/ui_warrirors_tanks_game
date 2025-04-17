@@ -33,8 +33,8 @@ async function startServer() {
   if (isDev()) {
     srcPath = path.dirname(require.resolve('client'))
   } else {
-    distPath = path.dirname(require.resolve('client/dist/index.html'))
-    ssrClientPath = require.resolve('client/dist-ssr/client.cjs')
+    distPath = path.resolve(__dirname, 'client', 'dist')
+    ssrClientPath = path.resolve(__dirname, 'client', 'dist-ssr', 'client.cjs')
   }
 
   if (isDev()) {

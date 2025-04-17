@@ -33,6 +33,32 @@ services:
       networks:
         - awesome
 
+    server:
+      container_name: prakticum-server
+      image: prackicum-server
+      build:
+        context: .
+        dockerfile: Dockerfile.server
+        args:
+          SERVER_PORT: ${SERVER_PORT}
+      ports:
+        - "${SERVER_PORT}:${SERVER_PORT}"
+      environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_PORT: ${POSTGRES_PORT}
+        POSTGRES_HOST: ${POSTGRES_HOST}
+        SERVER_PORT: ${SERVER_PORT}
+      networks:
+        - awesome
+      volumes:
+        - ./packages/client/dist:/app/client/dist
+        - ./packages/client/dist-ssr:/app/client/dist-ssr
+      depends_on:
+        - postgres
+        - client
+
 networks:
   awesome:
     driver: bridge
