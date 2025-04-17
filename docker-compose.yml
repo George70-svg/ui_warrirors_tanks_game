@@ -50,6 +50,7 @@ services:
         POSTGRES_PORT: ${POSTGRES_PORT}
         POSTGRES_HOST: ${POSTGRES_HOST}
         SERVER_PORT: ${SERVER_PORT}
+        NODE_ENV: production
       networks:
         - awesome
       volumes:
@@ -58,6 +59,8 @@ services:
       depends_on:
         - postgres
         - client
+      command: >
+        sh -c "/app/wait-for.sh ${POSTGRES_HOST}:${POSTGRES_PORT} -- node /app/index.js"
 
 networks:
   awesome:
