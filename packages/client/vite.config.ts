@@ -11,7 +11,7 @@ export default defineConfig({
   define: {
     __PORT__: JSON.stringify(process.env.SERVER_PORT) || JSON.stringify('3001'),
     __HOST__:
-      JSON.stringify(process.env.SERVER_HOST) || JSON.stringify('server'),
+      JSON.stringify(process.env.SERVER_HOST) || JSON.stringify('localhost'),
   },
   plugins: [...commonPlugins],
   css: {
