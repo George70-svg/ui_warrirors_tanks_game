@@ -9,26 +9,33 @@ import type { ViteDevServer } from 'vite'
 import * as process from 'node:process'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import cookieParser from 'cookie-parser'
+import { createClientAndConnect } from './db'
 
 dotenv.config()
 
-const isDev = () => process.env.NODE_ENV === 'development'
+const { NODE_ENV, SERVER_PORT } = process.env
+console.log(`NODE_ENV: ${NODE_ENV}, SERVER_PORT: ${SERVER_PORT}`)
+
+const isDev = () => NODE_ENV === 'development'
 
 async function startServer() {
+  const dbClient = await createClientAndConnect()
+  console.log(`database = ${dbClient?.database}`)
   const app = express()
   app.use(cors())
-  const port = Number(process.env.SERVER_PORT) || 3001
+  const port = Number(SERVER_PORT)
 
   let vite: ViteDevServer | undefined
   let distPath: string | undefined
   let ssrClientPath: string | undefined
+  let srcPath: string | undefined
 
-  if (!isDev()) {
+  if (isDev()) {
+    srcPath = path.dirname(require.resolve('client'))
+  } else {
     distPath = path.dirname(require.resolve('client/dist/index.html'))
     ssrClientPath = require.resolve('client/dist-ssr/client.cjs')
   }
-
-  const srcPath = path.dirname(require.resolve('client'))
 
   if (isDev()) {
     vite = await createViteServer({
@@ -36,7 +43,6 @@ async function startServer() {
       root: srcPath,
       appType: 'custom',
     })
-
     app.use(vite.middlewares)
   } else {
     app.use('/assets', express.static(path.resolve(distPath!, 'assets')))
@@ -57,14 +63,17 @@ async function startServer() {
 
     try {
       let template: string
-      if (!isDev()) {
+      if (isDev()) {
+        template = fs.readFileSync(
+          path.resolve(srcPath!, 'index.html'),
+          'utf-8'
+        )
+        template = await vite!.transformIndexHtml(url, template)
+      } else {
         template = fs.readFileSync(
           path.resolve(distPath!, 'index.html'),
           'utf-8'
         )
-      } else {
-        template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
-        template = await vite!.transformIndexHtml(url, template)
       }
 
       let render: (
@@ -72,11 +81,11 @@ async function startServer() {
         apiConfig: string | undefined
       ) => Promise<[Record<string, unknown>, string, string]>
 
-      if (!isDev()) {
-        render = (await import(ssrClientPath!)).render
-      } else {
-        render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx')))
+      if (isDev()) {
+        render = (await vite!.ssrLoadModule(path.resolve(srcPath!, 'ssr.tsx')))
           .render
+      } else {
+        render = (await import(ssrClientPath!)).render
       }
 
       const cookie = req.headers['cookie']

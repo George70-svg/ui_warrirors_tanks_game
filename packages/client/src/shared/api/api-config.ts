@@ -1,7 +1,7 @@
 export class ClientConfig {
   getConfig() {
     return {
-      baseURL: 'http://localhost:3001/api/v2/',
+      baseURL: `http://${__HOST__}:${__PORT__}/api/v2/`,
       withCredentials: true,
     }
   }
