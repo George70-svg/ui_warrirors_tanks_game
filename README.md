@@ -7,22 +7,24 @@
 
 ### Как запускать?
 
-Для корректной работы монорепы необходимо сделать линковку для локального yarn registry
+Для запуска проекта в dev режиме
 1. `yarn link` - запускаем в каталоге client
-2. `yarn link client` - запускаем в каталоге server
-В результате в каталоге server/node_modules должен отобразиться пакет client
+2. `yarn link client` - запускаем в каталоге server (в результате в каталоге server/node_modules должен отобразиться пакет client)
+3. В каталоге server копируем .env.example в .env и настраиваем переменные среды
+4. `docker compose up`  - запускаем в каталоге server
+5. `yarn dev` - запускаем в каталоге server
+
+Для запуска проекта в production режиме (все запускаем в корневом каталоге)
+1. Копируем .env.example в .env и настраиваем переменные среды
+2. `yarn build:ssr --scope client`
+3. `yarn build --scope client`
+4. `docker compose up`
 
 Для запуска проекта необходим установленный стек технологий:
 
 - Node > 16
 - Docker
 - Yarn  - установка `npm install -g yarn`
-
-1. `yarn bootstrap` - Перед запуском проекта устанавливаем bootstrap обязательно
-2. `yarn dev` - Запустить полный проект в Dev режиме
-3. `yarn dev --scope=client` - Запустить в Dev режиме только front
-4. `yarn dev --scope=server` - Запустить в Dev режиме только back
-
 
 ### Как добавить зависимости?
 В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
