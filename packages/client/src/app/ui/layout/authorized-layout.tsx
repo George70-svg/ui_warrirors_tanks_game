@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { AppLayout, Logo, FullscreenButton } from '../../../shared/ui'
+import { AppLayout, FullscreenButton, Logo } from '../../../shared/ui'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Button, Flex, Typography } from 'antd'
 import { ROUTES } from '../../../shared/config'

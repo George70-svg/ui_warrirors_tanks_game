@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 import * as path from 'path'
+import { commonPlugins } from './src/shared/config/commonConfig'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [...commonPlugins],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'ssr.tsx'),
@@ -14,6 +14,11 @@ export default defineConfig({
       output: {
         dir: 'dist-ssr',
       },
+    },
+  },
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
     },
   },
 })

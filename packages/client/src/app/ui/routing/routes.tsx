@@ -1,4 +1,5 @@
-import { RouteObject } from 'react-router-dom'
+import * as React from 'react'
+import { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
 import { HomePage } from '../../../pages/home'
 import { ROUTES } from '../../../shared/config'
 import { ForumPage } from '../../../pages/forum'
@@ -14,12 +15,28 @@ import { ErrorElement } from '../error-element'
 import { ErrorPage } from '../../../pages/error-page'
 import { LoadUserRoute } from './load-user-route'
 import { ForumCreateTopicPage } from '../../../pages/forum-create-topic'
+import { getUserData } from '../../../entities/user'
+import { AppDispatch } from '../../store'
 
-export const routes: RouteObject[] = [
+export interface SSRIndexRouteObject extends IndexRouteObject {
+  children?: undefined
+  ssrLoader?: (dispatch: AppDispatch) => Promise<unknown>
+}
+export interface SSRNonIndexRouteObject extends NonIndexRouteObject {
+  children?: SSRRouteObject[]
+  ssrLoader?: (dispatch: AppDispatch) => Promise<unknown>
+}
+
+type SSRRouteObject = SSRIndexRouteObject | SSRNonIndexRouteObject
+
+export const routes: SSRRouteObject[] = [
   {
     path: '/',
     element: <LoadUserRoute />,
     errorElement: <ErrorElement />,
+    ssrLoader: async (dispatch: AppDispatch) => {
+      return dispatch(getUserData())
+    },
     children: [
       {
         element: <ProtectedRoutes />,

@@ -1,25 +1,19 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
-import svgr from 'vite-plugin-svgr'
+import { commonPlugins } from './src/shared/config/commonConfig'
 dotenv.config()
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: Number(process.env.CLIENT_PORT) || 3000,
+    port: Number(process.env.CLIENT_PORT),
   },
   define: {
-    __SERVER_PORT__: process.env.SERVER_PORT || 3001,
+    __PORT__: JSON.stringify(process.env.SERVER_PORT) || JSON.stringify('3001'),
+    __HOST__:
+      JSON.stringify(process.env.SERVER_HOST) || JSON.stringify('localhost'),
   },
-  plugins: [
-    react(),
-    svgr({
-      svgrOptions: {
-        icon: true,
-      },
-    }),
-  ],
+  plugins: [...commonPlugins],
   css: {
     modules: {
       localsConvention: 'camelCase',

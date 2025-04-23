@@ -7,26 +7,34 @@ import * as console from 'node:console'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import * as process from 'node:process'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import cookieParser from 'cookie-parser'
+import { createClientAndConnect } from './db'
 
 dotenv.config()
 
-const isDev = () => process.env.NODE_ENV === 'development'
+const { NODE_ENV, SERVER_PORT } = process.env
+
+const isDev = () => NODE_ENV === 'development'
 
 async function startServer() {
+  const dbClient = await createClientAndConnect()
+  console.log(`database = ${dbClient?.database}`)
   const app = express()
   app.use(cors())
-  const port = Number(process.env.SERVER_PORT) || 3001
+  const port = Number(SERVER_PORT)
 
   let vite: ViteDevServer | undefined
   let distPath: string | undefined
   let ssrClientPath: string | undefined
+  let srcPath: string | undefined
 
-  if (!isDev()) {
-    distPath = path.dirname(require.resolve('client/dist/index.html'))
-    ssrClientPath = require.resolve('client/dist-ssr/client.cjs')
+  if (isDev()) {
+    srcPath = path.dirname(require.resolve('client'))
+  } else {
+    distPath = path.resolve(__dirname, 'client', 'dist')
+    ssrClientPath = path.resolve(__dirname, 'client', 'dist-ssr', 'client.cjs')
   }
-
-  const srcPath = path.dirname(require.resolve('client'))
 
   if (isDev()) {
     vite = await createViteServer({
@@ -34,39 +42,64 @@ async function startServer() {
       root: srcPath,
       appType: 'custom',
     })
-
     app.use(vite.middlewares)
-  }
-
-  if (!isDev()) {
+  } else {
     app.use('/assets', express.static(path.resolve(distPath!, 'assets')))
   }
 
-  app.use('*', async (req, res, next) => {
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: { '*': '' },
+      target: 'https://ya-praktikum.tech/api/v2',
+      logger: console,
+    })
+  )
+
+  app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
+
     try {
       let template: string
-      if (!isDev()) {
+      if (isDev()) {
+        template = fs.readFileSync(
+          path.resolve(srcPath!, 'index.html'),
+          'utf-8'
+        )
+        template = await vite!.transformIndexHtml(url, template)
+      } else {
         template = fs.readFileSync(
           path.resolve(distPath!, 'index.html'),
           'utf-8'
         )
-      } else {
-        template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
-        template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: () => Promise<string>
-      if (!isDev()) {
-        render = (await import(ssrClientPath!)).render
-      } else {
-        render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx')))
+      let render: (
+        req: unknown,
+        apiConfig: string | undefined
+      ) => Promise<[Record<string, unknown>, string, string]>
+
+      if (isDev()) {
+        render = (await vite!.ssrLoadModule(path.resolve(srcPath!, 'ssr.tsx')))
           .render
+      } else {
+        render = (await import(ssrClientPath!)).render
       }
 
-      const appHtml = await render()
+      const cookie = req.headers['cookie']
 
-      const html = template.replace('<!--ssr-outlet-->', appHtml)
+      const [initialState, appHtml, styleText] = await render(req, cookie)
+
+      const initStateSerialized = JSON.stringify(initialState)
+
+      const html = template
+        .replace(
+          '<!--antd-style-data-->',
+          `<style id="antd-style">${styleText}</style>`
+        )
+        .replace('<!--ssr-outlet-->', appHtml)
+        .replace('<!--store-data-->', initStateSerialized)
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
       if (isDev() && e instanceof Error) {

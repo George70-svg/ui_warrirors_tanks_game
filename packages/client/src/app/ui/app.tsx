@@ -1,6 +1,6 @@
 import './app.pcss'
 import { ReactElement, useEffect } from 'react'
-import { App as AntApp, ConfigProvider } from 'antd'
+import { ConfigProvider } from 'antd'
 import { MessageProvider } from './message-provider'
 import { useThemeTracker } from '../../shared/ui/themeToggler/useTheme'
 
@@ -22,10 +22,8 @@ export function App({ children }: { children: ReactElement }) {
   }, [])
 
   return (
-    <AntApp>
-      <ConfigProvider theme={theme}>
-        <MessageProvider>{children}</MessageProvider>
-      </ConfigProvider>
-    </AntApp>
+    <ConfigProvider theme={theme}>
+      <MessageProvider>{children}</MessageProvider>
+    </ConfigProvider>
   )
 }

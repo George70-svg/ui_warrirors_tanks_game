@@ -1,18 +1,20 @@
 import { createAppAsyncThunk } from '../../../shared/lib'
-import { API } from './api'
+import { apiParams } from './api'
 import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
+import { UserInfoDto } from './types'
 
 export const uploadAvatar = createAppAsyncThunk(
   '/user/profile/avatar',
-  async (data: FormData, thunkAPI) => {
+  async (data: FormData, thunkApi) => {
     try {
-      const result = await API.uploadAvatar(data)
-      thunkAPI.extra.messageProvider.success(
+      const requestData = apiParams.uploadAvatar(data)
+      const result = await thunkApi.extra.apiCall<UserInfoDto>(requestData)
+      thunkApi.extra.messageProvider.success(
         "The user's avatar has been successfully updated."
       )
       return result
     } catch (e) {
-      return thunkAPI.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
+      return thunkApi.rejectWithValue(convertApiErrorToPlainObjectOrNull(e))
     }
   }
 )
