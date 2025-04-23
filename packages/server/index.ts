@@ -1,5 +1,4 @@
 import dotenv from 'dotenv'
-import cors from 'cors'
 import express from 'express'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
@@ -9,7 +8,8 @@ import type { ViteDevServer } from 'vite'
 import * as process from 'node:process'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import cookieParser from 'cookie-parser'
-import { createClientAndConnect } from './db'
+import app from './server'
+import { dbConnect } from './db'
 
 dotenv.config()
 
@@ -18,10 +18,7 @@ const { NODE_ENV, SERVER_PORT } = process.env
 const isDev = () => NODE_ENV === 'development'
 
 async function startServer() {
-  const dbClient = await createClientAndConnect()
-  console.log(`database = ${dbClient?.database}`)
-  const app = express()
-  app.use(cors())
+  await dbConnect()
   const port = Number(SERVER_PORT)
 
   let vite: ViteDevServer | undefined
