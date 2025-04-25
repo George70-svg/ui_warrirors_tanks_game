@@ -1,32 +1,39 @@
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import styles from './comment.module.pcss'
 import AddReaction from '../addReaction/AddReaction'
-import { IEmoji, Reaction } from '../types'
 import ReactionBtn from '../reactionBtn/ReactionBtn'
+import { IEmoji, TComment } from '../../../../entities/forum/types'
+import { Avatar } from 'antd'
+import { ReactionForm } from '../../../../entities/forum/api/types'
 
 interface CommentProps {
-  avatar: ReactNode
-  title: ReactNode
-  description: ReactNode
-  reactions: Reaction[]
+  comment: TComment
+  onClickReaction: (data: ReactionForm) => void
+  onSelectReaction: (data: ReactionForm) => void
 }
 
 const Comment: FC<CommentProps> = ({
-  title,
-  description,
-  avatar,
-  reactions,
+  comment: { id, avatar, author, content, reactions },
+  onClickReaction,
+  onSelectReaction,
 }) => {
-  const onClickReaction = (emoji: IEmoji) => {
-    //Здесь будет логика отправки асинхронного экшена
-    console.log('onClickReaction', emoji)
+  const formattedSelectReactionPayload = (emoji: IEmoji) => {
+    const payload: ReactionForm = {
+      commentId: String(id),
+      emoji: emoji.type,
+      count: 1,
+    }
+    onSelectReaction(payload)
   }
+
   return (
     <div className={styles.comment}>
-      <div className={styles.avatar}>{avatar}</div>
+      <div className={styles.avatar}>
+        <Avatar src={avatar} />
+      </div>
       <div className={styles.content}>
-        <h4 className={styles.title}>{title}</h4>
-        <p className={styles.desc}>{description}</p>
+        <h4 className={styles.title}>{author}</h4>
+        <p className={styles.desc}>{content}</p>
         <div className={styles.reactions}>
           {reactions.map((reaction, idx) => (
             <ReactionBtn
@@ -35,7 +42,7 @@ const Comment: FC<CommentProps> = ({
               onClickEmoji={onClickReaction}
             />
           ))}
-          <AddReaction />
+          <AddReaction onSelectReaction={formattedSelectReactionPayload} />
         </div>
       </div>
     </div>

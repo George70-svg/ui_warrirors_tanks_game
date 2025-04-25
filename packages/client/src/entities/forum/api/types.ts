@@ -1,7 +1,9 @@
-import { IEmoji } from '../../../app/ui/forum/types'
+import { TComment } from '../types'
 
-export type CommentDto = {
-  id: string
-  emoji: IEmoji
+export type ReactionForm = {
+  commentId: string
+  emoji: string
   count: number
 }
+
+export type CommentDto = TComment

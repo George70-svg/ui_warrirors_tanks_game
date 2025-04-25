@@ -2,22 +2,20 @@ import { useEffect, useRef, useState } from 'react'
 import styles from './add-reaction.module.pcss'
 import EmojiPicker from '../emojiPicker/EmojiPicker'
 import AddEmojiSvg from '../../../../assets/emoji/add_emoji.svg?react'
-import { useAppDispatch } from '../../../../shared/lib'
-import { addReactionAction } from '../../../../entities/forum/forum-slice'
-import { IEmoji } from '../types'
+import { FC } from 'react'
+import { IEmoji } from '../../../../entities/forum/types'
 
-const AddReaction = () => {
+interface AddReactionProps {
+  onSelectReaction: (val: IEmoji) => void
+}
+
+const AddReaction: FC<AddReactionProps> = ({ onSelectReaction }) => {
   const [isOpenPanelEmoji, setIsOpenPanelEmoji] = useState(false)
   const addReactionBtnRef = useRef<HTMLDivElement | null>(null)
 
-  const dispatch = useAppDispatch()
-
   const onSelectEmoji = (emoji: IEmoji) => {
-    dispatch(addReactionAction(emoji))
+    onSelectReaction(emoji)
     setIsOpenPanelEmoji(false)
-
-    //Здесь будет логика отправки асинхронного экшена
-    console.log('onSelectEmoji', emoji)
   }
 
   useEffect(() => {

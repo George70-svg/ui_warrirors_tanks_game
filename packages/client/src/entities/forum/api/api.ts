@@ -1,8 +1,8 @@
 import { ConfigFacade } from '../../../shared/api'
-import { CommentDto } from './types'
+import { ReactionForm } from './types'
 
 export const apiParams = {
-  addReaction: (data: CommentDto): ConfigFacade => ({
+  addReaction: (data: ReactionForm): ConfigFacade => ({
     url: '/forum/comment/reaction',
     data,
     method: 'POST',

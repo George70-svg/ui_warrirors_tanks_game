@@ -1,42 +1,58 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addReaction } from './api/comment'
+import { addReaction } from './api/add-reaction'
+import { IEmoji, TAddReactionPayload, TComment, TReaction } from './types'
 
 type ForumState = {
-  comment: {
-    id: string
-    author: string
-    content: string
-    avatar: string
-    reactions: Reaction[]
-  } | null
-  reactions: Reaction[]
+  comments: TComment[]
 }
 
 const initialState: ForumState = {
-  comment: null,
-  reactions: [],
+  comments: [],
 }
 
 const forumSlice = createSlice({
   name: 'forum',
   initialState: initialState,
   selectors: {
-    selectReactions: (state) => state.reactions,
+    selectComments: (state) => state.comments,
+    selectCommentById: (state, commentId) =>
+      state.comments.find((comment) => comment.id === commentId),
   },
   reducers: {
-    addReactionAction: (state, action) => {
-      state.reactions.push(action.payload)
+    addCommentAction: (state, action) => {
+      state.comments = [...state.comments, action.payload]
+    },
+    addCommentReactionAction: (state, action) => {
+      const payload = action.payload as TAddReactionPayload
+      const commentIndex = state.comments.findIndex(
+        (comment) => Number(comment.id) === Number(payload.commentId)
+      )
+      if (commentIndex === -1) {
+        return
+      }
+
+      const newComment: TComment = { ...state.comments[commentIndex] }
+      const reactionIndex = newComment.reactions.findIndex(
+        (r) => r.emoji === payload.emoji
+      )
+      if (reactionIndex !== -1) {
+        newComment.reactions[reactionIndex].count += 1
+      } else {
+        newComment.reactions.push(payload)
+      }
+
+      state.comments.splice(commentIndex, 1, newComment)
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(addReaction.fulfilled, (state, action) => {
-      state.comment = action.payload
+    builder.addCase(addReaction.fulfilled, (_, action) => {
+      addCommentReactionAction(action)
     })
   },
 })
 
-export const { selectReactions } = forumSlice.selectors
+export const { selectComments, selectCommentById } = forumSlice.selectors
 
-export const { addReactionAction } = forumSlice.actions
+export const { addCommentReactionAction, addCommentAction } = forumSlice.actions
 
 export const { reducer: forumReducer } = forumSlice

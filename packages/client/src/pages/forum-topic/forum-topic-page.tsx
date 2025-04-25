@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import {
-  Avatar,
   Button,
   Card,
   Flex,
@@ -12,37 +10,49 @@ import {
 } from 'antd'
 import Comment from '../../app/ui/forum/comment/Comment'
 import styles from './forum-topic-page.module.pcss'
-import { Reaction } from '../../app/ui/forum/types'
+import { TComment } from '../../entities/forum/types'
+import { useAppDispatch } from '../../shared/lib'
+import {
+  addCommentReactionAction,
+  addCommentAction,
+  selectComments,
+} from '../../entities/forum/forum-slice'
+import { useSelector } from 'react-redux'
+import { ReactionForm } from '../../entities/forum/api/types'
 
 const { Text } = Typography
 const { TextArea } = Input
 
-type TComment = {
-  id: number
-  author: string
-  content: string
-  avatar: string
-  reactions: Reaction[]
-}
-
 export function ForumTopicPage() {
-  const [comments, setComments] = useState<TComment[]>([])
   const [form] = Form.useForm()
 
+  const dispatch = useAppDispatch()
+  const comments = useSelector(selectComments)
+
+  const newMockComment: TComment = {
+    id: 1,
+    author: 'User',
+    content: '',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User',
+    reactions: [],
+  }
+
+  const onClickReaction = (data: ReactionForm) => {
+    //Здесь будет логика отправки асинхронного экшена
+    console.log('onClickReaction', data)
+  }
+  const onSelectReaction = (data: ReactionForm) => {
+    //TODO Здесь будет логика отправки асинхронного экшена. Переписать после подключения бека
+
+    console.log('onSelectReaction', data)
+    dispatch(addCommentReactionAction(data))
+  }
+
   const handleAddComment = (values: { comment: string }) => {
-    const newComment = {
-      id: comments.length + 1,
-      author: 'User',
-      content: values.comment,
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User',
-      reactions: [
-        {
-          emoji: 'like',
-          count: 2,
-        },
-      ],
-    }
-    setComments([...comments, newComment])
+    newMockComment.content = values.comment
+    newMockComment.id = comments.length + 1
+
+    dispatch(addCommentAction(newMockComment))
     form.resetFields()
     message.success('Comment added!')
   }
@@ -59,10 +69,9 @@ export function ForumTopicPage() {
           renderItem={(item) => (
             <List.Item>
               <Comment
-                avatar={<Avatar src={item.avatar} />}
-                title={<Text>{item.author}</Text>}
-                description={<Text>{item.content}</Text>}
-                reactions={item.reactions}
+                comment={item}
+                onClickReaction={onClickReaction}
+                onSelectReaction={onSelectReaction}
               />
             </List.Item>
           )}
