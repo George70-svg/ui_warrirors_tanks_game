@@ -8,8 +8,8 @@ import type { ViteDevServer } from 'vite'
 import * as process from 'node:process'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import cookieParser from 'cookie-parser'
-import app from './server'
 import { dbConnect } from './db'
+import app from './src/app/app'
 
 dotenv.config()
 
