@@ -10,15 +10,23 @@ import {
   message,
   Typography,
 } from 'antd'
+import Comment from '../../app/ui/forum/comment/Comment'
 import styles from './forum-topic-page.module.pcss'
+import { Reaction } from '../../app/ui/forum/types'
 
 const { Text } = Typography
 const { TextArea } = Input
 
-type Comment = { id: number; author: string; content: string; avatar: string }
+type TComment = {
+  id: number
+  author: string
+  content: string
+  avatar: string
+  reactions: Reaction[]
+}
 
 export function ForumTopicPage() {
-  const [comments, setComments] = useState<Comment[]>([])
+  const [comments, setComments] = useState<TComment[]>([])
   const [form] = Form.useForm()
 
   const handleAddComment = (values: { comment: string }) => {
@@ -27,6 +35,12 @@ export function ForumTopicPage() {
       author: 'User',
       content: values.comment,
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User',
+      reactions: [
+        {
+          emoji: 'like',
+          count: 2,
+        },
+      ],
     }
     setComments([...comments, newComment])
     form.resetFields()
@@ -44,10 +58,11 @@ export function ForumTopicPage() {
           dataSource={comments}
           renderItem={(item) => (
             <List.Item>
-              <List.Item.Meta
+              <Comment
                 avatar={<Avatar src={item.avatar} />}
                 title={<Text>{item.author}</Text>}
                 description={<Text>{item.content}</Text>}
+                reactions={item.reactions}
               />
             </List.Item>
           )}
