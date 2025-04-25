@@ -3,18 +3,18 @@ import styles from './add-reaction.module.pcss'
 import EmojiPicker from '../emojiPicker/EmojiPicker'
 import AddEmojiSvg from '../../../../assets/emoji/add_emoji.svg?react'
 import { FC } from 'react'
-import { IEmoji } from '../../../../entities/forum/types'
+import { TReaction } from '../../../../entities/forum/types'
 
 interface AddReactionProps {
-  onSelectReaction: (val: IEmoji) => void
+  onSelectReaction: (reaction: TReaction) => void
 }
 
 const AddReaction: FC<AddReactionProps> = ({ onSelectReaction }) => {
   const [isOpenPanelEmoji, setIsOpenPanelEmoji] = useState(false)
   const addReactionBtnRef = useRef<HTMLDivElement | null>(null)
 
-  const onSelectEmoji = (emoji: IEmoji) => {
-    onSelectReaction(emoji)
+  const onSelectEmoji = (reaction: TReaction) => {
+    onSelectReaction(reaction)
     setIsOpenPanelEmoji(false)
   }
 

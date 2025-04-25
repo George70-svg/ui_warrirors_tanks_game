@@ -38,13 +38,14 @@ export function ForumTopicPage() {
   }
 
   const onClickReaction = (data: ReactionForm) => {
-    //Здесь будет логика отправки асинхронного экшена
+    // TODO Здесь будет асинхронный запрос для прибавления счетчика уже существующей реакции
     console.log('onClickReaction', data)
+    dispatch(addCommentReactionAction(data))
   }
   const onSelectReaction = (data: ReactionForm) => {
-    //TODO Здесь будет логика отправки асинхронного экшена. Переписать после подключения бека
+    //TODO Здесь будет асинхронный запрос на добавление реакции
 
-    console.log('onSelectReaction', data)
+    console.log('onClickReaction', data)
     dispatch(addCommentReactionAction(data))
   }
 

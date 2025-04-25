@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styles from './comment.module.pcss'
 import AddReaction from '../addReaction/AddReaction'
 import ReactionBtn from '../reactionBtn/ReactionBtn'
-import { IEmoji, TComment } from '../../../../entities/forum/types'
+import { TComment, TReaction } from '../../../../entities/forum/types'
 import { Avatar } from 'antd'
 import { ReactionForm } from '../../../../entities/forum/api/types'
 
@@ -17,10 +17,18 @@ const Comment: FC<CommentProps> = ({
   onClickReaction,
   onSelectReaction,
 }) => {
-  const formattedSelectReactionPayload = (emoji: IEmoji) => {
+  const formattedClickReaction = (reaction: TReaction) => {
     const payload: ReactionForm = {
       commentId: String(id),
-      emoji: emoji.type,
+      emoji: reaction.emoji,
+      count: 1,
+    }
+    onClickReaction(payload)
+  }
+  const formattedSelectReaction = (reaction: TReaction) => {
+    const payload: ReactionForm = {
+      commentId: String(id),
+      emoji: reaction.emoji,
       count: 1,
     }
     onSelectReaction(payload)
@@ -39,10 +47,10 @@ const Comment: FC<CommentProps> = ({
             <ReactionBtn
               key={reaction.emoji + idx}
               reaction={reaction}
-              onClickEmoji={onClickReaction}
+              onClickEmoji={formattedClickReaction}
             />
           ))}
-          <AddReaction onSelectReaction={formattedSelectReactionPayload} />
+          <AddReaction onSelectReaction={formattedSelectReaction} />
         </div>
       </div>
     </div>

@@ -1,34 +1,31 @@
 import styles from '../addReaction/add-reaction.module.pcss'
 import { FC } from 'react'
-import { IEmoji } from '../types'
+import { TReaction } from '../../../../entities/forum/types'
 import { EMOJI_LIST } from '../../../../entities/forum/constants'
 
 interface ReactionBtnProps {
-  reaction?: {
-    emoji: string
-    count?: number
-  }
-  emoji?: IEmoji
-  onClickEmoji: (val: IEmoji) => void
+  reaction: TReaction
+  onClickEmoji: (val: TReaction) => void
 }
 
-const ReactionBtn: FC<ReactionBtnProps> = ({
-  reaction,
-  emoji,
-  onClickEmoji,
-}) => {
-  const isReaction = !!reaction?.emoji
-  let emojiObj = emoji
-  if (isReaction) {
-    emojiObj = EMOJI_LIST.find((em) => em.type === reaction.emoji)
+const ReactionBtn: FC<ReactionBtnProps> = ({ reaction, onClickEmoji }) => {
+  const emojiObj = EMOJI_LIST.find((em) => em.type === reaction.emoji)
+
+  if (!emojiObj) {
+    return
   }
 
-  return emojiObj ? (
+  const reactionEmit: TReaction = {
+    ...reaction,
+    count: reaction.count + 1,
+  }
+
+  return (
     <div>
       <button
         type="button"
         className={styles.button}
-        onClick={() => onClickEmoji(emojiObj)}
+        onClick={() => onClickEmoji(reactionEmit)}
       >
         <img width="18" height="18" src={emojiObj.icon} alt={emojiObj.type} />
         {reaction?.count ? (
@@ -36,7 +33,7 @@ const ReactionBtn: FC<ReactionBtnProps> = ({
         ) : null}
       </button>
     </div>
-  ) : null
+  )
 }
 
 export default ReactionBtn
