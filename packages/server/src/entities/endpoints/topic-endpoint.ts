@@ -8,6 +8,7 @@ import {
 } from '../controllers/topic-controller'
 
 async function addTopic(req: express.Request, res: express.Response) {
+  console.log('addTopic')
   const body = req.body as CreateTopicPayload
   const topic = await createTopic(body)
   res.status(200).json(topic)
