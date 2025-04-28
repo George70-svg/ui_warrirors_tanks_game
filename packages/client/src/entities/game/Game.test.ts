@@ -35,6 +35,7 @@ describe('Game', () => {
   } as unknown as CanvasRenderingContext2D
   const mockPageContext = document.createElement('div')
   const mockOnGameOver = jest.fn()
+  const mockSetScorePoint = jest.fn()
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -42,6 +43,7 @@ describe('Game', () => {
       context: mockContext,
       pageContext: mockPageContext,
       onGameOver: mockOnGameOver,
+      setScorePoint: mockSetScorePoint,
     })
     ;(isGameOver as jest.Mock).mockReturnValue(false)
 
@@ -88,7 +90,10 @@ describe('Game', () => {
       )
       expect(updateAllTanks).toHaveBeenCalled()
       expect(updateAllBullets).toHaveBeenCalled()
-      expect(computerTankGeneration).toHaveBeenCalledWith(mockContext)
+      expect(computerTankGeneration).toHaveBeenCalledWith(
+        mockContext,
+        mockSetScorePoint
+      )
       expect(deleteMarkedObjects).toHaveBeenCalled()
       expect(renderAllObjects).toHaveBeenCalledWith(mockContext)
     })

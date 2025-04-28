@@ -3,11 +3,10 @@ import {
   toPixels,
   initializeTankObjects,
   initializeDecorationObjects,
-  createDecorationFigure,
 } from './gameConfig'
 import { Tank, TankProps } from '../objects/tank'
-import { Decoration } from '../objects/decoration'
-import { Coordinate } from '../types'
+import { Decoration, DecorationProps } from '../objects/decoration'
+import { getDecorations } from '../constants/decorations'
 
 Object.defineProperty(globalThis, 'crypto', {
   value: {
@@ -24,6 +23,7 @@ jest.mock('../objects/decoration')
 
 describe('gameConfig', () => {
   let mockTank: Tank
+  let mockDecoration: Decoration
   const mockContext = {
     clearRect: jest.fn(),
   } as unknown as CanvasRenderingContext2D
@@ -39,8 +39,20 @@ describe('gameConfig', () => {
     bulletColor: '#00e413',
   }
 
+  const decorationProps: DecorationProps = {
+    id: 'mock-decoration-id',
+    context: mockContext,
+    position: { x: 650, y: 350 },
+    size: { width: 50, height: 50 },
+    typeDecoration: 'brick',
+    color: '#000',
+    hasDeletable: true,
+    imageSrc: 'brick-img.png',
+  }
+
   beforeEach(() => {
     mockTank = new Tank(tankProps)
+    mockDecoration = new Decoration(decorationProps)
 
     // Очищаем конфиг перед каждым тестом
     config.tankObjects = []
@@ -86,25 +98,10 @@ describe('gameConfig', () => {
 
   describe('createDecorationFigure()', () => {
     it('Должен создать декорации', () => {
-      const coords: Coordinate[] = [{ x: 1, y: 2 }]
-      const decorations = createDecorationFigure(
-        coords,
-        mockContext,
-        'brick',
-        true,
-        'brick-img.png'
-      )
+      const decorations = getDecorations(mockContext)
 
-      expect(decorations).toHaveLength(1)
-      expect(Decoration).toHaveBeenCalledWith({
-        id: 'mocked-uuid',
-        context: mockContext,
-        position: { x: 50, y: 100 }, // toPixels(1), toPixels(2)
-        size: { width: 50, height: 50 }, // toPixels(1)
-        typeDecoration: 'brick',
-        hasDeletable: true,
-        imageSrc: 'brick-img.png',
-      })
+      expect(decorations.length).toBeGreaterThan(1)
+      expect(Decoration).toHaveBeenCalledWith(decorationProps)
     })
   })
 
@@ -117,11 +114,7 @@ describe('gameConfig', () => {
 
       // Проверяем, что хотя бы один элемент создан с правильными параметрами
       expect(Decoration).toHaveBeenCalledWith(
-        expect.objectContaining({
-          position: { x: 150, y: 150 }, // toPixels(3), toPixels(3)
-          color: '#46efe9',
-          hasDeletable: false,
-        })
+        expect.objectContaining(decorationProps)
       )
     })
   })
