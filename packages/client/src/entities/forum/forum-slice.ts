@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { addReaction } from './api/add-reaction'
 import { TComment } from './types'
 import { ReactionForm } from './api/types'
-import { addReactionCount } from './api/add-reaction-count'
 
 type ForumState = {
   comments: TComment[]
@@ -47,13 +46,9 @@ const forumSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(addReaction.fulfilled, (_, action) => {
-        addCommentReactionAction(action)
-      })
-      .addCase(addReactionCount.fulfilled, (_, action) => {
-        addCommentReactionAction(action)
-      })
+    builder.addCase(addReaction.fulfilled, (_, action) => {
+      addCommentReactionAction(action)
+    })
   },
 })
 

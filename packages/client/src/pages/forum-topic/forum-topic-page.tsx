@@ -38,14 +38,8 @@ export function ForumTopicPage() {
   }
 
   const onClickReaction = (data: ReactionForm) => {
-    // TODO Здесь будет асинхронный запрос для прибавления счетчика уже существующей реакции
-    console.log('onClickReaction', data)
-    dispatch(addCommentReactionAction(data))
-  }
-  const onSelectReaction = (data: ReactionForm) => {
-    //TODO Здесь будет асинхронный запрос на добавление реакции
-
-    console.log('onClickReaction', data)
+    // TODO Здесь будет асинхронный запрос на добавление реакции
+    //  или прибавление счетчика уже существующей реакции
     dispatch(addCommentReactionAction(data))
   }
 
@@ -72,7 +66,7 @@ export function ForumTopicPage() {
               <Comment
                 comment={item}
                 onClickReaction={onClickReaction}
-                onSelectReaction={onSelectReaction}
+                onSelectReaction={onClickReaction}
               />
             </List.Item>
           )}
