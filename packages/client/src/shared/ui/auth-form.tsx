@@ -1,7 +1,8 @@
 import { Button, Card, Flex, Form, Typography } from 'antd'
 import styles from './auth-form.module.pcss'
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { ThemeSwitcher } from './themeToggler/ThemeToggler'
 
 const { Title, Text } = Typography
 
@@ -54,6 +55,7 @@ export function AuthForm<T>({
         <Text>
           <Link to={footerLink}>{linkText}</Link>
         </Text>
+        <ThemeSwitcher />
       </Flex>
     </Card>
   )
