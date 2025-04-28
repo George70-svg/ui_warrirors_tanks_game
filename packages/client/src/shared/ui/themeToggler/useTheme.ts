@@ -4,20 +4,27 @@ import { darkTheme, lightTheme } from '../../../app/ui/theme-config'
 type ThemeConfig = typeof darkTheme
 
 export const useThemeTracker = () => {
-  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(() => {
-    const savedTheme = localStorage.getItem('THEME_KEY')
-    return savedTheme === 'dark' ? darkTheme : lightTheme
-  })
+  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(lightTheme) // По умолчанию светлая тема
 
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'THEME_KEY') {
-        setCurrentTheme(e.newValue === 'dark' ? darkTheme : lightTheme)
+    // Проверяем наличие window перед обращением к localStorage
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('THEME_KEY')
+      if (savedTheme === 'dark') {
+        setCurrentTheme(darkTheme)
+      } else {
+        setCurrentTheme(lightTheme)
       }
-    }
 
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'THEME_KEY') {
+          setCurrentTheme(e.newValue === 'dark' ? darkTheme : lightTheme)
+        }
+      }
+
+      window.addEventListener('storage', handleStorageChange)
+      return () => window.removeEventListener('storage', handleStorageChange)
+    }
   }, [])
 
   return currentTheme
