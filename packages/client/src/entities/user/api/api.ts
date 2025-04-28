@@ -3,8 +3,7 @@ import {
   UserSignUpDto,
   UserUpdatePasswordDto,
   UserUpdateProfileDto,
-  UserSignInOauthYaParams,
-  OauthYaServiceParams,
+  OauthYaParams,
 } from './types'
 import { ConfigFacade } from '../../../shared/api'
 
@@ -36,12 +35,14 @@ export const apiParams = {
     data,
     method: 'PUT',
   }),
-  oauthYaGetServiceId: (data: OauthYaServiceParams): ConfigFacade => ({
+  oauthYaGetServiceId: (): ConfigFacade => ({
     url: 'oauth/yandex/service-id',
-    data,
+    data: {
+      redirect_uri: `http://${__HOST__}:${__PORT__}`,
+    },
     method: 'GET',
   }),
-  oauthYa: (data: UserSignInOauthYaParams): ConfigFacade => ({
+  oauthYa: (data: OauthYaParams): ConfigFacade => ({
     url: 'oauth/yandex',
     data,
     method: 'POST',

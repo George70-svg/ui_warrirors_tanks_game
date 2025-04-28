@@ -8,16 +8,13 @@ import { ROUTES } from '../../shared/config'
 import { AuthForm, InputField } from '../../shared/ui'
 import { useAppDispatch, useAppSelector } from '../../shared/lib'
 import { useEffect } from 'react'
+import { OAUTH_YA_REDIRECT_URI } from '../../shared/config/constants'
 interface Fields {
   login: string
   password: string
 }
 
 export function SignInPage() {
-  const serverHost = 'localhost'
-  const serverPort = '3000'
-  const redirect_uri = `http://${serverHost}:${serverPort}`
-
   const dispatch = useAppDispatch()
   const isUserDataUpdating = useAppSelector(selectIsUserDataUpdating)
   const userOauthYaClintId = useAppSelector(selectUserOauthYaClintId)
@@ -27,17 +24,14 @@ export function SignInPage() {
   }
 
   const handleOauthYa = () => {
-    const oauthYaClientParams = {
-      redirect_uri,
-    }
-    dispatch(oauthYaServiceId(oauthYaClientParams))
+    dispatch(oauthYaServiceId())
   }
 
   useEffect(() => {
-    if (redirect_uri && userOauthYaClintId) {
-      window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${userOauthYaClintId}&redirect_uri=${redirect_uri}`
+    if (userOauthYaClintId) {
+      window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${userOauthYaClintId}&redirect_uri=${OAUTH_YA_REDIRECT_URI}`
     }
-  }, [redirect_uri, userOauthYaClintId])
+  }, [userOauthYaClintId])
 
   return (
     <AuthForm<Fields>

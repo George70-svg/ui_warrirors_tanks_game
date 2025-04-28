@@ -1,18 +1,13 @@
 import { convertApiErrorToPlainObjectOrNull } from '../../../shared/api'
 import { createAppAsyncThunk } from '../../../shared/lib'
 import { apiParams } from './api'
-import {
-  OauthServiceDTO,
-  OauthYaServiceParams,
-  UserInfoDto,
-  UserSignInOauthYaParams,
-} from './types'
+import { OauthServiceDTO, UserInfoDto, OauthYaParams } from './types'
 
 export const oauthYaServiceId = createAppAsyncThunk(
   'user/oauth-ya-service-id',
-  async (data: OauthYaServiceParams, thunkApi) => {
+  async (_, thunkApi) => {
     try {
-      const requestOauthYaClientId = apiParams.oauthYaGetServiceId(data)
+      const requestOauthYaClientId = apiParams.oauthYaGetServiceId()
       return await thunkApi.extra.apiCall<OauthServiceDTO>(
         requestOauthYaClientId
       )
@@ -24,7 +19,7 @@ export const oauthYaServiceId = createAppAsyncThunk(
 
 export const oauthYa = createAppAsyncThunk(
   'user/oauth-ya',
-  async (data: UserSignInOauthYaParams, thunkApi) => {
+  async (data: OauthYaParams, thunkApi) => {
     try {
       const requestOauthYa = apiParams.oauthYa(data)
       await thunkApi.extra.apiCall(requestOauthYa)

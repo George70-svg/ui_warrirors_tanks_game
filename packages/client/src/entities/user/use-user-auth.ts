@@ -1,40 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import {
   selectIsUserAuthenticated,
   selectIsUserAuthStatusIdle,
   selectIsUserAuthStatusSuccess,
 } from './user-slice'
 import { useAppDispatch, useAppSelector } from '../../shared/lib'
-import { getUserData, oauthYa } from './index'
-import { useSearchParams } from 'react-router-dom'
+import { getUserData } from './index'
+import { useOauthYa } from './use-oauth-ya'
 
 export function useUserAuth() {
   const dispatch = useAppDispatch()
   const isUserAuthStatusSuccess = useAppSelector(selectIsUserAuthStatusSuccess)
   const isUserAuthStatusIdle = useAppSelector(selectIsUserAuthStatusIdle)
   const isUserAuthorized = useAppSelector(selectIsUserAuthenticated)
-  const [searchParams, _] = useSearchParams()
-  const code = searchParams.get('code')
-  const serverHost = 'localhost'
-  const serverPort = '3000'
-  const redirect_uri = `http://${serverHost}:${serverPort}`
 
-  const isRuningOauthYa = useRef(false)
+  useOauthYa()
 
   useEffect(() => {
-    if (code && redirect_uri && !isRuningOauthYa.current) {
-      const params = {
-        code,
-        redirect_uri,
-      }
-      dispatch(oauthYa(params))
-      isRuningOauthYa.current = true
-    }
-
     if (isUserAuthStatusIdle) {
       dispatch(getUserData())
     }
-  }, [dispatch, isUserAuthStatusIdle, code, redirect_uri])
+  }, [dispatch, isUserAuthStatusIdle])
 
   return {
     isUserAuthStatusSuccess,
