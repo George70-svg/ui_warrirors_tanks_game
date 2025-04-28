@@ -2,6 +2,7 @@ import { Button, Card, Flex, Form, Typography } from 'antd'
 import styles from './auth-form.module.pcss'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import LogoYandexSvg from '../../assets/ya_logo.svg?react'
 
 const { Title, Text } = Typography
 
@@ -9,6 +10,7 @@ export function AuthForm<T>({
   title,
   submitButtonText,
   onSubmit,
+  onYaAuth,
   footerText,
   footerLink,
   linkText,
@@ -18,6 +20,7 @@ export function AuthForm<T>({
   title: string
   submitButtonText: string
   onSubmit: (values: T) => void
+  onYaAuth: () => void
   footerText: string
   footerLink: string
   linkText: string
@@ -48,6 +51,18 @@ export function AuthForm<T>({
           </Button>
         </Form.Item>
       </Form>
+
+      <Flex vertical align={'center'} gap={10} className={styles.anotherAuth}>
+        <Title level={5}>Another login with:</Title>
+        <Button
+          type="default"
+          htmlType="button"
+          className={styles.yaButton}
+          onClick={onYaAuth}
+        >
+          <LogoYandexSvg />
+        </Button>
+      </Flex>
 
       <Flex justify={'center'} align={'center'} gap={5}>
         <Text>{footerText}</Text>

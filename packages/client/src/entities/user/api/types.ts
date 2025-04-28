@@ -8,6 +8,19 @@ export type UserSignUpDto = {
 }
 export type UserSignInDto = Pick<UserSignUpDto, 'password' | 'login'>
 
+export type UserSignInOauthYaParams = {
+  code: string
+  redirect_uri: string
+}
+
+export type OauthYaServiceParams = {
+  redirect_uri: string
+}
+
+export type OauthServiceDTO = {
+  service_id: string
+}
+
 export type UserInfoDto = {
   id: number
   first_name: string
