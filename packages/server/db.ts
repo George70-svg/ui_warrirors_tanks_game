@@ -1,28 +1,49 @@
-import { Client } from 'pg'
+import dotenv from 'dotenv'
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
+import { topicModel } from './src/entities/models/topic'
+import { commentModel } from './src/entities/models/comment'
+import { replyModel } from './src/entities/models/reply'
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
-  process.env
+dotenv.config()
 
-export const createClientAndConnect = async (): Promise<Client | null> => {
+const {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  POSTGRES_PORT,
+  POSTGRES_HOST,
+} = process.env
+
+const sequelizeOptions: SequelizeOptions = {
+  username: POSTGRES_USER,
+  host: POSTGRES_HOST,
+  database: POSTGRES_DB,
+  password: POSTGRES_PASSWORD,
+  port: Number(POSTGRES_PORT),
+  dialect: 'postgres',
+}
+
+const sequelize = new Sequelize(sequelizeOptions)
+
+export const Topic = sequelize.define('topic', topicModel, {
+  timestamps: false,
+})
+export const Comment = sequelize.define('comment', commentModel, {
+  timestamps: false,
+})
+export const Reply = sequelize.define('reply', replyModel, {
+  timestamps: false,
+})
+
+Topic.hasMany(Comment)
+Comment.hasMany(Reply)
+
+export async function dbConnect() {
   try {
-    const client = new Client({
-      user: POSTGRES_USER,
-      host: 'localhost',
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD,
-      port: Number(POSTGRES_PORT),
-    })
-
-    await client.connect()
-
-    const res = await client.query('SELECT NOW()')
-    console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now)
-    client.end()
-
-    return client
-  } catch (e) {
-    console.error(e)
+    await sequelize.authenticate()
+    await sequelize.sync()
+    console.log('Connection has been established successfully.')
+  } catch (error) {
+    console.error('Unable to connect to the database:', error)
   }
-
-  return null
 }

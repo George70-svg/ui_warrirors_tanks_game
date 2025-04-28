@@ -4,8 +4,8 @@ import {
   selectIsUserAuthStatusIdle,
   selectIsUserAuthStatusSuccess,
 } from './user-slice'
-import { getUserData } from './api/get-user-data'
 import { useAppDispatch, useAppSelector } from '../../shared/lib'
+import { getUserData } from './index'
 
 export function useUserAuth() {
   const dispatch = useAppDispatch()

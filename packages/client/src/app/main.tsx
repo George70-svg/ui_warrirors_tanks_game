@@ -1,19 +1,34 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { App } from './ui/app'
-import { App as AntApp, ConfigProvider } from 'antd'
-import { themeConfig } from './theme-config'
 import { Provider } from 'react-redux'
-import { store } from './store'
+import { App } from './ui/app'
+import { createStore } from './store'
+import { routes } from './ui/routing/routes'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createCache, StyleProvider } from '@ant-design/cssinjs'
+import { ClientConfig } from '../shared/api/api-config'
+import { createApiCall } from '../shared/api'
+// import { startServiceWorker } from '../../serviceWorker'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+/*if (process.env.NODE_ENV === 'production') {
+  startServiceWorker()
+}*/
+
+const initialState = window.initialState
+
+const router = createBrowserRouter(routes)
+const apiCall = createApiCall(new ClientConfig().getConfig())
+const cache = createCache()
+
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
-    <AntApp>
-      <ConfigProvider theme={themeConfig}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ConfigProvider>
-    </AntApp>
+    <Provider store={createStore(router, apiCall, initialState)}>
+      <StyleProvider cache={cache}>
+        <App>
+          <RouterProvider router={router} />
+        </App>
+      </StyleProvider>
+    </Provider>
   </React.StrictMode>
 )

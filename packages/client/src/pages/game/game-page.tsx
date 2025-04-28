@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { router } from '../../app/ui/routing/router'
 import { ROUTES } from '../../shared/config'
 import { config } from '../../entities/game/config/gameConfig'
 import { Game } from '../../entities/game/Game'
@@ -7,9 +6,11 @@ import { EndGame } from './end-game'
 import styles from './game-page.module.pcss'
 import { GameModal } from './game-modal'
 import { StartGame } from './start-game'
+import { Typography } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 type GamePhase = 'start' | 'running' | 'end'
-type State = { gamePhase: GamePhase }
+type State = { gamePhase: GamePhase; score: number }
 type GamePhaseModalProps = { title: string; successText: string }
 
 const getGamePhaseModalProps = (phase: GamePhase): GamePhaseModalProps => {
@@ -22,18 +23,24 @@ const getGamePhaseModalProps = (phase: GamePhase): GamePhaseModalProps => {
   }
 }
 
+const { Title } = Typography
+
 export function GamePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [state, setState] = useState<State>(() => ({ gamePhase: 'start' }))
+  const [state, setState] = useState<State>(() => ({
+    gamePhase: 'start',
+    score: 0,
+  }))
   const gameInstance = useRef<Game | null>(null)
+  const navigate = useNavigate()
 
   const { gamePhase } = state
   const isModalIOpen = gamePhase === 'start' || gamePhase === 'end'
 
   const startGame = useCallback(() => {
     gameInstance.current?.start()
-    setState((prev) => ({ ...prev, gamePhase: 'running' }))
+    setState((prev) => ({ ...prev, gamePhase: 'running', score: 0 }))
   }, [])
 
   const endGame = useCallback(() => {
@@ -41,7 +48,11 @@ export function GamePage() {
   }, [])
 
   const exitGame = useCallback(() => {
-    router.navigate(ROUTES.HOME)
+    navigate(ROUTES.HOME)
+  }, [navigate])
+
+  const setScorePoint = useCallback((value: number) => {
+    setState((prev) => ({ ...prev, score: prev.score + value }))
   }, [])
 
   useEffect(() => {
@@ -56,12 +67,13 @@ export function GamePage() {
       context: context,
       pageContext: pageContext,
       onGameOver: endGame,
+      setScorePoint: setScorePoint,
     })
 
     return () => {
       gameInstance.current?.stop()
     }
-  }, [endGame])
+  }, [setScorePoint, endGame])
 
   return (
     <div ref={containerRef} className={styles.container}>
@@ -73,8 +85,10 @@ export function GamePage() {
         {...getGamePhaseModalProps(gamePhase)}
       >
         {gamePhase === 'start' && <StartGame />}
-        {gamePhase === 'end' && <EndGame />}
+        {gamePhase === 'end' && <EndGame score={state.score} />}
       </GameModal>
+
+      <Title>Score: {state.score}</Title>
 
       <canvas
         ref={canvasRef}

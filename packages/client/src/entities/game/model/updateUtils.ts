@@ -1,4 +1,4 @@
-import { config, TConfigObjects } from '../config/gameConfig'
+import { config } from '../config/gameConfig'
 import { Tank } from '../objects/tank'
 import { Direction, KeysState, Offset } from '../types'
 import {
@@ -113,11 +113,39 @@ function handleBulletCollisionWithTank(tank: Tank) {
   ) || [null, null]
 
   if (tankObject && bulletObject) {
-    tank.takeDamage()
+    const currentBullet = enemyBullets.find(
+      (item) => item.id === bulletObject.id
+    )
+
+    if (currentBullet) {
+      handleDamage(tank, currentBullet)
+    }
+
     bulletObject.setMarkForDelete(true) // Отмечаем пулю для удаления
 
     if (tank.healthPoint <= 0) {
       tankObject.setMarkForDelete(true) // Отмечаем танк для удаления
+
+      if (tank instanceof ComputerTank) {
+        tank.updateScore()
+      }
+    }
+  }
+}
+
+// Обработка получения урона
+function handleDamage(tank: Tank, bullet: Bullet): void {
+  // Если это танк игрока, то он получает урон от всех пуль, кроме своих
+  if (tank.type === 'player') {
+    if (tank.id !== bullet.tankId) {
+      tank.takeDamage()
+    }
+  } else if (tank.type === 'computer') {
+    // Если танк компьютера, то он получает урон только от выстрелов игрока
+    const playerTank = config.tankObjects.find((tank) => tank.type === 'player')
+
+    if (playerTank && playerTank.id === bullet.tankId) {
+      tank.takeDamage()
     }
   }
 }
@@ -126,7 +154,8 @@ function handleBulletCollisionWithTank(tank: Tank) {
 export function playerShotHandler() {
   const playerTank = config.tankObjects.find((item) => item.type === 'player')
 
-  if (playerTank) {
+  // Стреляем только если есть танк игрока и нет его пуль, находящихся в движении
+  if (playerTank && !hasTankBullet(playerTank)) {
     const newBullet = playerTank.shot()
     config.bulletObjects.push(newBullet)
   }
@@ -188,4 +217,11 @@ function getBulletOffset(bullet: Bullet, delta: number) {
   }
 
   return newOffset
+}
+
+export function hasTankBullet(tank: Tank): boolean {
+  const tankBullet = config.bulletObjects.find(
+    (item) => item.tankId === tank.id
+  )
+  return !!tankBullet
 }

@@ -17,6 +17,6 @@
     "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client", "node", "jest"]
   },
-  "include": ["src","global.d.ts", "jest.config.js"],
+  "include": ["src", "src/types", "jest.config.js"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }
