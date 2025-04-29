@@ -54,7 +54,7 @@ export function AuthForm<T>({
       </Form>
 
       <Flex vertical align={'center'} gap={10} className={styles.anotherAuth}>
-        <Title level={5}>Another login with:</Title>
+        <Text className={styles.desc}>Another login with:</Text>
         <Button
           type="default"
           htmlType="button"
