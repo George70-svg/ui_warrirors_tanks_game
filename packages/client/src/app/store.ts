@@ -9,6 +9,7 @@ import { ROUTES } from '../shared/config'
 import type { RouterNavigateOptions } from '@remix-run/router/router'
 import type { To } from 'react-router-dom'
 import { createApiCall } from '../shared/api'
+import { forumReducer } from '../entities/forum/forum-slice'
 
 type MessageProvider = typeof messageProvider
 
@@ -52,6 +53,7 @@ export function createStore(
   return configureStore({
     reducer: {
       user: userReducer,
+      forum: forumReducer,
     },
     preloadedState: initialState,
     middleware: (getDefaultMiddleware) =>

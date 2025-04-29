@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import {
-  Avatar,
   Button,
   Card,
   Flex,
@@ -10,25 +8,46 @@ import {
   message,
   Typography,
 } from 'antd'
+import Comment from '../../app/ui/forum/comment/Comment'
 import styles from './forum-topic-page.module.pcss'
+import { TComment } from '../../entities/forum/types'
+import { useAppDispatch } from '../../shared/lib'
+import {
+  addCommentReactionAction,
+  addCommentAction,
+  selectComments,
+} from '../../entities/forum/forum-slice'
+import { useSelector } from 'react-redux'
+import { ReactionForm } from '../../entities/forum/api/types'
 
 const { Text } = Typography
 const { TextArea } = Input
 
-type Comment = { id: number; author: string; content: string; avatar: string }
-
 export function ForumTopicPage() {
-  const [comments, setComments] = useState<Comment[]>([])
   const [form] = Form.useForm()
 
+  const dispatch = useAppDispatch()
+  const comments = useSelector(selectComments)
+
+  const newMockComment: TComment = {
+    id: 1,
+    author: 'User',
+    content: '',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User',
+    reactions: [],
+  }
+
+  const onClickReaction = (data: ReactionForm) => {
+    // TODO Здесь будет асинхронный запрос на добавление реакции
+    //  или прибавление счетчика уже существующей реакции
+    dispatch(addCommentReactionAction(data))
+  }
+
   const handleAddComment = (values: { comment: string }) => {
-    const newComment = {
-      id: comments.length + 1,
-      author: 'User',
-      content: values.comment,
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User',
-    }
-    setComments([...comments, newComment])
+    newMockComment.content = values.comment
+    newMockComment.id = comments.length + 1
+
+    dispatch(addCommentAction(newMockComment))
     form.resetFields()
     message.success('Comment added!')
   }
@@ -44,10 +63,10 @@ export function ForumTopicPage() {
           dataSource={comments}
           renderItem={(item) => (
             <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={<Text>{item.author}</Text>}
-                description={<Text>{item.content}</Text>}
+              <Comment
+                comment={item}
+                onClickReaction={onClickReaction}
+                onSelectReaction={onClickReaction}
               />
             </List.Item>
           )}
