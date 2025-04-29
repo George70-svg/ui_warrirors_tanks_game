@@ -9,7 +9,7 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT),
   },
   define: {
-    __PORT__: JSON.stringify(process.env.SERVER_PORT) || JSON.stringify('3001'),
+    __PORT__: JSON.stringify(process.env.SERVER_PORT) || JSON.stringify('3000'),
     __HOST__:
       JSON.stringify(process.env.SERVER_HOST) || JSON.stringify('localhost'),
   },

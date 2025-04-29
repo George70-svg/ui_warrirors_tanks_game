@@ -7,16 +7,21 @@ import { signUp } from './api/sign-up'
 import { updateProfile } from './api/update-profile'
 import { uploadAvatar } from './api/upload-avatar'
 import { updatePassword } from './api/update-password'
+import { oauthYa, oauthYaServiceId } from './api/oauth'
 
 type UserState = {
   fetchUserAuthStatus: 'idle' | 'pending' | 'success'
   isUserDataUpdating: boolean
+  userOauthYaClintId: string | null
+  userOauthYaCode: string | null
   data?: UserInfoDto | null
 }
 
 const initialState: UserState = {
   fetchUserAuthStatus: 'idle',
   isUserDataUpdating: false,
+  userOauthYaClintId: null,
+  userOauthYaCode: null,
 }
 
 const userSlice = createSlice({
@@ -29,6 +34,8 @@ const userSlice = createSlice({
       state.fetchUserAuthStatus === 'success',
     selectIsUserAuthenticated: (state) => !!state.data,
     selectIsUserDataUpdating: (state) => state.isUserDataUpdating,
+    selectUserOauthYaClintId: (state) => state.userOauthYaClintId,
+    selectUserOauthYaCode: (state) => state.userOauthYaCode,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -44,6 +51,9 @@ const userSlice = createSlice({
         state.isUserDataUpdating = false
         state.data = null
       })
+      .addCase(oauthYaServiceId.fulfilled, (state, action) => {
+        state.userOauthYaClintId = action.payload.service_id
+      })
       .addMatcher(
         isAnyOf(
           logout.pending,
@@ -51,7 +61,8 @@ const userSlice = createSlice({
           signUp.pending,
           updateProfile.pending,
           uploadAvatar.pending,
-          updatePassword.pending
+          updatePassword.pending,
+          oauthYa.pending
         ),
         (state) => {
           state.isUserDataUpdating = true
@@ -65,7 +76,8 @@ const userSlice = createSlice({
           signUp.rejected,
           updatePassword.rejected,
           updatePassword.fulfilled,
-          uploadAvatar.rejected
+          uploadAvatar.rejected,
+          oauthYa.rejected
         ),
         (state) => {
           state.isUserDataUpdating = false
@@ -76,7 +88,8 @@ const userSlice = createSlice({
           uploadAvatar.fulfilled,
           updateProfile.fulfilled,
           signUp.fulfilled,
-          signIn.fulfilled
+          signIn.fulfilled,
+          oauthYa.fulfilled
         ),
         (state, action) => {
           state.isUserDataUpdating = false
@@ -92,6 +105,7 @@ export const {
   selectUserData,
   selectIsUserAuthenticated,
   selectIsUserDataUpdating,
+  selectUserOauthYaClintId,
 } = userSlice.selectors
 
 export const { reducer: userReducer } = userSlice
