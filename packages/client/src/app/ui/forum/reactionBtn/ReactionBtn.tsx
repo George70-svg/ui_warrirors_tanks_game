@@ -2,6 +2,7 @@ import styles from '../addReaction/add-reaction.module.pcss'
 import { FC } from 'react'
 import { TReaction } from '../../../../entities/forum/types'
 import { EMOJI_LIST } from '../../../../entities/forum/constants'
+import { Button } from 'antd'
 
 interface ReactionBtnProps {
   reaction: TReaction
@@ -22,16 +23,18 @@ const ReactionBtn: FC<ReactionBtnProps> = ({ reaction, onClickEmoji }) => {
 
   return (
     <div>
-      <button
-        type="button"
+      <Button
+        color="default"
+        variant="text"
+        type="text"
         className={styles.button}
         onClick={() => onClickEmoji(reactionEmit)}
       >
         <img width="18" height="18" src={emojiObj.icon} alt={emojiObj.type} />
-        {reaction?.count ? (
+        {reaction?.count && (
           <span className={styles.buttonCount}>{reaction.count}</span>
-        ) : null}
-      </button>
+        )}
+      </Button>
     </div>
   )
 }

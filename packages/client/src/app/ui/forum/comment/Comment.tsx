@@ -43,9 +43,9 @@ const Comment: FC<CommentProps> = ({
         <h4 className={styles.title}>{author}</h4>
         <p className={styles.desc}>{content}</p>
         <div className={styles.reactions}>
-          {reactions.map((reaction, idx) => (
+          {reactions.map((reaction) => (
             <ReactionBtn
-              key={reaction.emoji + idx}
+              key={reaction.emoji}
               reaction={reaction}
               onClickEmoji={formattedClickReaction}
             />
