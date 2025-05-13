@@ -1,16 +1,35 @@
+### Описание проекта
+Игра Battle City аналог легендарной аркадной игры для dandy
+
+[Демонстрация приложения](https://disk.yandex.ru/d/Ez6kTkumh4S8aw)
+
+[Документация](docs/README.md)
+
 ### Как запускать?
 
-1. Убедитесь что у вас установлен `node` и `docker`
-2. Выполните команду `yarn bootstrap` - это обязательный шаг, без него ничего работать не будет :)
-3. Выполните команду `yarn dev`
-3. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
-4. Выполните команду `yarn dev --scope=server` чтобы запустить только server
+Для запуска проекта в dev режиме
+1. `yarn link` - запускаем в каталоге client
+2. `yarn link client` - запускаем в каталоге server (в результате в каталоге server/node_modules должен отобразиться пакет client)
+3. В каталоге server копируем .env.example в .env и настраиваем переменные среды
+4. `docker compose up`  - запускаем в каталоге server
+5. `yarn dev` - запускаем в каталоге server
 
+Для запуска проекта в production режиме (все запускаем в корневом каталоге)
+1. Копируем .env.example в .env и настраиваем переменные среды
+2. `yarn build:ssr --scope client`
+3. `yarn build --scope client`
+4. `docker compose up`
+
+Для запуска проекта необходим установленный стек технологий:
+
+- Node > 16
+- Docker
+- Yarn  - установка `npm install -g yarn`
 
 ### Как добавить зависимости?
 В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
 
-Чтобы добавить зависимость для клиента 
+Добавить зависимость для клиента 
 ```yarn lerna add {your_dep} --scope client```
 
 Для сервера
@@ -19,8 +38,7 @@
 И для клиента и для сервера
 ```yarn lerna add {your_dep}```
 
-
-Если вы хотите добавить dev зависимость, проделайте то же самое, но с флагом `dev`
+Для добавления в dev зависимости, запускаем команду с флагом `dev`
 ```yarn lerna add {your_dep} --dev --scope server```
 
 
@@ -31,6 +49,7 @@
 ```yarn test```
 
 ### Линтинг
+В проекте расширяется конфиг typescript-eslint/recommended
 
 ```yarn lint```
 
@@ -65,7 +84,6 @@
 
 ## Production окружение в докере
 Перед первым запуском выполните `node init.js`
-
 
 `docker compose up` - запустит три сервиса
 1. nginx, раздающий клиентскую статику (client)
