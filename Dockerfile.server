@@ -27,5 +27,5 @@ RUN yarn install --production=true
 COPY ./utils/wait-for.sh /app/wait-for.sh
 RUN chmod +x wait-for.sh
 
-EXPOSE $SERVER_PORT
+EXPOSE 3001
 
