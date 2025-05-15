@@ -1,7 +1,7 @@
 export class ClientConfig {
   getConfig() {
     return {
-      baseURL: `http://${__HOST__}:${__PORT__}/api/v2/`,
+      baseURL: `https://ya-praktikum.tech/api/v2`,
       withCredentials: true,
     }
   }
