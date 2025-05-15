@@ -6,12 +6,11 @@ dotenv.config()
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: Number(process.env.CLIENT_PORT),
+    port: 3000,
   },
   define: {
-    __PORT__: JSON.stringify(process.env.SERVER_PORT) || JSON.stringify('3000'),
-    __HOST__:
-      JSON.stringify(process.env.SERVER_HOST) || JSON.stringify('localhost'),
+    __PORT__: JSON.stringify('3000'),
+    __HOST__: JSON.stringify('localhost'),
   },
   plugins: [...commonPlugins],
   css: {
