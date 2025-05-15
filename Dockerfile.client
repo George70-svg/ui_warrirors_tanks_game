@@ -1,29 +1,22 @@
 ARG NODE_VERSION=20
 
-# Стадия 1: сборка клиента
 FROM node:${NODE_VERSION}-buster as builder
-
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
-
 COPY . .
 RUN yarn lerna bootstrap
 RUN rm -rf /app/packages/client/dist
 RUN yarn build --scope=client
 
-# Стадия 2: финальный production-слой
 FROM node:${NODE_VERSION}-buster-slim as production
-
 WORKDIR /app
 
-# Копируем билд из builder
 COPY --from=builder /app/packages/client/dist /app/dist
 
-# Устанавливаем serve
 RUN npm install -g serve
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "0.0.0.0:3000"]
+CMD ["serve", "-s", "dist", "-l", "tcp://0.0.0.0:3000"]
