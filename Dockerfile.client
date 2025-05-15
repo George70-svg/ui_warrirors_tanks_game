@@ -1,4 +1,5 @@
-FROM node:$NODE_VERSION-buster-slim as production
+ARG NODE_VERSION=20
+FROM node:${NODE_VERSION}-buster-slim as production
 
 WORKDIR /app
 
