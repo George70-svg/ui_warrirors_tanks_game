@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import brickImg from '../../../assets/images/brick.png'
 import metalImg from '../../../assets/images/metal.png'
 import { Coordinate } from '../types'
@@ -131,7 +132,7 @@ function createDecorationFigure(
   return coords.map(
     ({ x: coordX, y: coordY }) =>
       new Decoration({
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         context,
         position: { x: toPixels(coordX), y: toPixels(coordY) },
         size: { width: toPixels(1), height: toPixels(1) },

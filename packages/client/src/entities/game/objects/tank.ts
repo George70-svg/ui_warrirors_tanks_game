@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { Coordinate, Direction, Size } from '../types'
 import { Bullet } from './bullet'
 import { Shape } from './shape'
@@ -70,7 +71,7 @@ export class Tank extends Shape {
 
   public shot() {
     return new Bullet({
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       tankId: this.id,
       context: this.context,
       startPosition: {

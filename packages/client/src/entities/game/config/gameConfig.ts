@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { Tank } from '../objects/tank'
 import { Decoration } from '../objects/decoration'
 import { Bullet } from '../objects/bullet'
@@ -32,7 +33,7 @@ export const config: Config = {
 export function initializeTankObjects(context: CanvasRenderingContext2D) {
   config.tankObjects = [
     new Tank({
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       context,
       startPosition: { x: toPixels(13), y: toPixels(12) },
       direction: 'up',
