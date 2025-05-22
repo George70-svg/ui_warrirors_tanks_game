@@ -38,7 +38,7 @@ export const apiParams = {
   oauthYaGetServiceId: (): ConfigFacade => ({
     url: 'oauth/yandex/service-id',
     data: {
-      redirect_uri: `https://${__HOST__}:${__PORT__}`,
+      redirect_uri: 'http://84.252.138.94:3000/',
     },
     method: 'GET',
   }),
